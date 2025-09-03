@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - PetCare</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script type="module" src="../src/signup.js" defer></script>
+</head>
+<body>
+  <header>
+    <a href="../index.html"><img src="../logo.png" alt="PetCare Logo" />
+    <h2>PetCare</h2></a>
+  </header>
+  <main>
+    <fieldset>
+      <legend><h1>Sign Up</h1></legend>
+      <form action="#" method="post">
+        <label for="name"><img src="../name-icon.png" alt="Name Icon"></label>
+        <input type="text" id="name" name="name" placeholder="Name" required>
+        <br>
+        <label for="email"><img src="../email-icon.png" alt="Email Icon"></label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <br>
+        <label for="password"><img src="../password-icon.png" alt="Password Icon"></label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <br>
+        <label for="confirm-password"><img src="../confirm-password-icon.png" alt="Confirm Password Icon"></label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+        <br>
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+      </form>
+    </fieldset>
+  </main>
+</body>
+</html>

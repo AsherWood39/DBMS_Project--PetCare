@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - PetCare</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script type="module" src="../src/login.js" defer></script>
+</head>
+<body>
+  <header>
+    <a href="../index.html"><img src="../logo.png" alt="PetCare Logo" />
+    <h2>PetCare</h2></a>
+  </header>
+  <main>
+    <fieldset>
+      <legend><h1>Login</h1></legend>
+      <form action="#" method="post">
+        <label for="email"><img src="../email-icon.png" alt="Email Icon"></label>
+        <input type="email" id="email" placeholder="Email" name="email" required>
+        <br>
+        <label for="password"><img src="../password-icon.png" alt="Password Icon"></label>
+        <input type="password" id="password" placeholder="Password" name="password" required>
+        <br>
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Remember Me</label>
+        <p><em><a href="#">Forgot Password?</a></em></p>
+        <br>
+        <button type="submit">Login</button>
+      </form>
+    </fieldset>
+  </main>
+</body>
+</html>
