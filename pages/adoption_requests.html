@@ -4,83 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Adoption Requests</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
-
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 22px;
-    }
-
-    .container {
-      margin: 20px auto;
-      max-width: 1000px;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-    }
-
-    table th {
-      background: #f2f2f2;
-    }
-
-    .status-pending {
-      color: orange;
-      font-weight: bold;
-    }
-    .status-approved {
-      color: green;
-      font-weight: bold;
-    }
-    .status-rejected {
-      color: red;
-      font-weight: bold;
-    }
-
-    button {
-      padding: 6px 12px;
-      margin: 2px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .approve-btn {
-      background: #4CAF50;
-      color: white;
-    }
-
-    .reject-btn {
-      background: #f44336;
-      color: white;
-    }
-
-    button:hover {
-      opacity: 0.8;
-    }
-  </style>
+  <link rel="stylesheet" href="../style/adoption_request.css">
+  <script src="../src/adoption_request.js" defer></script>
+  <script src="../script.js" defer></script>
 </head>
 <body>
 
@@ -98,6 +24,7 @@
         <th>Request Date</th>
         <th>Status</th>
         <th>Action</th>
+        <th>Reason</th>
       </tr>
 
       <!-- Example Row 1 -->
@@ -109,8 +36,9 @@
         <td class="status-pending">Pending</td>
         <td>
           <button class="approve-btn">Approve</button>
-          <button class="reject-btn">Reject</button>
+          <button class="reject-btn" onclick="openRejectModal(101)">Reject</button>
         </td>
+        <td id="reason-101"> - </td>
       </tr>
 
       <!-- Example Row 2 -->
@@ -120,6 +48,7 @@
         <td>Asiya M</td>
         <td>2025-09-02</td>
         <td class="status-approved">Approved</td>
+        <td> - </td>
         <td> - </td>
       </tr>
 
@@ -131,9 +60,29 @@
         <td>2025-09-02</td>
         <td class="status-rejected">Rejected</td>
         <td> - </td>
+        <td id="reason-103">Health records missing</td>
       </tr>
-
     </table>
+  </div>
+
+  <div id="rejectModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Reject Request</h3>
+
+      <label for="rejectionReason">Select a reason:</label>
+      <select id="rejectionReason">
+        <option value="Incomplete health records">Incomplete health records</option>
+        <option value="Adopter not eligible">Adopter not eligible</option>
+        <option value="Pet already adopted">Pet already adopted</option>
+        <option value="Other">Other (Please specify below)</option>
+      </select>
+
+      <textarea id="customReason" placeholder="Enter custom reason..." style="display:none;"></textarea>
+
+      <br><br>
+      <button onclick="submitRejection()">Submit</button>
+      <button onclick="closeRejectModal()">Cancel</button>
+    </div>
   </div>
 
 </body>
