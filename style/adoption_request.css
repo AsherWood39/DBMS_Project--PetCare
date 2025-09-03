@@ -100,7 +100,7 @@ button:hover {
 }
 
 .modal-content {
-  background: #fff;
+  background: var(--background-color);
   padding: 20px;
   border-radius: 8px;
   width: 400px;
@@ -116,3 +116,55 @@ textarea {
   margin-top: 10px;
   padding: 8px;
 }
+/* Modal Buttons */
+.modal-content button {
+  padding: 8px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+
+.modal-content button:first-of-type {
+  background: var(--error-color); 
+  color: #fff;
+}
+
+.modal-content button:last-of-type {
+  background: var(--border-color); 
+  color: var(--text-color);
+}
+
+.modal-content button:hover {
+  opacity: 0.85;
+}
+/* Style the dropdown itself */
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover/focus effect */
+select:hover, select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  outline: none;
+}
+
+/* Style individual options */
+select option {
+  padding: 10px;
+  font-size: 14px;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+

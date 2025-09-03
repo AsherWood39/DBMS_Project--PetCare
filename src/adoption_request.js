@@ -48,6 +48,9 @@ function submitRejection() {
   let statusCell = row.querySelector("td:nth-child(5)");
   statusCell.textContent = "Rejected";
   statusCell.className = "status-rejected";
+  
+  let actionCell = row.querySelector("td:nth-child(6)");
+  actionCell.textContent = "-";
 
   // ✅ (Later) Send to backend
   console.log("Rejected Request:", currentRequestId, "Reason:", reason);
@@ -61,4 +64,24 @@ function submitRejection() {
 
   // Close modal
   closeRejectModal();
+  
+
+}
+function approveRequest(adoptionId) {
+  let row = document.querySelector(`#reason-${adoptionId}`).closest("tr");
+
+  // Update status
+  let statusCell = row.querySelector("td:nth-child(5)");
+  statusCell.textContent = "Approved";
+  statusCell.className = "status-approved";
+
+  // Remove action buttons
+  let actionCell = row.querySelector("td:nth-child(6)");
+  actionCell.textContent = "-";
+
+  // Reset reason cell
+  let reasonCell = document.querySelector(`#reason-${adoptionId}`);
+  reasonCell.textContent = "-";
+
+  console.log("Approved Request:", adoptionId);
 }
