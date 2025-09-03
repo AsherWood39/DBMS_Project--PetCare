@@ -1,0 +1,140 @@
+@import url('./style/global.css');
+
+header .logo-container {
+  display: flex;
+  align-items: center;
+}
+
+header .logo-container a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Link Styles */
+header a {
+  color: var(--text-color);
+  text-decoration: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+header .logo-container img {
+  height: 40px;
+  width: 40px;
+  margin-right: 1rem;
+  border-radius: 50%;  /* Makes the logo circular */
+  object-fit: cover;   /* Ensures image fills the circular space properly */
+  transition: filter 0.3s ease;  /* Smooth transition for the darkening effect */
+}
+
+header .logo-container h2 {
+  color: var(--primary-color);
+  margin: 0;  /* Removes any default margins */
+  transition: color 0.3s ease;  /* Smooth transition for color change */  
+  gap: 1rem;
+}
+
+/* Both image and text darken when the link is hovered */
+header .logo-container a:hover img {
+  filter: brightness(95%);
+}
+
+header .logo-container a:hover h2 {
+  color: var(--secondary-color);
+}
+
+header #theme-toggle {
+  height: 120%;
+  width: 120%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+header #theme-toggle svg {
+  fill: var(--background-color);
+  height: 55%;
+}
+
+header #theme-toggle svg:last-child {
+  display: none;
+}
+
+.darkmode #theme-toggle svg:first-child {
+  display: none;
+}
+
+.darkmode #theme-toggle svg:last-child {
+  display: block;
+}
+
+/* Navigation Styles */
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+}
+
+header nav ul li a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+header nav ul li a:hover {
+  color: var(--secondary-color);
+}
+
+/* Underline effect */
+header nav ul li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 50%;
+  background-color: var(--secondary-color);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+header nav ul li a:hover::after {
+  width: 100%;
+}
+
+header .auth-buttons button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0.5rem;
+  gap: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+header .auth-buttons button:hover {
+  background-color: var(--secondary-color);
+}
+
+header .auth-buttons button a {
+  color: var(--background-color);
+  text-decoration: none;
+}

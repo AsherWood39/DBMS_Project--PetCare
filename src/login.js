@@ -65,7 +65,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
 // Handle forgot password
 document.addEventListener('DOMContentLoaded', function() {
   const forgotPasswordLink = document.querySelector('a[href="#"]');
-  if (forgotPasswordLink && forgotPasswordLink.textContent.includes('Forgot Password')) {
+  if (forgotPasswordLink?.textContent?.includes('Forgot Password')) {
     forgotPasswordLink.addEventListener("click", async (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();

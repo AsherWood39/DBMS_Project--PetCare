@@ -4,29 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - PetCare</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../style/login-signup_style.css">
   <script type="module" src="../src/login.js" defer></script>
+  <script src="../script.js" defer></script>
 </head>
 <body>
   <header>
-    <a href="../index.html"><img src="../logo.png" alt="PetCare Logo" />
-    <h2>PetCare</h2></a>
+    <a href="../index.html"><img src="../petcare_logo.jpg" alt="PetCare Logo">
+      <h2>PetCare</h2></a>
   </header>
+  <hr>
   <main>
     <fieldset>
-      <legend><h1>Login</h1></legend>
+      <h1 id="heading">Login</h1>
       <form action="#" method="post">
-        <label for="email"><img src="../email-icon.png" alt="Email Icon"></label>
-        <input type="email" id="email" placeholder="Email" name="email" required>
-        <br>
-        <label for="password"><img src="../password-icon.png" alt="Password Icon"></label>
-        <input type="password" id="password" placeholder="Password" name="password" required>
-        <br>
-        <input type="checkbox" id="remember" name="remember">
-        <label for="remember">Remember Me</label>
-        <p><em><a href="#">Forgot Password?</a></em></p>
-        <br>
-        <button type="submit">Login</button>
+        <div class="input-container">
+          <i class="material-icons">email</i>
+          <input type="email" id="email" placeholder="Email" name="email" required>
+        </div>
+        <div class="input-container">
+          <i class="material-icons">lock</i>
+          <input type="password" id="password" placeholder="Password" name="password" required>
+        </div>
+
+        <div class="options-container">
+          <div class="toggle-container">
+            <label class="switch">
+              <input type="checkbox" id="remember" name="remember">
+              <span class="slider"></span>
+            </label>
+            <span class="remember-label">Remember Me</span>
+          </div>
+          <em><a href="#">Forgot Password?</a></em>
+        </div>
+          <button type="submit">Login</button>
       </form>
     </fieldset>
   </main>

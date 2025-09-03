@@ -1,4 +1,3 @@
-import { or } from "@firebase/firestore";
 import { createUser } from "../utils/firebase.js";
 
 const nameInput = document.getElementById("name");
@@ -21,6 +20,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
 
+  // Validation
   if (!name || !email || !password || !confirmPassword) {
     errorDiv.textContent = "All fields are required";
     return;
@@ -36,6 +36,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     return;
   }
 
+  // Email Format Validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     errorDiv.textContent = "Please enter a valid email address";

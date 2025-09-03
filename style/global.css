@@ -1,0 +1,55 @@
+/* Global Styles */
+:root {
+  --primary-color: #B1622D;
+  --secondary-color: #9b4207;
+  --error-color: #f44336;
+  --success-color: #4CAF50;
+  --text-color: #333;
+  --background-color: #f9f9f9;
+  --border-color: #ddd;
+}
+
+.darkmode {
+  --primary-color: #FFA95D;        
+  --secondary-color: #FF7A29;   
+  --error-color: #EF5350;    
+  --success-color: #66BB6A;      
+  --text-color: #f5f5f5;          
+  --background-color: #121212;  
+  --border-color: #333;          
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+  background-color: var(--background-color);
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Footer Styles */
+footer {
+  background-color: var(--background-color);
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+  
+footer a {
+  margin: 0 1rem;
+}

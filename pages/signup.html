@@ -4,32 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - PetCare</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../style/login-signup_style.css">
   <script type="module" src="../src/signup.js" defer></script>
+  <script src="../script.js" defer></script>
 </head>
 <body>
   <header>
-    <a href="../index.html"><img src="../logo.png" alt="PetCare Logo" />
+    <a href="../index.html"><img src="../petcare_logo.jpg" alt="PetCare Logo" />
     <h2>PetCare</h2></a>
   </header>
+  <hr>
   <main>
     <fieldset>
-      <legend><h1>Sign Up</h1></legend>
+      <h1 id="heading">Sign Up</h1>
       <form action="#" method="post">
-        <label for="name"><img src="../name-icon.png" alt="Name Icon"></label>
-        <input type="text" id="name" name="name" placeholder="Name" required>
-        <br>
-        <label for="email"><img src="../email-icon.png" alt="Email Icon"></label>
-        <input type="email" id="email" name="email" placeholder="Email" required>
-        <br>
-        <label for="password"><img src="../password-icon.png" alt="Password Icon"></label>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <br>
-        <label for="confirm-password"><img src="../confirm-password-icon.png" alt="Confirm Password Icon"></label>
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
-        <br>
+        <div class="input-container">
+          <i class="material-icons">person</i>
+          <input type="text" id="name" name="name" placeholder="Name" required>
+        </div>
+
+        <div class="input-container">
+          <i class="material-icons">email</i>
+          <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+
+        <div class="input-container">
+          <i class="material-icons">lock</i>
+          <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="input-container">
+          <i class="material-icons">lock</i>
+          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+        </div>
         <button type="submit">Sign Up</button>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <p id="login-link">Already have an account? <a href="login.html"><em>Login here</em></a></p>
       </form>
     </fieldset>
   </main>

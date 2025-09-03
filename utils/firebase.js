@@ -4,6 +4,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
   sendPasswordResetEmail,
   setPersistence, 
   browserLocalPersistence, 
@@ -35,8 +37,31 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export { app, auth, db };
+// Function to update UI based on auth state
+function updateAuthUI(user) {
+  const loggedOutButtons = document.querySelector('.logged-out-buttons');
+  const loggedInButtons = document.querySelector('.logged-in-buttons');
+  const getStartedButton = document.querySelector('main button');
+  
+  if (user) {
+    // User is signed in
+    if (loggedOutButtons) loggedOutButtons.style.display = 'none';
+    if (loggedInButtons) loggedInButtons.style.display = 'block';
+    if (getStartedButton) getStartedButton.style.display = 'none';
+    
+    // Update last login time in Firestore
+    updateDoc(doc(db, "users", user.uid), {
+      lastLogin: serverTimestamp()
+    }).catch(console.error);
+  } else {
+    // User is signed out
+    if (loggedOutButtons) loggedOutButtons.style.display = 'block';
+    if (loggedInButtons) loggedInButtons.style.display = 'none';
+    if (getStartedButton) getStartedButton.style.display = 'block';
+  }
+}
 
+// Save user credentials to Firestore
 async function saveUserCredentials(uid, name, email) {
   try {
     console.log("Saving user credentials to Firestore");
@@ -49,16 +74,45 @@ async function saveUserCredentials(uid, name, email) {
       emailVerified: false
     });
 
-    await setDoc(doc(db, "users", uid), userDoc);
     console.log("User credentials saved successfully");
   } catch (error) {
     console.error("Error saving user credentials:", error);
-    console.error("Error details:", {
-      code: error.code,
-      message: error.message,
-      stack: error.stack
+    throw error;
+  }
+}
+
+// Handle sign out
+async function handleSignOut() {
+  try {
+    await signOut(auth);
+    window.location.href = '/'; // Redirect to home page after logout
+  } catch (error) {
+    console.error("Error signing out:", error);
+    throw error;
+  }
+}
+
+// Initialize auth state observer
+function initializeAuthStateObserver() {
+  onAuthStateChanged(auth, (user) => {
+    updateAuthUI(user);
+  });
+
+  // Add logout handler
+  const logoutButton = document.getElementById('logout-button');
+  if (logoutButton) {
+    logoutButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleSignOut();
     });
   }
+}
+
+// Initialize auth state handling when DOM is loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeAuthStateObserver);
+} else {
+  initializeAuthStateObserver();
 }
 
 export async function createUser(email, password, name) {
