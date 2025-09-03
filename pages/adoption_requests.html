@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Adoption Requests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .container {
+      margin: 20px auto;
+      max-width: 1000px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    table th {
+      background: #f2f2f2;
+    }
+
+    .status-pending {
+      color: orange;
+      font-weight: bold;
+    }
+    .status-approved {
+      color: green;
+      font-weight: bold;
+    }
+    .status-rejected {
+      color: red;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .approve-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .reject-btn {
+      background: #f44336;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    🐾 Admin Dashboard – Adoption Requests
+  </header>
+
+  <div class="container">
+    <h2>Adoption Requests</h2>
+    <table>
+      <tr>
+        <th>Adoption ID</th>
+        <th>Pet Name</th>
+        <th>User Name</th>
+        <th>Request Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+
+      <!-- Example Row 1 -->
+      <tr>
+        <td>101</td>
+        <td>Bruno 🐶</td>
+        <td>Anna T</td>
+        <td>2025-09-01</td>
+        <td class="status-pending">Pending</td>
+        <td>
+          <button class="approve-btn">Approve</button>
+          <button class="reject-btn">Reject</button>
+        </td>
+      </tr>
+
+      <!-- Example Row 2 -->
+      <tr>
+        <td>102</td>
+        <td>Kitty 🐱</td>
+        <td>Asiya M</td>
+        <td>2025-09-02</td>
+        <td class="status-approved">Approved</td>
+        <td> - </td>
+      </tr>
+
+      <!-- Example Row 3 -->
+      <tr>
+        <td>103</td>
+        <td>Rocky 🐕</td>
+        <td>Athishta P</td>
+        <td>2025-09-02</td>
+        <td class="status-rejected">Rejected</td>
+        <td> - </td>
+      </tr>
+
+    </table>
+  </div>
+
+</body>
+</html>
