@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adopt a Pet</title>
+  <link rel="stylesheet" href="../style/adopt_pet.css">
+</head>
+<body>
+  <header>
+    Pet Adoption Request
+  </header>
+
+  <div class="form-container">
+    <h2>Adoption Request Form</h2>
+    <form id="adoptionForm">
+      <!-- Prefilled User Info -->
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="john@example.com" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" value="+91 9876543210">
+      </div>
+
+      <!-- Adoption Specific Questions -->
+      <div class="form-group">
+        <label for="petName">Which pet would you like to adopt?</label>
+        <select id="petName" name="petName">
+          <option value="dog1">Max (Dog)</option>
+          <option value="cat1">Luna (Cat)</option>
+          <option value="rabbit1">Snowy (Rabbit)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="experience">Do you have previous experience with pets?</label>
+        <select id="experience" name="experience">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="homeType">Do you live in a rented or owned house?</label>
+        <select id="homeType" name="homeType">
+          <option value="owned">Owned</option>
+          <option value="rented">Rented</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label for="message">Why do you want to adopt this pet?</label>
+        <textarea id="message" name="message" rows="4" placeholder="Write your answer here..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+            <span>I promise to take responsibility for the pet’s health, food, and exercise.</span>
+            <input type="checkbox" id="commitment" name="commitment" required>
+        </label>
+    </div>
+
+      <button type="submit" class="submit-btn">Submit Adoption Request</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("adoptionForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let formData = {
+        fullName: document.getElementById("fullName").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        petName: document.getElementById("petName").value,
+        experience: document.getElementById("experience").value,
+        homeType: document.getElementById("homeType").value,
+        message: document.getElementById("message").value
+      };
+
+      console.log("Adoption Request Submitted:", formData);
+
+      alert("Your adoption request has been submitted successfully!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
