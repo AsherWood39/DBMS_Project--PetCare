@@ -1,19 +1,38 @@
 {
+<<<<<<< HEAD
   "name": "dbms_petcare",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+=======
+  "dependencies": {
+    "firebase": "^12.2.1"
+  },
+  "name": "dbms_project--petcare",
+  "version": "1.0.0",
+  "description": "Smart Pet Health &amp; Adoption System",
+  "main": "script.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+>>>>>>> e54d177cbe8e99c0850271b2462e2d30aafad562
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+<<<<<<< HEAD
   "type": "commonjs",
   "dependencies": {
     "express": "^5.1.0"
   },
   "devDependencies": {
     "vite": "^7.1.4"
+=======
+  "devDependencies": {
+    "vite": "^5.3.1"
+>>>>>>> e54d177cbe8e99c0850271b2462e2d30aafad562
   }
 }
