@@ -41,23 +41,23 @@ const db = getFirestore(app);
 function updateAuthUI(user) {
   const loggedOutButtons = document.querySelector('.logged-out-buttons');
   const loggedInButtons = document.querySelector('.logged-in-buttons');
-  const getStartedButton = document.querySelector('main button');
-  
+  const roleSelection = document.querySelector('.role-selection');
+
   if (user) {
     // User is signed in
     if (loggedOutButtons) loggedOutButtons.style.display = 'none';
-    if (loggedInButtons) loggedInButtons.style.display = 'block';
-    if (getStartedButton) getStartedButton.style.display = 'none';
-    
+    if (loggedInButtons) loggedInButtons.style.display = 'flex';
+    if (roleSelection) roleSelection.style.display = 'none';
+
     // Update last login time in Firestore
     updateDoc(doc(db, "users", user.uid), {
       lastLogin: serverTimestamp()
     }).catch(console.error);
   } else {
     // User is signed out
-    if (loggedOutButtons) loggedOutButtons.style.display = 'block';
+    if (loggedOutButtons) loggedOutButtons.style.display = 'flex';
     if (loggedInButtons) loggedInButtons.style.display = 'none';
-    if (getStartedButton) getStartedButton.style.display = 'block';
+    if (roleSelection) roleSelection.style.display = 'flex';
   }
 }
 
