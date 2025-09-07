@@ -37,7 +37,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     errorDiv.style.color = "green";
     errorDiv.textContent = "Login successful! Redirecting...";
     setTimeout(() => {
-      window.location.href = "../index.html";
+      window.location.href = "../pages/feature.html";
     }, 2000);
   } catch (error) {
     console.error("Login error:", error);

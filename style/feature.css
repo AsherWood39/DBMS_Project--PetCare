@@ -1,9 +1,11 @@
-@import url('global.css');
+.darkmode .paw-bg {
+  filter: brightness(10);   
+}
 
 /* Pet Cards Container */
 #pets-container {
   display: flex;
-  flex-wrap: wrap;           /* allows wrapping */
+  flex-wrap: wrap;          
   justify-content: space-between; /* spread cards evenly */
   padding: 20px;
   max-width: 1300px;         /* optional: keeps container neat */
@@ -13,9 +15,9 @@
 /* Individual Pet Card */
 .pet-card {
   width: 18%;                 /* 5 cards roughly = 100% width (18% + gaps) */
-  background: white;
+  background: var(--background-color);
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--background-color), var(--border-color));
   margin-bottom: 20px;
   padding: 15px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -23,7 +25,7 @@
 
 .pet-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--background-color), var(--border-color));
 }
 
 /* Pet Images - uniform size */
@@ -43,7 +45,7 @@
 
 .pet-card p {
   margin: 3px 0;
-  color: #555;
+  color: var(--text-color);
   font-weight: bold;
 }
 
@@ -52,8 +54,8 @@
   margin-top: 10px;
   padding: 10px 20px;
   border: none;
-  background: var(--success-color);
-  color: white;
+  background: var(--primary-color);
+  color: var(--background-color);
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
@@ -61,7 +63,7 @@
 }
 
 .pet-card button:hover {
-  background: #45a049;
+  background: var(--secondary-color);
   transform: scale(1.05);
 }
 
@@ -74,8 +76,9 @@
   margin: 0 5px 10px 5px;
   padding: 10px 20px;
   border: none;
-  background: var(--success-color);
-  color: white;
+  background: var(--button-bg-color);
+  opacity: 0.8;
+  color: var(--background-color);
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
@@ -85,7 +88,7 @@
 #filter-buttons button:hover,
 #filter-buttons button.active {
   transform: scale(1.05);
-  background: #45a049;
+  background: var(--secondary-color);
 }
 
 /* Responsive Adjustments */
