@@ -193,3 +193,24 @@ buttons.forEach(button => {
     displayPets(button.getAttribute("data-type"));
   });
 });
+// Display pets with clickable "View Details"
+function displayPets(type = "All") {
+  container.innerHTML = "";
+  pets.forEach(pet => {
+    if (type === "All" || pet.type === type) {
+      const card = document.createElement("div");
+      card.className = "pet-card";
+      card.innerHTML = `
+        <img src="${pet.image}" alt="${pet.name}">
+        <h3>${pet.name}</h3>
+        <p>Age: ${pet.age}</p>
+        <p>Breed: ${pet.breed}</p>
+        <p>Gender: ${pet.gender}</p>
+        <a href="details.html?pet=${encodeURIComponent(pet.name)}">
+          <button>View Details</button>
+        </a>
+      `;
+      container.appendChild(card);
+    }
+  });
+}

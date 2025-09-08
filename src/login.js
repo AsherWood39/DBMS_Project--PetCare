@@ -1,4 +1,9 @@
-import { loginInUser, sendPasswordReset } from "../utils/firebase.js";
+// Dummy user data (replace with backend integration later)
+const dummyUser = {
+  email: "john@example.com",
+  password: "123456",
+  name: "John Doe"
+};
 
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");  
@@ -23,50 +28,42 @@ document.querySelector("form").addEventListener("submit", async function (event)
     return;
   }
 
-  try {
-    // Show loading state
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    submitButton.disabled = true;
-    submitButton.textContent = "Logging in...";
+  // Simulate loading state
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = "Logging in...";
 
-    // Sign in user with improved functionality
-    await loginInUser(email, password, rememberMe);
+  setTimeout(() => {
+    if (email === dummyUser.email && password === dummyUser.password) {
+      // Successful login
+      errorDiv.style.color = "green";
+      errorDiv.textContent = "Login successful! Redirecting...";
 
-    // Redirect to home page
-    errorDiv.style.color = "green";
-    errorDiv.textContent = "Login successful! Redirecting...";
-    setTimeout(() => {
-      window.location.href = "../pages/feature.html";
-    }, 2000);
-  } catch (error) {
-    console.error("Login error:", error);
-    errorDiv.style.color = "red";
-    
-    if (error.code === 'auth/user-not-found') {
-      errorDiv.textContent = "No user found with this email address";
-    } else if (error.code === 'auth/wrong-password') {
-      errorDiv.textContent = "Incorrect password";
-    } else if (error.code === 'auth/invalid-email') {
-      errorDiv.textContent = "Invalid email address";
-    } else if (error.code === 'auth/too-many-requests') {
-      errorDiv.textContent = "Too many failed attempts. Please try again later";
+      if (rememberMe) {
+        localStorage.setItem("loggedInUser", JSON.stringify(dummyUser));
+      } else {
+        sessionStorage.setItem("loggedInUser", JSON.stringify(dummyUser));
+      }
+
+      setTimeout(() => {
+        window.location.href = "../pages/feature.html";
+      }, 2000);
     } else {
-      errorDiv.textContent = error.message || "Login failed. Please try again";
+      // Failed login
+      errorDiv.style.color = "red";
+      errorDiv.textContent = "Invalid email or password";
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
     }
-    
-    // Reset button state
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
-  }
+  }, 1000); // simulate server delay
 });
 
 // Handle forgot password
 document.addEventListener('DOMContentLoaded', function() {
   const forgotPasswordLink = document.querySelector('a[href="#"]');
   if (forgotPasswordLink?.textContent?.includes('Forgot Password')) {
-    forgotPasswordLink.addEventListener("click", async (e) => {
+    forgotPasswordLink.addEventListener("click", (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();
 
@@ -76,18 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      try {
-        await sendPasswordReset(email);
+      if (email === dummyUser.email) {
         errorDiv.style.color = "green";
-        errorDiv.textContent = "Password reset email sent! Please check your inbox.";
-      } catch (error) {
-        console.error("Password reset error:", error);
+        errorDiv.textContent = "Password reset link sent to your email (simulated).";
+      } else {
         errorDiv.style.color = "red";
-        if (error.code === 'auth/user-not-found') {
-          errorDiv.textContent = "No user found with this email address";
-        } else {
-          errorDiv.textContent = error.message || "Failed to send reset email";
-        }
+        errorDiv.textContent = "No user found with this email address";
       }
     });
   }
