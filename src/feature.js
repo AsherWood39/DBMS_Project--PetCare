@@ -59,49 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Generate paw prints background
   generatePawPrints();
 
-  // Wait for Firebase to load then initialize auth features
-  setTimeout(() => {
-    initializeAuthFeatures();
-  }, 1000);
+  // Initialize simple authentication UI (no Firebase)
+  // initializeStaticAuthUI();  // COMMENTED OUT - No authentication needed
 });
 
-// Authentication Features for Feature Page (leveraging existing Firebase system)
-function initializeAuthFeatures() {
-  console.log('Initializing authentication features for feature page');
-  
-  // The Firebase module is already loaded via the script tag in HTML
-  // It automatically handles auth state changes via the onAuthStateChanged observer
-  // We just need to add the logout functionality for this page
-
-  // Add logout functionality
-  const logoutButton = document.getElementById('logout-button');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      console.log('Logout button clicked');
-      
-      try {
-        // Use the global Firebase auth that's already initialized
-        if (window.firebase && window.firebase.auth) {
-          const auth = window.firebase.auth();
-          await auth.signOut();
-          console.log('User signed out successfully');
-          
-          // Redirect to home page after logout
-          window.location.href = '../index.html';
-        } else {
-          console.error('Firebase auth not available');
-          // Fallback: redirect to home page anyway
-          window.location.href = '../index.html';
-        }
-      } catch (error) {
-        console.error('Error signing out:', error);
-        // Redirect to home page even if logout fails
-        window.location.href = '../index.html';
-      }
-    });
-  }
-}
+// Authentication is now handled by the shared auth.js script
 
 // Dynamic Paw Print Background Generator (inherited from main script.js)
 function generatePawPrints() {

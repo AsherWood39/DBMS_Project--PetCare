@@ -1,0 +1,81 @@
+# Build and Deploy Workflow
+name: Build and Deploy
+
+# Trigger the workflow on push to main branch and pull requests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Define the jobs
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    # Checkout the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    # Setup Node.js environment
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    # Install dependencies
+    - name: Install dependencies
+      run: npm ci
+    
+    # Ensure vite binary has execute permissions (fix for permission denied error)
+    - name: Ensure vite is executable
+      run: chmod +x node_modules/.bin/vite
+    
+    # Run the build process
+    - name: Build project
+      run: npm run build
+    
+    # Optional: Run tests if you have any
+    # - name: Run tests
+    #   run: npm test
+    
+    # Upload build artifacts for deployment job
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files-${{ matrix.node-version }}
+        path: dist/
+        retention-days: 1
+
+  # Optional deployment job (can be configured for your hosting provider)
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    # Checkout the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    # Download build artifacts
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files-20.x
+        path: dist/
+    
+    # Deploy to your hosting provider
+    # This step will depend on where you want to deploy (GitHub Pages, Netlify, etc.)
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist

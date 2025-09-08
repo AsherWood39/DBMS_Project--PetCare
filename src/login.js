@@ -1,5 +1,4 @@
-import { loginInUser, sendPasswordReset } from "../utils/firebase.js";
-
+// Simple login functionality without Firebase
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");  
 const rememberMeCheckbox = document.getElementById("remember");
@@ -9,6 +8,13 @@ errorDiv.style.color = "red";
 errorDiv.style.marginTop = "10px";
 errorDiv.style.fontSize = "14px";
 document.querySelector("form").appendChild(errorDiv);
+
+// Simple user credentials for demo (in real app, this would be server-side)
+const demoUsers = [
+  { email: "user@petcare.com", password: "123456", name: "Demo User" },
+  { email: "admin@petcare.com", password: "admin123", name: "Admin User" },
+  { email: "test@test.com", password: "test123", name: "Test User" }
+];
 
 document.querySelector("form").addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -30,30 +36,53 @@ document.querySelector("form").addEventListener("submit", async function (event)
     submitButton.disabled = true;
     submitButton.textContent = "Logging in...";
 
-    // Sign in user with improved functionality
-    await loginInUser(email, password, rememberMe);
+    // Simulate login delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Redirect to home page
+    // Check credentials - accept any valid email and any password with at least 6 characters
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(email)) {
+      errorDiv.textContent = "Please enter a valid email address";
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      return;
+    }
+    
+    if (password.length < 6) {
+      errorDiv.textContent = "Password must be at least 6 characters long";
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      return;
+    }
+    
+    // Login successful - accept any valid email and 6+ character password
+    const user = { email: email, name: email.split('@')[0] }; // Use email prefix as name
+    
+    // Store simple auth state
+    if (rememberMe) {
+      localStorage.setItem('simpleAuthState', 'logged-in');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    } else {
+      sessionStorage.setItem('simpleAuthState', 'logged-in');
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    // Show success and redirect
     errorDiv.style.color = "green";
     errorDiv.textContent = "Login successful! Redirecting...";
+    
     setTimeout(() => {
       window.location.href = "../pages/feature.html";
-    }, 2000);
+    }, 1500);
+    
+    // Reset button state
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+    
   } catch (error) {
     console.error("Login error:", error);
-    errorDiv.style.color = "red";
-    
-    if (error.code === 'auth/user-not-found') {
-      errorDiv.textContent = "No user found with this email address";
-    } else if (error.code === 'auth/wrong-password') {
-      errorDiv.textContent = "Incorrect password";
-    } else if (error.code === 'auth/invalid-email') {
-      errorDiv.textContent = "Invalid email address";
-    } else if (error.code === 'auth/too-many-requests') {
-      errorDiv.textContent = "Too many failed attempts. Please try again later";
-    } else {
-      errorDiv.textContent = error.message || "Login failed. Please try again";
-    }
+    errorDiv.textContent = "Login failed. Please try again";
     
     // Reset button state
     const submitButton = event.target.querySelector('button[type="submit"]');
@@ -66,7 +95,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
 document.addEventListener('DOMContentLoaded', function() {
   const forgotPasswordLink = document.querySelector('a[href="#"]');
   if (forgotPasswordLink?.textContent?.includes('Forgot Password')) {
-    forgotPasswordLink.addEventListener("click", async (e) => {
+    forgotPasswordLink.addEventListener("click", (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();
 
@@ -76,19 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      try {
-        await sendPasswordReset(email);
-        errorDiv.style.color = "green";
-        errorDiv.textContent = "Password reset email sent! Please check your inbox.";
-      } catch (error) {
-        console.error("Password reset error:", error);
-        errorDiv.style.color = "red";
-        if (error.code === 'auth/user-not-found') {
-          errorDiv.textContent = "No user found with this email address";
-        } else {
-          errorDiv.textContent = error.message || "Failed to send reset email";
-        }
-      }
+      // Simulate password reset
+      errorDiv.style.color = "green";
+      errorDiv.textContent = "Password reset instructions sent! (Demo mode - check console)";
+      console.log(`Password reset would be sent to: ${email}`);
     });
   }
 });

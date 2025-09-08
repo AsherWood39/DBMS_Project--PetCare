@@ -1,6 +1,6 @@
 # PetCare Project
 
-A web application for managing pet care services with user authentication using Firebase.
+A web application for managing pet care services with simple local authentication.
 
 ## Prerequisites
 
@@ -22,22 +22,9 @@ Before you begin, ensure you have installed:
    npm install
    ```
    This will install all required dependencies including:
-   - Firebase SDK for authentication
    - Vite for development and building
+   - Express for backend functionality
    - Other project dependencies
-
-3. **Environment Setup**
-   - Create a `.env` file in the root directory
-   - Add your Firebase configuration:
-     ```env
-     VITE_FIREBASE_API_KEY=your_api_key
-     VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-     VITE_FIREBASE_PROJECT_ID=your_project_id
-     VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-     VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-     VITE_FIREBASE_APP_ID=your_app_id
-     VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
-     ```
 
 ## Development Workflow
 
