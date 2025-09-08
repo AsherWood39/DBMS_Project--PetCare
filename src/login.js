@@ -1,10 +1,4 @@
-// Dummy user data (replace with backend integration later)
-const dummyUser = {
-  email: "john@example.com",
-  password: "123456",
-  name: "John Doe"
-};
-
+// Simple login functionality without Firebase
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");  
 const rememberMeCheckbox = document.getElementById("remember");
@@ -14,6 +8,13 @@ errorDiv.style.color = "red";
 errorDiv.style.marginTop = "10px";
 errorDiv.style.fontSize = "14px";
 document.querySelector("form").appendChild(errorDiv);
+
+// Simple user credentials for demo (in real app, this would be server-side)
+const demoUsers = [
+  { email: "user@petcare.com", password: "123456", name: "Demo User" },
+  { email: "admin@petcare.com", password: "admin123", name: "Admin User" },
+  { email: "test@test.com", password: "test123", name: "Test User" }
+];
 
 document.querySelector("form").addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -28,35 +29,66 @@ document.querySelector("form").addEventListener("submit", async function (event)
     return;
   }
 
-  // Simulate loading state
-  const submitButton = event.target.querySelector('button[type="submit"]');
-  const originalText = submitButton.textContent;
-  submitButton.disabled = true;
-  submitButton.textContent = "Logging in...";
+  try {
+    // Show loading state
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = "Logging in...";
 
-  setTimeout(() => {
-    if (email === dummyUser.email && password === dummyUser.password) {
-      // Successful login
-      errorDiv.style.color = "green";
-      errorDiv.textContent = "Login successful! Redirecting...";
+    // Simulate login delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-      if (rememberMe) {
-        localStorage.setItem("loggedInUser", JSON.stringify(dummyUser));
-      } else {
-        sessionStorage.setItem("loggedInUser", JSON.stringify(dummyUser));
-      }
-
-      setTimeout(() => {
-        window.location.href = "../pages/feature.html";
-      }, 2000);
-    } else {
-      // Failed login
-      errorDiv.style.color = "red";
-      errorDiv.textContent = "Invalid email or password";
+    // Check credentials - accept any valid email and any password with at least 6 characters
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(email)) {
+      errorDiv.textContent = "Please enter a valid email address";
       submitButton.disabled = false;
       submitButton.textContent = originalText;
+      return;
     }
-  }, 1000); // simulate server delay
+    
+    if (password.length < 6) {
+      errorDiv.textContent = "Password must be at least 6 characters long";
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      return;
+    }
+    
+    // Login successful - accept any valid email and 6+ character password
+    const user = { email: email, name: email.split('@')[0] }; // Use email prefix as name
+    
+    // Store simple auth state
+    if (rememberMe) {
+      localStorage.setItem('simpleAuthState', 'logged-in');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    } else {
+      sessionStorage.setItem('simpleAuthState', 'logged-in');
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    // Show success and redirect
+    errorDiv.style.color = "green";
+    errorDiv.textContent = "Login successful! Redirecting...";
+    
+    setTimeout(() => {
+      window.location.href = "../pages/feature.html";
+    }, 1500);
+    
+    // Reset button state
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+    
+  } catch (error) {
+    console.error("Login error:", error);
+    errorDiv.textContent = "Login failed. Please try again";
+    
+    // Reset button state
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+  }
 });
 
 // Handle forgot password
@@ -73,13 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      if (email === dummyUser.email) {
-        errorDiv.style.color = "green";
-        errorDiv.textContent = "Password reset link sent to your email (simulated).";
-      } else {
-        errorDiv.style.color = "red";
-        errorDiv.textContent = "No user found with this email address";
-      }
+      // Simulate password reset
+      errorDiv.style.color = "green";
+      errorDiv.textContent = "Password reset instructions sent! (Demo mode - check console)";
+      console.log(`Password reset would be sent to: ${email}`);
     });
   }
 });

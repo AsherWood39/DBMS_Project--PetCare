@@ -197,6 +197,9 @@ window.addEventListener('storage', (e) => {
     }
   }
 });
+
+// Initialize when page loads
+// Authentication is now handled by src/auth.js
 });
 
 // Dynamic Paw Print Background Generator
@@ -356,3 +359,5 @@ window.addEventListener('resize', function() {
   clearTimeout(window.pawResizeTimeout);
   window.pawResizeTimeout = setTimeout(generatePawPrintsEnhanced, 250);
 });
+
+// Authentication is now handled by the shared auth.js script

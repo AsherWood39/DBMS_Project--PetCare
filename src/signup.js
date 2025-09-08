@@ -1,5 +1,4 @@
-import { createUser } from "../utils/firebase.js";
-
+// Simple signup functionality without Firebase
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -26,7 +25,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     return;
   }
 
-  if (password != confirmPassword) {
+  if (password !== confirmPassword) {
     errorDiv.textContent = "Passwords do not match";
     return;
   }
@@ -50,11 +49,34 @@ document.querySelector("form").addEventListener("submit", async function (event)
     submitButton.disabled = true;
     submitButton.textContent = "Signing up...";
 
-    console.log("Creating user with:", { name, email });
+    console.log("Creating user account for:", { name, email });
 
-    // Create user with all the improved functionality
-    const user = await createUser(email, password, name);
-    console.log("User successfully created:", user);
+    // Simulate signup delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Check if user already exists (simple check)
+    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const userExists = existingUsers.some(user => user.email === email);
+
+    if (userExists) {
+      errorDiv.textContent = "An account with this email already exists";
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      return;
+    }
+
+    // Create new user account (store locally)
+    const newUser = {
+      id: Date.now().toString(),
+      name,
+      email,
+      createdAt: new Date().toISOString()
+    };
+
+    existingUsers.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
+
+    console.log("User successfully created:", newUser);
 
     // Clear form
     event.target.reset();
@@ -62,25 +84,15 @@ document.querySelector("form").addEventListener("submit", async function (event)
     // Show success message and redirect
     errorDiv.style.color = "green";
     errorDiv.textContent = "Signup successful! Redirecting to login...";
+    
     setTimeout(() => {
       window.location.href = "../pages/login.html";
     }, 2000);
+
   } catch (error) {
     console.error("Error during signup:", error);
     errorDiv.style.color = "red";
-    
-    // Handle specific Firebase errors
-    if (error.code === 'auth/email-already-in-use') {
-      errorDiv.textContent = "An account with this email already exists";
-    } else if (error.code === 'auth/invalid-email') {
-      errorDiv.textContent = "Invalid email address";
-    } else if (error.code === 'auth/operation-not-allowed') {
-      errorDiv.textContent = "Email/password accounts are not enabled";
-    } else if (error.code === 'auth/weak-password') {
-      errorDiv.textContent = "Password is too weak";
-    } else {
-      errorDiv.textContent = error.message || "Failed to create account. Please try again";
-    }
+    errorDiv.textContent = "Failed to create account. Please try again";
     
     // Reset button state
     const submitButton = event.target.querySelector('button[type="submit"]');
