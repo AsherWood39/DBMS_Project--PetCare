@@ -14,14 +14,15 @@ permissions:
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 # Define the jobs
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
     
     steps:
     # Checkout the repository code
@@ -29,10 +30,10 @@ jobs:
       uses: actions/checkout@v4
     
     # Setup Node.js environment
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '20'
         cache: 'npm'
     
     # Install dependencies
@@ -47,23 +48,24 @@ jobs:
     - name: Build project
       run: npm run build
     
-    # Optional: Run tests if you have any
-    # - name: Run tests
-    #   run: npm test
-    
     # Upload build artifacts for deployment job
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: build-files-${{ matrix.node-version }}
+        name: build-files
         path: dist/
         retention-days: 1
 
-  # Deploy to GitHub Pages
+  # Deploy to GitHub Pages using official action
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    # Set up a GitHub Pages deployment environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     # Checkout the repository code
@@ -74,15 +76,20 @@ jobs:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: build-files-20.x
+        name: build-files
         path: dist/
     
-    # Deploy to GitHub Pages with proper permissions
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    # Setup Pages configuration
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    # Upload artifact to GitHub Pages
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        force_orphan: true
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
+        path: './dist'
+    
+    # Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
