@@ -1,38 +1,38 @@
 /* Import global styles and variables */
-@import url("global.css");
+@import url(./global.css);
 
-/* Header styling (logo + PetCare heading) */
-.header {
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+header a {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* logo + heading together */
-  padding: 15px 30px;
-  background: var(--background-color);
-  border-bottom: 1px solid var(--border-color);
+  text-decoration: none;
 }
-
-.header img {
-  width: 40px; /* small */
-  height: 40px; /* square */
-  border-radius: 50%; /* circular */
-  object-fit: cover;
-  margin-right: 1rem; /* space between logo & text */
-  transition: filter 0.3s ease;
+header img {
+  height: 40px;
+  width: 40px;
+  margin-right: 1rem;
+  border-radius: 50%; /* Makes the logo circular */
+  object-fit: cover; /* Ensures image fills the circular space properly */
+  transition: filter 0.3s ease; /* Smooth transition for the darkening effect */
 }
-
-.header h1 {
-  font-size: 24px;
-  font-weight: bold;
+header h2 {
   color: var(--primary-color);
-  margin: 0;
-  transition: color 0.3s ease;
+  margin: 0; /* Removes any default margins */
+  transition: color 0.3s ease; /* Smooth transition for color change */
 }
 
-.header:hover img {
+/* Both image and text darken when the link is hovered */
+header a:hover img {
   filter: brightness(95%);
 }
 
-.header:hover h1 {
+header a:hover h2 {
   color: var(--secondary-color);
 }
 
