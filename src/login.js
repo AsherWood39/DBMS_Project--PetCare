@@ -73,7 +73,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     errorDiv.textContent = "Login successful! Redirecting...";
     
     setTimeout(() => {
-      window.location.href = "../pages/feature.html";
+      window.location.href = "../pages/profile.html";
     }, 1500);
     
     // Reset button state

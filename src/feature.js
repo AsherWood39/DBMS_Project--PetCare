@@ -14,136 +14,6 @@ const pets = [
 const container = document.getElementById("pets-container");
 const buttons = document.querySelectorAll("#filter-buttons button");
 
-// Enhanced Theme Toggle Functionality (inherited from main script.js)
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize theme functionality
-  let darkmode = localStorage.getItem("darkmode");
-  const themeToggle = document.getElementById("theme-toggle"); 
-
-  const enableDarkMode = () => {
-    document.body.classList.add("darkmode");
-    localStorage.setItem("darkmode", "active");
-  };
-
-  const disableDarkMode = () => {
-    document.body.classList.remove("darkmode");
-    localStorage.setItem("darkmode", null);
-  };
-
-  // Initialize theme on page load
-  if (darkmode === "active") enableDarkMode();
-
-  // Add click event only if toggle button exists
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      darkmode = localStorage.getItem('darkmode');
-      if (darkmode !== "active") {
-        enableDarkMode();
-      } else {
-        disableDarkMode();
-      }
-    });
-  }
-
-  // Update theme when localStorage changes (sync across tabs)
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'darkmode') {
-      if (e.newValue === 'active') {
-        enableDarkMode();
-      } else {
-        disableDarkMode();
-      }
-    }
-  });
-
-  // Generate paw prints background
-  generatePawPrints();
-
-  // Initialize simple authentication UI (no Firebase)
-  // initializeStaticAuthUI();  // COMMENTED OUT - No authentication needed
-});
-
-// Authentication is now handled by the shared auth.js script
-
-// Dynamic Paw Print Background Generator (inherited from main script.js)
-function generatePawPrints() {
-  const pawContainer = document.querySelector('.paw-bg');
-  if (!pawContainer) return;
-
-  // Clear existing paw prints (if any)
-  pawContainer.innerHTML = '';
-
-  // Configuration for paw prints
-  const pawConfig = {
-    count: 12, // Number of paw prints
-    minSize: 90,
-    maxSize: 118,
-    minOpacity: 0.08,
-    maxOpacity: 0.18,
-    imagePath: '../public/paws.png' // Adjusted path for pages subfolder
-  };
-
-  // Generate random paw prints
-  for (let i = 0; i < pawConfig.count; i++) {
-    const pawPrint = document.createElement('img');
-    pawPrint.src = pawConfig.imagePath;
-    pawPrint.alt = '';
-    pawPrint.className = `paw-dynamic paw-${i + 1}`;
-
-    // Random positioning (avoiding edges)
-    const top = Math.random() * 80 + 10; // 10% to 90%
-    const left = Math.random() * 80 + 10; // 10% to 90%
-
-    // Random size
-    const size = Math.random() * (pawConfig.maxSize - pawConfig.minSize) + pawConfig.minSize;
-
-    // Random rotation
-    const rotation = Math.random() * 360;
-
-    // Random flip (scaleX and scaleY)
-    const scaleX = Math.random() > 0.5 ? 1 : -1;
-    const scaleY = Math.random() > 0.5 ? 1 : -1;
-
-    // Random opacity
-    const opacity = Math.random() * (pawConfig.maxOpacity - pawConfig.minOpacity) + pawConfig.minOpacity;
-
-    // Apply styles
-    pawPrint.style.cssText = `
-      position: absolute;
-      top: ${top}%;
-      left: ${left}%;
-      width: ${size}px;
-      height: auto;
-      opacity: ${opacity};
-      transform: rotate(${rotation}deg) scaleX(${scaleX}) scaleY(${scaleY});
-      user-select: none;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    `;
-
-    pawContainer.appendChild(pawPrint);
-  }
-}
-
-function displayPets(type = "All") {
-  container.innerHTML = "";
-  pets.forEach(pet => {
-    if (type === "All" || pet.type === type) {
-      const card = document.createElement("div");
-      card.className = "pet-card";
-      card.innerHTML = `
-        <img src="${pet.image}" alt="${pet.name}">
-        <h3>${pet.name}</h3>
-        <p>Age: ${pet.age}</p>
-        <p>Breed: ${pet.breed}</p>
-        <p>Gender: ${pet.gender}</p>
-        <button>View Details</button>
-      `;
-      container.appendChild(card);
-    }
-  });
-}
-
 // Show all pets initially
 displayPets("All");
 
@@ -168,7 +38,7 @@ function displayPets(type = "All") {
         <p>Age: ${pet.age}</p>
         <p>Breed: ${pet.breed}</p>
         <p>Gender: ${pet.gender}</p>
-        <a href="details.html?pet=${encodeURIComponent(pet.name)}">
+        <a href="../pages/details.html">
           <button>View Details</button>
         </a>
       `;
