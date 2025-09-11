@@ -1,0 +1,113 @@
+@import url(./global.css);
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--background-color);
+        color: var(--text-color);
+    }
+    header a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    header img {
+        height: 40px;
+        width: 40px;
+        margin-right: 1rem;
+        border-radius: 50%;  /* Makes the logo circular */
+        object-fit: cover;   /* Ensures image fills the circular space properly */
+        transition: filter 0.3s ease;  /* Smooth transition for the darkening effect */
+    }
+    header h2 {
+    color: var(--primary-color);
+    margin: 0;  /* Removes any default margins */
+    transition: color 0.3s ease;  /* Smooth transition for color change */
+    }
+
+    /* Both image and text darken when the link is hovered */
+    header a:hover img {
+    filter: brightness(95%);
+    }
+
+    header a:hover h2 {
+    color: var(--secondary-color);
+    }
+   
+
+    .form-container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: var(--background-color);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      margin-bottom: 15px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+    /* put checkbox right after the text */
+    .checkbox-label {
+    display: flex;
+    justify-content: space-between; /* push text left, checkbox right */
+    align-items: center;            /* vertical alignment */
+    gap: 13px;                       /* spacing between text and checkbox */
+    font-weight: normal;            /* optional: don’t make this sentence bold */
+    }
+
+    /* make the box a touch larger and clickable */
+    .checkbox-label input[type="checkbox"] {
+    transform: scale(1.1);
+    cursor: pointer;
+    width: 9%;
+    }
+

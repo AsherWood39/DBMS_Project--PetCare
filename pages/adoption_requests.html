@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Adoption Requests</title>
+  <link rel="stylesheet" href="../style/adoption_request.css">
+  <script src="../src/adoption_request.js" defer></script>
+  <script src="../script.js" defer></script>
+</head>
+<body>
+
+  <header>
+    🐾 Admin Dashboard – Adoption Requests
+  </header>
+
+  <div class="container">
+    <h2>Adoption Requests</h2>
+    <table>
+      <tr>
+        <th>Adoption ID</th>
+        <th>Pet Name</th>
+        <th>User Name</th>
+        <th>Request Date</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Reason</th>
+      </tr>
+
+      <!-- Example Row 1 -->
+      <tr>
+        <td>101</td>
+        <td>Bruno 🐶</td>
+        <td>Anna T</td>
+        <td>2025-09-01</td>
+        <td class="status-pending">Pending</td>
+        <td>
+          <button class="approve-btn" onclick="approveRequest(101)">Approve</button>
+          <button class="reject-btn" onclick="openRejectModal(101)">Reject</button>
+        </td>
+        <td id="reason-101"> - </td>
+      </tr>
+
+      <!-- Example Row 2 -->
+      <tr>
+        <td>102</td>
+        <td>Kitty 🐱</td>
+        <td>Asiya M</td>
+        <td>2025-09-02</td>
+        <td class="status-approved">Approved</td>
+        <td> - </td>
+        <td> - </td>
+      </tr>
+
+      <!-- Example Row 3 -->
+      <tr>
+        <td>103</td>
+        <td>Rocky 🐕</td>
+        <td>Athishta P</td>
+        <td>2025-09-02</td>
+        <td class="status-rejected">Rejected</td>
+        <td> - </td>
+        <td id="reason-103">Health records missing</td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="rejectModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Reject Request</h3>
+
+      <label for="rejectionReason">Select a reason:</label>
+      <select id="rejectionReason">
+        <option value="Incomplete health records">Incomplete health records</option>
+        <option value="Adopter not eligible">Adopter not eligible</option>
+        <option value="Pet already adopted">Pet already adopted</option>
+        <option value="Other">Other (Please specify below)</option>
+      </select>
+
+      <textarea id="customReason" placeholder="Enter custom reason..." style="display:none;"></textarea>
+
+      <br><br>
+      <button onclick="submitRejection()">Submit</button>
+      <button onclick="closeRejectModal()">Cancel</button>
+    </div>
+  </div>
+
+</body>
+</html>
