@@ -77,9 +77,19 @@
     <!-- Pet Cards Container -->
     <div id="pets-container"></div>
   </main>
+  <!-- + Add Pet button (hidden for buyers, visible for sellers) -->
+  <button id="add-pet-btn" class="add-pet-btn">+</button>
   
   <!-- Feature page functionality -->
   <script src="../utils/auth.js"></script>
   <script src="../src/feature.js"></script>
+   <script>
+    // Example: hide/show based on role
+    const userRole = "buyer"; // change to "seller" to see button
+    const addPetBtn = document.getElementById("add-pet-btn");
+    if (userRole === "buyer") {
+      addPetBtn.style.display = "none";
+    }
+  </script>
 </body>
 </html>

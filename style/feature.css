@@ -90,6 +90,28 @@
   transform: scale(1.05);
   background: var(--secondary-color);
 }
+/* Add Pet Floating Button */
+.add-pet-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 32px;
+  color: var(--background-color);
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--background-color), var(--border-color));
+  transition: transform 0.2s, background 0.2s;
+}
+
+.add-pet-btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.1);
+}
+
 
 /* Responsive Adjustments */
 @media (max-width: 1200px) { .pet-card { width: 23%; } }  /* 4 per row */
