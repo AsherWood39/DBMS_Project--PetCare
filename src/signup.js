@@ -3,6 +3,56 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirm-password");
+const adopterRadio = document.getElementById("adopter");
+const ownerRadio = document.getElementById("owner");
+
+// Handle URL parameters for role selection
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const roleParam = urlParams.get('role');
+  
+  if (roleParam) {
+    if (roleParam.toLowerCase() === 'adopter') {
+      adopterRadio.checked = true;
+      highlightSelectedRole('adopter');
+    } else if (roleParam.toLowerCase() === 'owner') {
+      ownerRadio.checked = true;
+      highlightSelectedRole('owner');
+    }
+  }
+  
+  // Add visual feedback when role changes
+  const roleRadios = document.querySelectorAll('input[name="role"]');
+  roleRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      highlightSelectedRole(this.value.toLowerCase());
+    });
+  });
+});
+
+// Function to highlight the selected role
+function highlightSelectedRole(role) {
+  const roleContainer = document.querySelector('.role-select');
+  const adopterLabel = document.querySelector('label[for="adopter"]');
+  const ownerLabel = document.querySelector('label[for="owner"]');
+  
+  // Reset styles
+  adopterLabel.style.fontWeight = 'normal';
+  ownerLabel.style.fontWeight = 'normal';
+  adopterLabel.style.color = '';
+  ownerLabel.style.color = '';
+  
+  // Highlight selected role
+  if (role === 'adopter') {
+    adopterLabel.style.fontWeight = 'bold';
+    adopterLabel.style.color = 'var(--primary-color)';
+  } else if (role === 'owner') {
+    ownerLabel.style.fontWeight = 'bold';
+    ownerLabel.style.color = 'var(--primary-color)';
+  }
+}
+
+// Create error message div
 const errorDiv = document.createElement("div");
 errorDiv.className = "error-message";
 errorDiv.style.color = "red";
@@ -21,6 +71,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
   const email = emailInput.value.trim();
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
+  const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
   // Validation
   if (!name || !email || !password || !confirmPassword) {
@@ -52,7 +103,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     submitButton.disabled = true;
     submitButton.textContent = "Signing up...";
 
-    console.log("Creating user account for:", { name, email });
+    console.log("Creating user account for:", { name, email, role: selectedRole });
 
     // Simulate signup delay
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -73,6 +124,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
       id: Date.now().toString(),
       name,
       email,
+      role: selectedRole,
       createdAt: new Date().toISOString()
     };
 
@@ -84,13 +136,20 @@ document.querySelector("form").addEventListener("submit", async function (event)
     // Clear form
     event.target.reset();
 
-    // Show success message and redirect
+    // Show success message with role-specific content
     errorDiv.style.color = "green";
-    errorDiv.textContent = "Signup successful! Redirecting to login...";
+    const roleMessage = selectedRole === 'Adopter' 
+      ? "Welcome to PetCare! You can now find your perfect pet companion." 
+      : "Welcome to PetCare! You can now list your pets for adoption.";
+    
+    errorDiv.textContent = `Signup successful as ${selectedRole}! ${roleMessage} Redirecting to login...`;
+    
+    // Store the user's role preference for later use
+    localStorage.setItem('userRole', selectedRole);
     
     setTimeout(() => {
-      window.location.href = "../pages/login.html";
-    }, 2000);
+      window.location.href = "login.html";
+    }, 3000);
 
   } catch (error) {
     console.error("Error during signup:", error);
