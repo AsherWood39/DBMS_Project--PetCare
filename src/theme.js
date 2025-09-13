@@ -176,15 +176,9 @@ function generatePawPrintsEnhanced() {
 function updatePawPrintsForTheme() {
   const pawPrints = document.querySelectorAll('.paw-dynamic');
   const isDarkMode = document.body.classList.contains('darkmode');
-  
   pawPrints.forEach(paw => {
-    if (isDarkMode) {
-      paw.style.opacity = parseFloat(paw.style.opacity) * 0.6; // Reduce opacity in dark mode
-      paw.style.filter = 'brightness(20)';
-    } else {
-      paw.style.filter = 'brightness(1)';
-      // Restore original opacity (you might want to store original values)
-    }
+    paw.style.opacity = isDarkMode ? '0.18' : '0.08';
+    paw.style.filter = isDarkMode ? 'brightness(2)' : 'brightness(1)';
   });
 }
 
