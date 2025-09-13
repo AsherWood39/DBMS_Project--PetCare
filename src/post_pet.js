@@ -10,7 +10,20 @@ const compulsoryVaccines = {
   Bird: ["Avian Influenza", "Newcastle Disease"]
 };
 
+// Prefill category from query string
+function getCategoryFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('category');
+}
+
 const categorySelect = document.getElementById("categorySelect");
+const prefillCategory = getCategoryFromQuery();
+if (prefillCategory && categorySelect) {
+  categorySelect.value = prefillCategory.charAt(0).toUpperCase() + prefillCategory.slice(1).toLowerCase();
+  // Trigger change event to update health/vaccine options
+  categorySelect.dispatchEvent(new Event('change'));
+}
+
 const healthDiv = document.getElementById("healthOptions");
 const vaccineDiv = document.getElementById("compulsoryVaccines");
 
