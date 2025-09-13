@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (role === 'Owner') {
         mainActionBtn.textContent = "";
         link.textContent = "Add a Pet";
-        link.href = "post_pet.html";
+        link.href = "owner_feature.html";
         mainActionBtn.appendChild(link);
       } else {
         // Default to adopter functionality (including when role is 'Adopter' or undefined)
