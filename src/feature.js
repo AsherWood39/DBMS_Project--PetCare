@@ -47,14 +47,3 @@ function displayPets(type = "All") {
   });
 }
 
-
-// ✅ Add "+ Add Pet" button only for sellers
-const userRole = "seller"; // change to "buyer" to hide the button
-
-if (userRole === "seller") {
-  const addBtn = document.createElement("button");
-  addBtn.textContent = "+ Add Pet";
-  addBtn.className = "add-pet-btn";
-  addBtn.onclick = () => alert("Add pet form will open here!");
-  document.body.insertBefore(addBtn, container);
-}
