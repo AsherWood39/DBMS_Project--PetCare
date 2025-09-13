@@ -230,9 +230,3 @@ main a:hover {
   margin-top: 1rem;
 }
 
-/* Show only the correct icon based on theme
-.icon-light { display: inline; }
-.icon-dark { display: none; }
-
-body.dark-theme .icon-light { display: none; }
-body.dark-theme .icon-dark { display: inline; } */

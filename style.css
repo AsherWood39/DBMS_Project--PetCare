@@ -1,5 +1,9 @@
 @import url('./style/global.css');
 
+html {
+  scroll-behavior: smooth;
+}
+
 header .logo-container {
   display: flex;
   align-items: center;
@@ -289,6 +293,40 @@ main {
   margin-bottom: 2rem;
   font-size: 1.1rem;
   line-height: 1.5;
+}
+
+/* About Section Styles */
+.about-section {
+  padding: 2rem 1rem;
+  background: color-mix(in srgb, var(--primary-color) 5%, #fff);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 900px;
+  box-shadow: 0 2px 12px rgba(177,98,45,0.07);
+}
+
+.about-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.about-details {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.about-details > div {
+  flex: 1 1 250px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 6px rgba(177,98,45,0.05);
+}
+
+.about-details img {
+  display: block;
+  margin: 0.5rem auto;
 }
 
 /* Responsive Design */
