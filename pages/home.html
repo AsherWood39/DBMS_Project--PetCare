@@ -63,12 +63,17 @@
     <div class="welcome-content">
       <div class="welcome-left">
         <h1 id="welcome-title">Welcome, <span id="user-name">John Doe</span></h1>
-        <p id="welcome-description">
-          Discover amazing pets looking for their forever homes. Browse through our collection of adorable cats, dogs, and other animals ready for adoption. Your perfect companion is just a click away!
-        </p>
+        <div id="welcome-description">
+          <p id="welcome-text-adopter" style="display: none;">
+            Discover amazing pets looking for their forever homes. Browse through our collection of adorable cats, dogs, and other animals ready for adoption. Your perfect companion is just a click away!
+          </p>
+          <p id="welcome-text-owner" style="display: none;">
+            Are you a pet owner looking to find loving homes for your pets? Join our community to list your pets for adoption and connect with potential adopters who will give them the care and love they deserve.
+          </p>
+        </div>
         <div class="selection-btn">
           <button class="btn welcome-primary" id="welcome-adopt-btn">
-            <a href="feature.html">Adopt a Pet</a>
+            <a href="">Adopt a Pet</a>
           </button>
           <button class="btn welcome-secondary" id="welcome-learn-btn">
             <a href="#">Learn More ...</a>
@@ -76,21 +81,9 @@
         </div>
       </div>
       <div class="welcome-pic-container">
-        <img src="../public/pet1.jpg" alt="Welcome pic" id="welcome-pic">
+        <img src="" alt="Welcome pic" id="welcome-pic">
       </div>
     </div>
-    <script>
-      // Get user name from localStorage and update the display
-      document.addEventListener('DOMContentLoaded', function() {
-        const userName = localStorage.getItem('userName') || 'John Doe';
-        document.getElementById('user-name').textContent = userName;
-        
-        // Set a random pet image
-        const petImages = ['pet1.jpg', 'pet2.jpg', 'pet3.jpg', 'pet4.jpg', 'pet5.jpg'];
-        const randomImage = petImages[Math.floor(Math.random() * petImages.length)];
-        document.getElementById('welcome-pic').src = `../public/${randomImage}`;
-      });
-    </script>
   </main>
 </body>
 </html>

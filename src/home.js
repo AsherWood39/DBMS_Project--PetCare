@@ -33,6 +33,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const role = localStorage.getItem('userRole'); // "Owner" or "Adopter"
 
+  // Show appropriate welcome text based on user role
+  const adopterText = document.getElementById('welcome-text-adopter');
+  const ownerText = document.getElementById('welcome-text-owner');
+
+  if (role === 'Owner') {
+    // Show owner-specific welcome text
+    if (ownerText) ownerText.style.display = 'block';
+    if (adopterText) adopterText.style.display = 'none';
+
+  } else if (role === 'Adopter') {
+    // Show adopter-specific welcome text
+    if (adopterText) adopterText.style.display = 'block';
+    if (ownerText) ownerText.style.display = 'none';
+  } else {
+    // Default case - show adopter text if no role is set
+    if (adopterText) adopterText.style.display = 'block';
+    if (ownerText) ownerText.style.display = 'none';
+  }
+
   // Update the main action button (welcome-adopt-btn) based on role
   const mainActionBtn = document.getElementById('welcome-adopt-btn');
   if (mainActionBtn) {
@@ -40,10 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (link) {
       if (role === 'Owner') {
         mainActionBtn.textContent = "";
-        link.textContent = "Post a Pet";
-        link.href = "owner_feature.html";
+        link.textContent = "Add a Pet";
+        link.href = "post_pet.html";
         mainActionBtn.appendChild(link);
       } else {
+        // Default to adopter functionality (including when role is 'Adopter' or undefined)
         mainActionBtn.textContent = "";
         link.textContent = "Adopt a Pet";
         link.href = "feature.html";

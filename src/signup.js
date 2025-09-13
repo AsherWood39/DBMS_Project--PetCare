@@ -6,21 +6,29 @@ const confirmPasswordInput = document.getElementById("confirm-password");
 const adopterRadio = document.getElementById("adopter");
 const ownerRadio = document.getElementById("owner");
 
-// Handle URL parameters for role selection
+// Handle URL parameters and localStorage for role selection
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   const roleParam = urlParams.get('role');
   
-  if (roleParam) {
-    if (roleParam.toLowerCase() === 'adopter') {
+  // Check for pre-selected role from auth.js (localStorage)
+  const preSelectedRole = localStorage.getItem('signupRole');
+  
+  // Priority: URL parameter > localStorage role > no selection
+  let selectedRole = roleParam || preSelectedRole;
+  
+  if (selectedRole) {
+    if (selectedRole.toLowerCase() === 'adopter') {
       adopterRadio.checked = true;
       highlightSelectedRole('adopter');
-    } else if (roleParam.toLowerCase() === 'owner') {
+    } else if (selectedRole.toLowerCase() === 'owner') {
       ownerRadio.checked = true;
       highlightSelectedRole('owner');
     }
+  } else {
+    highlightSelectedRole('none');
   }
-  
+
   // Add visual feedback when role changes
   const roleRadios = document.querySelectorAll('input[name="role"]');
   roleRadios.forEach(radio => {
@@ -44,11 +52,16 @@ function highlightSelectedRole(role) {
   
   // Highlight selected role
   if (role === 'adopter') {
-    adopterLabel.style.fontWeight = 'bold';
-    adopterLabel.style.color = 'var(--primary-color)';
+    adopterLabel.style.fontWeight = 'normal';
   } else if (role === 'owner') {
-    ownerLabel.style.fontWeight = 'bold';
-    ownerLabel.style.color = 'var(--primary-color)';
+    ownerLabel.style.fontWeight = 'normal';
+  } else if (role === 'none') {
+    // No selection - ensure both radio buttons are unchecked
+    const adopterRadio = document.getElementById('adopter');
+    const ownerRadio = document.getElementById('owner');
+    if (adopterRadio) adopterRadio.checked = false;
+    if (ownerRadio) ownerRadio.checked = false;
+    // Keep default styling (both labels remain normal weight and color)
   }
 }
 
@@ -146,6 +159,9 @@ document.querySelector("form").addEventListener("submit", async function (event)
     
     // Store the user's role preference for later use
     localStorage.setItem('userRole', selectedRole);
+    
+    // Clear the temporary signup role from auth.js
+    localStorage.removeItem('signupRole');
     
     setTimeout(() => {
       window.location.href = "login.html";

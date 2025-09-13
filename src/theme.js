@@ -51,66 +51,6 @@ function generatePawPrints() {
   const pawContainer = document.querySelector('.paw-bg');
   if (!pawContainer) return;
 
-  // Clear existing paw prints (if any)
-  pawContainer.innerHTML = '';
-
-  // Configuration for paw prints
-  const pawConfig = {
-    count: 12, // Number of paw prints
-    minSize: 45,
-    maxSize: 80,
-    minOpacity: 0.08,
-    maxOpacity: 0.18,
-    imagePath: window.location.pathname.includes('/pages/') ? '../public/paws.png' : './public/paws.png'
-  };
-
-  // Generate random paw prints
-  for (let i = 0; i < pawConfig.count; i++) {
-    const pawPrint = document.createElement('img');
-    pawPrint.src = pawConfig.imagePath;
-    pawPrint.alt = '';
-    pawPrint.className = `paw-dynamic paw-${i + 1}`;
-
-    // Random positioning (avoiding edges)
-    const top = Math.random() * 80 + 10; // 10% to 90%
-    const left = Math.random() * 80 + 10; // 10% to 90%
-
-    // Random size
-    const size = Math.random() * (pawConfig.maxSize - pawConfig.minSize) + pawConfig.minSize;
-
-    // Random rotation
-    const rotation = Math.random() * 360;
-
-    // Random flip (scaleX and scaleY)
-    const scaleX = Math.random() > 0.5 ? 1 : -1;
-    const scaleY = Math.random() > 0.5 ? 1 : -1;
-
-    // Random opacity
-    const opacity = Math.random() * (pawConfig.maxOpacity - pawConfig.minOpacity) + pawConfig.minOpacity;
-
-    // Apply styles
-    pawPrint.style.cssText = `
-      position: absolute;
-      top: ${top}%;
-      left: ${left}%;
-      width: ${size}px;
-      height: auto;
-      opacity: ${opacity};
-      transform: rotate(${rotation}deg) scaleX(${scaleX}) scaleY(${scaleY});
-      user-select: none;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    `;
-
-    pawContainer.appendChild(pawPrint);
-  }
-}
-
-// Enhanced version with predefined positions for better distribution
-function generatePawPrintsEnhanced() {
-  const pawContainer = document.querySelector('.paw-bg');
-  if (!pawContainer) return;
-
   // Clear existing paw prints
   pawContainer.innerHTML = '';
 
@@ -122,54 +62,76 @@ function generatePawPrintsEnhanced() {
     imagePath = '../public/paws.png';
   }
 
-  // Predefined positions for better distribution
-  const positions = [
-    { top: 15, left: 10 },
-    { top: 25, left: 75 },
-    { top: 40, left: 20 },
-    { top: 35, left: 60 },
-    { top: 55, left: 85 },
-    { top: 65, left: 15 },
-    { top: 75, left: 70 },
-    { top: 85, left: 40 },
-    { top: 20, left: 45 },
-    { top: 50, left: 5 },
-    { top: 80, left: 25 },
-    { top: 30, left: 90 }
+  // Number of paws is set to 10 for better coverage
+  const totalPaws = 10;
+
+  // Predefined patterns for consistent, non-random placement
+  const patterns = [
+    { rotation: 15, scaleX: 1, scaleY: 1, leftBase: 10, rightBase: 80 },
+    { rotation: -30, scaleX: -1, scaleY: 1, leftBase: 15, rightBase: 75 },
+    { rotation: 45, scaleX: 1, scaleY: -1, leftBase: 20, rightBase: 70 },
+    { rotation: 0, scaleX: -1, scaleY: -1, leftBase: 8, rightBase: 85 },
+    { rotation: 60, scaleX: 1, scaleY: 1, leftBase: 25, rightBase: 65 },
+    { rotation: -45, scaleX: -1, scaleY: 1, leftBase: 5, rightBase: 90 },
+    { rotation: 30, scaleX: 1, scaleY: -1, leftBase: 12, rightBase: 78 },
+    { rotation: -15, scaleX: -1, scaleY: -1, leftBase: 18, rightBase: 72 },
+    { rotation: 75, scaleX: 1, scaleY: 1, leftBase: 22, rightBase: 68 },
+    { rotation: -60, scaleX: -1, scaleY: 1, leftBase: 7, rightBase: 88 }
   ];
 
-  positions.forEach((pos, index) => {
+  // Generate systematically positioned paw prints
+  for (let i = 0; i < totalPaws; i++) {
     const pawPrint = document.createElement('img');
     pawPrint.src = imagePath;
     pawPrint.alt = '';
-    pawPrint.className = `paw-dynamic paw-${index + 1}`;
+    pawPrint.className = `paw-dynamic paw-${i + 1}`;
 
-    // Random variations
-    const size = 120; // 100px
-    const rotation = Math.random() * 360;
-    const scaleX = Math.random() > 0.5 ? 1 : -1;
-    const scaleY = Math.random() > 0.5 ? 1 : -1;
-    const opacity = 0.08; // 0.08
+    // Get pattern for this paw
+    const pattern = patterns[i % patterns.length];
+    
+    // Calculate vertical position - distribute evenly across page height
+    const verticalSection = (i / totalPaws) * 0.9 + 0.05; // 5% to 95%
+    const topPercentage = verticalSection * 100;
+    
+    // Advanced horizontal distribution to prevent pairing/clustering
+    // Use prime number multiplication to create better spread
+    const primeMultiplier = 77; // Large prime for good distribution
+    const horizontalSpread = (i * primeMultiplier) % 100;
+    
+    // Map the spread to avoid edges and ensure minimum spacing
+    // This creates positions from 8% to 95% with automatic spacing
+    const minPos = 8;
+    const maxPos = 95;
+    const range = maxPos - minPos;
+    const basePosition = minPos + (horizontalSpread / 100) * range;
+    
+    // Add a secondary offset based on vertical position to break any remaining patterns
+    const verticalInfluence = (topPercentage * 0.3) % 20 - 10; // ±10% based on height
+    const finalPosition = basePosition + verticalInfluence;
+    
+    const leftPercentage = Math.max(5, Math.min(92, finalPosition));
 
-    // Add some random offset to positions
-    const topOffset = (Math.random() - 0.5) * 10;
-    const leftOffset = (Math.random() - 0.5) * 10;
+    const size = 125; // Increased size for better visibility
+    const opacity = 0.18; // Increased opacity
 
     pawPrint.style.cssText = `
       position: absolute;
-      top: ${pos.top + topOffset}%;
-      left: ${pos.left + leftOffset}%;
+      top: ${topPercentage}%;
+      left: ${leftPercentage}%;
       width: ${size}px;
       height: auto;
       opacity: ${opacity};
-      transform: rotate(${rotation}deg) scaleX(${scaleX}) scaleY(${scaleY});
+      transform: rotate(${pattern.rotation}deg) scaleX(${pattern.scaleX}) scaleY(${pattern.scaleY});
       user-select: none;
       pointer-events: none;
       transition: opacity 0.3s ease;
+      z-index: -1;
     `;
 
     pawContainer.appendChild(pawPrint);
-  });
+  }
+
+  console.log(`Generated ${totalPaws} paw prints for page height: ${pageHeight}px`);
 }
 
 // Function to regenerate paw prints (useful for theme changes)
@@ -186,8 +148,8 @@ function updatePawPrintsForTheme() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeTheme();
   
-  // Initialize paw prints
-  generatePawPrintsEnhanced();
+  // Initialize paw prints with enhanced positioning
+  generatePawPrints();
   
   // Update paw prints when theme changes
   const themeToggle = document.getElementById('theme-toggle');
@@ -198,10 +160,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Optional: Regenerate paw prints on window resize
+  // Regenerate paw prints when page content changes (e.g., dynamic loading)
+  const observer = new MutationObserver(function(mutations) {
+    let shouldRegenerate = false;
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        shouldRegenerate = true;
+      }
+    });
+    
+    if (shouldRegenerate) {
+      // Debounce regeneration
+      clearTimeout(window.pawRegenerateTimeout);
+      window.pawRegenerateTimeout = setTimeout(generatePawPrints, 500);
+    }
+  });
+  
+  // Observe changes to body content
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+  
+  // Regenerate paw prints on window resize with debouncing
   window.addEventListener('resize', function() {
-    // Debounce the resize event
     clearTimeout(window.pawResizeTimeout);
-    window.pawResizeTimeout = setTimeout(generatePawPrintsEnhanced, 250);
+    window.pawResizeTimeout = setTimeout(function() {
+      generatePawPrints();
+    }, 250);
   });
 });

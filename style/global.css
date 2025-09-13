@@ -33,14 +33,15 @@
 
 /* Paw Print Background Container */
 .paw-bg {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 6%;
   left: 0;
   width: 100%;
+  min-height: 100vh;
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Base styles for dynamically generated paw prints */
@@ -60,14 +61,14 @@ body {
 
 /* Header Styles */
 header {
-  background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
+  background-color: color-mix(in srgb, var(--primary-color) 15%, var(--background-color));
   padding: 1rem;
   border: none;
-  box-shadow: 0 0 4px
-    color-mix(in srgb, var(--secondary-color) 15%, transparent);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 2;
 }
 
 /* Footer Styles */

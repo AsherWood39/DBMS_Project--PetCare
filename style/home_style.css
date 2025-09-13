@@ -29,11 +29,14 @@
 #welcome-title {
   font-size: 2.5rem;
   color: var(--primary-color);
+  padding: 0;
+  margin: 0;
   margin-bottom: 1rem;
   text-align: left;
 }
 
-#welcome-description {
+#welcome-description #welcome-text-adopter,
+#welcome-description #welcome-text-owner {
   color: var(--text-color);
   margin-bottom: 2rem;
   font-size: 1.1rem;
@@ -137,7 +140,6 @@
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);
 }
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
