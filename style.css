@@ -542,7 +542,7 @@ footer img {
 }
 
 .carousel-text {
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   color: var(--text-color);
   margin-bottom: 1rem;
@@ -566,7 +566,7 @@ footer img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -609,33 +609,33 @@ footer img {
 .carousel-image-item:nth-child(1) {
   left: -2%;
   top: 10px;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
 }
 .carousel-image-item:nth-child(2) {
   left: 23%;
   top: 140px;
-  width: 70px;
-  height: 70px;
+  width: 105px;
+  height: 105px;
 }
 .carousel-image-item:nth-child(3) {
   left: 50%;
   top: -100px;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   transform: translateX(-50%);
 }
 .carousel-image-item:nth-child(4) {
   left: 77%;
   top: 140px;
-  width: 70px;
-  height: 70px;
+  width: 105px;
+  height: 105px;
 }
 .carousel-image-item:nth-child(5) {
   left: 95%;
   top: 10px;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
 }
 
 .carousel-pet-image {
