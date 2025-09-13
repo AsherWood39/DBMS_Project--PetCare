@@ -30,4 +30,25 @@ fetch('../public/image_urls.json')
   // Initialize DOM content when loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Any additional initialization can go here
+
+  const role = localStorage.getItem('userRole'); // "Owner" or "Adopter"
+
+  // Update the main action button (welcome-adopt-btn) based on role
+  const mainActionBtn = document.getElementById('welcome-adopt-btn');
+  if (mainActionBtn) {
+    const link = mainActionBtn.querySelector("a");
+    if (link) {
+      if (role === 'Owner') {
+        mainActionBtn.textContent = "";
+        link.textContent = "Post a Pet";
+        link.href = "owner_feature.html";
+        mainActionBtn.appendChild(link);
+      } else {
+        mainActionBtn.textContent = "";
+        link.textContent = "Adopt a Pet";
+        link.href = "feature.html";
+        mainActionBtn.appendChild(link);
+      }
+    }
+  }
 });
