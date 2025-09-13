@@ -192,7 +192,7 @@ header .auth-buttons #profile-button:hover {
   font-size: 1.1rem;
   transition: all 0.3s ease;
   z-index: 2; /* Above paw prints background */
-  font-weight: 700;
+  background: #f9f6f2;
 }
 
 .role-selection #adopter-button {
@@ -339,25 +339,23 @@ main {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2rem 5vw;
-  background: var(--background-color);
-  border-radius: 16px;
-  margin: 2rem auto;
-  max-width: 900px;
-  box-shadow: 0 2px 12px
-    color-mix(in srgb, var(--primary-color) 10%, transparent);
-  border: 1px solid var(--border-color);
+    padding: 8rem 4rem;
+    background: #efe0dc;
+    border-radius: 18px;
+  margin: 3rem auto 2rem auto;
+  max-width: 1200px;
+  box-shadow: 0 2px 18px rgba(177,98,45,0.10);
   color: var(--text-color);
 }
 
 .about-container h2 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 2rem;
   color: var(--primary-color);
 }
 
 .about-container p {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   line-height: 1.7;
   max-width: 800px;
   margin-bottom: 2rem;
@@ -371,7 +369,63 @@ main {
   gap: 32px;
   flex-wrap: wrap;
 }
-
+/* Services Section Styles */
+.services-container {
+  margin: 3rem auto 2rem auto;
+  max-width: 1200px;
+    padding: 8rem 4rem;
+  background: #efe0dc;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(177, 98, 45, 0.07);
+  color: var(--text-color);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.services-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+.services-list {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.service-card {
+  flex: 1 1 500px;
+  background: #f9f6f2;
+  border-radius: 18px;
+  padding: 4rem 2rem;
+  box-shadow: 0 2px 18px rgba(177, 98, 45, 0.1);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.service-icon {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+.service-title {
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.service-desc {
+  margin-bottom: 2rem;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+body.darkmode .services-container {
+  background: #232323;
+  color: var(--text-color);
+  box-shadow: 0 2px 12px rgba(177, 98, 45, 0.15);
+}
+body.darkmode .service-card {
+  background: var(--button-bg-color);
+  color: var(--text-color);
+}
 .stat-box {
   background: #fff;
   border: 1px solid var(--border-color);
@@ -399,9 +453,8 @@ main {
 
 /* Dark mode support */
 body.darkmode .about-container {
-  background: var(--background-color);
+  background: #232323;
   color: var(--text-color);
-  border: 1px solid var(--border-color);
 }
 
 body.darkmode .stat-box {
@@ -730,4 +783,5 @@ footer img {
     height: 32px;
     top: 15px;
   }
+}
 }
