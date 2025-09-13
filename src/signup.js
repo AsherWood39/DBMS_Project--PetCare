@@ -8,6 +8,9 @@ errorDiv.className = "error-message";
 errorDiv.style.color = "red";
 errorDiv.style.marginTop = "10px";
 errorDiv.style.fontSize = "14px";
+errorDiv.style.textAlign = "center";
+errorDiv.style.width = "100%";
+errorDiv.style.display = "block";
 document.querySelector("form").appendChild(errorDiv);
 
 document.querySelector("form").addEventListener("submit", async function (event) {

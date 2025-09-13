@@ -168,14 +168,19 @@ header .auth-buttons #profile-button:hover {
   background-color: var(--secondary-color);
 }
 
+.main-content {
+  z-index: 2;
+}
+
 /* Role Selection Styles */
 .role-selection {
   display: flex;
   gap: 2rem;
+  z-index: 2;
 }
 
-.role-selection #buyer-button,
-.role-selection #seller-button {
+.role-selection #adopter-button,
+.role-selection #owner-button {
   padding: 0.8rem 2rem;
   border: 2px solid var(--primary-color);
   border-radius: 4px;
@@ -184,30 +189,31 @@ header .auth-buttons #profile-button:hover {
   transition: all 0.3s ease;
 }
 
-.role-selection #buyer-button {
+.role-selection #adopter-button {
   background-color: var(--primary-color);
 }
 
-.role-selection #seller-button {
+.role-selection #owner-button {
   background-color: transparent;
 }
 
-.role-selection #buyer-button a {
+.role-selection #adopter-button a {
   color: var(--background-color);
   text-decoration: none;
 }
 
-.role-selection #seller-button a {
+.role-selection #owner-button a {
   color: var(--primary-color);
   text-decoration: none;
 }
 
-.role-selection #buyer-button:hover {
+.role-selection #adopter-button:hover {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
+  cursor: pointer;
 }
 
-.role-selection #seller-button:hover{
+.role-selection #owner-button:hover{
   background-color: var(--border-color);
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);

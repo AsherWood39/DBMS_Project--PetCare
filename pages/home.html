@@ -3,17 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pet Gallery</title>
-  
-  <!-- Import Google Material Icons for theme toggle -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <!-- Import main CSS which includes header styles -->
   <link rel="stylesheet" href="../style.css">
-  
-  <!-- Feature-specific CSS -->
-  <link rel="stylesheet" href="../style/feature.css">
+  <link rel="stylesheet" href="../style/home_style.css">
   <script src="../src/theme.js" defer></script>
+  <script src="../src/home.js" defer></script>
+  <script src="../utils/auth.js" defer></script>
+  <title>Home Page</title>
 </head>
 <body>
   <header>
@@ -35,7 +31,7 @@
             </svg>
           </button>
         </li>
-        <li><a href="./home.html">Home</a></li>
+        <li><a href="#">Home</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Services</a></li>
         <li><a href="#">Contact</a></li>
@@ -63,23 +59,38 @@
 
   <!-- Paw prints background container -->
   <div class="paw-bg"></div>
-
-  <main>
-    <h2>Pets Available..</h2>
-    <!-- Filter Buttons -->
-    <div id="filter-buttons">
-      <button data-type="All" class="active">All</button>
-      <button data-type="Dog">Dogs</button>
-      <button data-type="Cat">Cats</button>
-      <button data-type="Bird">Birds</button>
+  <main class="welcome-main">
+    <div class="welcome-content">
+      <div class="welcome-left">
+        <h1 id="welcome-title">Welcome, <span id="user-name">John Doe</span></h1>
+        <p id="welcome-description">
+          Discover amazing pets looking for their forever homes. Browse through our collection of adorable cats, dogs, and other animals ready for adoption. Your perfect companion is just a click away!
+        </p>
+        <div class="selection-btn">
+          <button class="btn welcome-primary" id="welcome-adopt-btn">
+            <a href="feature.html">Adopt a Pet</a>
+          </button>
+          <button class="btn welcome-secondary" id="welcome-learn-btn">
+            <a href="feature.html">Learn More ...</a>
+          </button>
+        </div>
+      </div>
+      <div class="welcome-pic-container">
+        <img src="../public/pet1.jpg" alt="Welcome pic" id="welcome-pic">
+      </div>
     </div>
-
-    <!-- Pet Cards Container -->
-    <div id="pets-container"></div>
+    <script>
+      // Get user name from localStorage and update the display
+      document.addEventListener('DOMContentLoaded', function() {
+        const userName = localStorage.getItem('userName') || 'John Doe';
+        document.getElementById('user-name').textContent = userName;
+        
+        // Set a random pet image
+        const petImages = ['pet1.jpg', 'pet2.jpg', 'pet3.jpg', 'pet4.jpg', 'pet5.jpg'];
+        const randomImage = petImages[Math.floor(Math.random() * petImages.length)];
+        document.getElementById('welcome-pic').src = `../public/${randomImage}`;
+      });
+    </script>
   </main>
-  
-  <!-- Feature page functionality -->
-  <script src="../utils/auth.js"></script>
-  <script src="../src/feature.js"></script>
 </body>
 </html>

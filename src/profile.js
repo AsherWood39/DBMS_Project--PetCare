@@ -105,5 +105,187 @@ function deleteProfile() {
 }
 
 function editProfile() {
-  window.location.href = 'adopt_pet.html';
+  const editButton = document.querySelector('.btn-edit');
+  const viewPetsButton = document.querySelector('.btn-view-pets');
+  const displayNameInput = document.getElementById('display-name');
+  const displayEmailInput = document.getElementById('display-email');
+  const themeInput = document.getElementById('current-theme');
+  const notificationInput = document.getElementById('notification-settings');
+  
+  // Check if currently in edit mode
+  const isEditMode = editButton.textContent === 'Save';
+  
+  if (isEditMode) {
+    // Save mode - save changes and exit edit mode
+    saveProfileChanges();
+  } else {
+    // Enter edit mode
+    enterEditMode();
+  }
+}
+
+function enterEditMode() {
+  // Store original values for cancel functionality
+  const displayNameInput = document.getElementById('display-name');
+  const displayEmailInput = document.getElementById('display-email');
+  const themeInput = document.getElementById('current-theme');
+  const notificationInput = document.getElementById('notification-settings');
+  
+  // Store original values in data attributes
+  displayNameInput.dataset.original = displayNameInput.value;
+  displayEmailInput.dataset.original = displayEmailInput.value;
+  themeInput.dataset.original = themeInput.value;
+  notificationInput.dataset.original = notificationInput.value;
+  
+  // Make inputs editable
+  displayNameInput.removeAttribute('readonly');
+  displayEmailInput.removeAttribute('readonly');
+  themeInput.removeAttribute('readonly');
+  notificationInput.removeAttribute('readonly');
+  
+  // Add edit styling
+  displayNameInput.classList.add('editing');
+  displayEmailInput.classList.add('editing');
+  themeInput.classList.add('editing');
+  notificationInput.classList.add('editing');
+  
+  // Change button text and functionality
+  const editButton = document.querySelector('.btn-edit');
+  const viewPetsButton = document.querySelector('.btn-view-pets');
+  
+  editButton.textContent = 'Save';
+  editButton.classList.add('btn-save');
+  
+  viewPetsButton.textContent = 'Cancel';
+  viewPetsButton.classList.add('btn-cancel');
+  viewPetsButton.setAttribute('onclick', 'cancelEdit()');
+}
+
+function saveProfileChanges() {
+  const displayNameInput = document.getElementById('display-name');
+  const displayEmailInput = document.getElementById('display-email');
+  const themeInput = document.getElementById('current-theme');
+  const notificationInput = document.getElementById('notification-settings');
+  
+  // Get current user data
+  const userFromLocal = localStorage.getItem('currentUser');
+  const userFromSession = sessionStorage.getItem('currentUser');
+  
+  let currentUser = null;
+  let storageType = null;
+  
+  if (userFromLocal) {
+    currentUser = JSON.parse(userFromLocal);
+    storageType = 'local';
+  } else if (userFromSession) {
+    currentUser = JSON.parse(userFromSession);
+    storageType = 'session';
+  }
+  
+  if (currentUser) {
+    // Update user data
+    currentUser.name = displayNameInput.value;
+    currentUser.email = displayEmailInput.value;
+    
+    // Save back to storage
+    const userDataString = JSON.stringify(currentUser);
+    if (storageType === 'local') {
+      localStorage.setItem('currentUser', userDataString);
+    } else {
+      sessionStorage.setItem('currentUser', userDataString);
+    }
+    
+    // Update display elements
+    const userNameEl = document.getElementById('user-name');
+    const userEmailEl = document.getElementById('user-email');
+    
+    if (userNameEl) userNameEl.textContent = currentUser.name;
+    if (userEmailEl) userEmailEl.textContent = currentUser.email;
+  }
+  
+  // Exit edit mode
+  exitEditMode();
+  
+  // Show success message
+  showMessage('Profile updated successfully!', 'success');
+}
+
+function cancelEdit() {
+  const displayNameInput = document.getElementById('display-name');
+  const displayEmailInput = document.getElementById('display-email');
+  const themeInput = document.getElementById('current-theme');
+  const notificationInput = document.getElementById('notification-settings');
+  
+  // Restore original values
+  displayNameInput.value = displayNameInput.dataset.original;
+  displayEmailInput.value = displayEmailInput.dataset.original;
+  themeInput.value = themeInput.dataset.original;
+  notificationInput.value = notificationInput.dataset.original;
+  
+  // Exit edit mode
+  exitEditMode();
+}
+
+function exitEditMode() {
+  const displayNameInput = document.getElementById('display-name');
+  const displayEmailInput = document.getElementById('display-email');
+  const themeInput = document.getElementById('current-theme');
+  const notificationInput = document.getElementById('notification-settings');
+  
+  // Make inputs readonly again
+  displayNameInput.setAttribute('readonly', true);
+  displayEmailInput.setAttribute('readonly', true);
+  themeInput.setAttribute('readonly', true);
+  notificationInput.setAttribute('readonly', true);
+  
+  // Remove edit styling
+  displayNameInput.classList.remove('editing');
+  displayEmailInput.classList.remove('editing');
+  themeInput.classList.remove('editing');
+  notificationInput.classList.remove('editing');
+  
+  // Restore button text and functionality
+  const editButton = document.querySelector('.btn-edit');
+  const viewPetsButton = document.querySelector('.btn-view-pets');
+  
+  editButton.textContent = 'Edit Profile';
+  editButton.classList.remove('btn-save');
+  
+  viewPetsButton.textContent = 'View Pets';
+  viewPetsButton.classList.remove('btn-cancel');
+  viewPetsButton.setAttribute('onclick', 'featurePageNavigate()');
+  
+  // Clear stored original values
+  displayNameInput.removeAttribute('data-original');
+  displayEmailInput.removeAttribute('data-original');
+  themeInput.removeAttribute('data-original');
+  notificationInput.removeAttribute('data-original');
+}
+
+function showMessage(message, type = 'info') {
+  // Create message element
+  const messageEl = document.createElement('div');
+  messageEl.className = `profile-message ${type}`;
+  messageEl.textContent = message;
+  messageEl.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 5px;
+    color: white;
+    z-index: 1000;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    background-color: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+  `;
+  
+  document.body.appendChild(messageEl);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    if (messageEl.parentNode) {
+      messageEl.parentNode.removeChild(messageEl);
+    }
+  }, 3000);
 }

@@ -159,5 +159,12 @@ function generateCarouselImages(imageUrls) {
 
 // Initialize DOM content when loaded
 document.addEventListener('DOMContentLoaded', function() {
-  // Any additional initialization can go here
+  document.getElementById('home-link').addEventListener('click', function(e) {
+    if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
+      e.preventDefault();
+    }
+    else {
+      window.location.href = './pages/home.html';
+    }
+  });
 });

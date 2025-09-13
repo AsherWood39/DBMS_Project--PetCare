@@ -5,6 +5,9 @@ const rememberMeCheckbox = document.getElementById("remember");
 const errorDiv = document.createElement("div");
 errorDiv.className = "error-message";
 errorDiv.style.color = "red";
+errorDiv.style.textAlign = "center";
+errorDiv.style.width = "100%";
+errorDiv.style.display = "block";
 errorDiv.style.marginTop = "10px";
 errorDiv.style.fontSize = "14px";
 document.querySelector("form").appendChild(errorDiv);
@@ -73,7 +76,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     errorDiv.textContent = "Login successful! Redirecting...";
     
     setTimeout(() => {
-      window.location.href = "../pages/profile.html";
+      window.location.href = "../pages/home.html";
     }, 1500);
     
     // Reset button state

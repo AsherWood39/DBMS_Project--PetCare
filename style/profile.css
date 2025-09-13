@@ -285,3 +285,56 @@
     font-size: 1.5rem;
   }
 }
+
+/* Edit mode styles */
+.detail-item input.editing[type="text"] {
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.detail-item input.editing[type="text"]:focus {
+  outline: none;
+  border-bottom: 2px solid var(--button-bg-color);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--button-bg-color) 10%, var(--button-bg-color) 50%);
+}
+
+.btn-save {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+}
+
+.btn-save:hover {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--success-color) 10%, var(--success-color) 50%));
+}
+
+.btn-cancel {
+  background-color: transparent !important;
+  color: var(--error-color) !important;
+  border-color: var(--error-color) !important;
+}
+
+.btn-cancel:hover {
+  background-color: var(--border-color) !important;
+  border-color: var(--error-color) !important;
+}
+
+/* Profile message animations */
+.profile-message {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
