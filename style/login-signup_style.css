@@ -1,33 +1,11 @@
-@import url('./global.css');
-
-header a {
+/* Header Layout Styles */
+header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  text-decoration: none;
-}
-
-header img {
-  height: 40px;
-  width: 40px;
-  margin-right: 1rem;
-  border-radius: 50%;  /* Makes the logo circular */
-  object-fit: cover;   /* Ensures image fills the circular space properly */
-  transition: filter 0.3s ease;  /* Smooth transition for the darkening effect */
-}
-
-header h2 {
-  color: var(--primary-color);
-  margin: 0;  /* Removes any default margins */
-  transition: color 0.3s ease;  /* Smooth transition for color change */
-}
-
-/* Both image and text darken when the link is hovered */
-header a:hover img {
-  filter: brightness(95%);
-}
-
-header a:hover h2 {
-  color: var(--secondary-color);
+  padding: 1rem 2rem;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* Form Styles */

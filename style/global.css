@@ -59,7 +59,7 @@ header {
   background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
   padding: 1rem;
   border: none;
-  box-shadow: 0 0 4px color-mix(in srgb, var(--secondary-color) 15%, transparent);
+  box-shadow: 0 0 2px color-mix(in srgb, var(--secondary-color) 20%, transparent);
   display: flex;
   align-items: center;
   justify-content: space-between;
