@@ -62,10 +62,35 @@ function initializeCarousel() {
       name: "John, German Shepherd",
       details: "7 years",
       text: "Highly recommend PetCare. They treat every pet like family."
+    },
+    {
+      name: "Priya, Persian Cat",
+      details: "3 years",
+      text: "PetCare helped me find the perfect companion. The adoption process was smooth and transparent."
+    },
+    {
+      name: "Amit, Cockatiel",
+      details: "2 years",
+      text: "My bird received excellent medical care. The team is knowledgeable and friendly."
+    },
+    {
+      name: "Emily, Husky",
+      details: "4 years",
+      text: "The training sessions were fun and effective. My Husky is happier and healthier!"
+    },
+    {
+      name: "Ravi, Labrador",
+      details: "6 years",
+      text: "Great experience with PetCare. The staff truly loves animals."
+    },
+    {
+      name: "Sonia, Tabby Cat",
+      details: "2 years",
+      text: "I appreciate the regular updates and support. My cat settled in quickly."
     }
   ];
 
-  let current = 0;
+  let current = Math.floor(Math.random() * reviews.length);
   const container = document.getElementById('review-carousel');
   if (!container) return;
 
