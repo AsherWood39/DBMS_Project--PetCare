@@ -1,3 +1,4 @@
+
 // Simple login functionality without Firebase
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");  
