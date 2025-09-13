@@ -1,0 +1,128 @@
+.form-container {
+  max-width: 600px;
+  margin: 30px auto;
+  background: var(--background-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+h3 {
+  margin-top: 20px;
+  color: var(--secondary-color);
+}
+
+h4 {
+  margin-top: 15px;
+  color: var(--primary-color);
+  font-size: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ===== Checkboxes Styling ===== */
+.checkbox-group,
+#compulsoryVaccines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.checkbox-group label,
+.vaccination-entry label {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between checkbox and text */
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"],
+.vaccination-entry input[type="checkbox"] {
+  margin: 0 0 0 0;
+  vertical-align: middle;
+  accent-color: var(--primary-color);
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== Vaccination Entries ===== */
+.vaccination-entry {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto; /* name/file/remove button */
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  background: #fafafa;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.vaccination-entry input[type="text"],
+.vaccination-entry input[type="file"] {
+  width: 100%;
+}
+
+.removeVaccineBtn,
+.remove-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.removeVaccineBtn:hover,
+.remove-btn:hover {
+  background: #d32f2f;
+}
+
+/* ===== Submit Button ===== */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
