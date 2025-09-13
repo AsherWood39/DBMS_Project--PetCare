@@ -187,14 +187,18 @@ header .auth-buttons #profile-button:hover {
   cursor: pointer;
   font-size: 1.1rem;
   transition: all 0.3s ease;
+  z-index: 2; /* Above paw prints background */
+  font-weight: 700;
 }
 
 .role-selection #adopter-button {
   background-color: var(--primary-color);
+  color: var(--background-color);
 }
 
 .role-selection #owner-button {
   background-color: transparent;
+  color: var(--primary-color);
 }
 
 .role-selection #adopter-button a {
