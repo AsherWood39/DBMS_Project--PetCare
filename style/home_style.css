@@ -101,25 +101,18 @@
   font-size: 1.1rem;
   font-weight: 700;
   transition: all 0.3s ease;
-  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .selection-btn #welcome-adopt-btn {
   background-color: var(--primary-color);
+  color: var(--background-color);
 }
 
 .selection-btn #welcome-learn-btn {
   background-color: transparent;
-}
-
-.selection-btn #welcome-adopt-btn a {
-  color: var(--background-color);
-  text-decoration: none;
-}
-
-.selection-btn #welcome-learn-btn a {
   color: var(--primary-color);
-  text-decoration: none;
 }
 
 .selection-btn #welcome-adopt-btn:hover {
@@ -129,9 +122,6 @@
 
 .selection-btn #welcome-learn-btn:hover {
   background-color: var(--primary-color);
-}
-
-.selection-btn #welcome-learn-btn:hover a {
   color: var(--background-color);
 }
 
