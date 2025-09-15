@@ -95,10 +95,6 @@ function initializeProfileAuth() {
   }
 }
 
-function featurePageNavigate() {
-  window.location.href = 'feature.html';
-}
-
 function deleteProfile() {
   alert('Delete Profile functionality will be implemented soon!');
   initializeProfileAuth(); // Re-check auth state
@@ -106,14 +102,18 @@ function deleteProfile() {
 
 function editProfile() {
   const editButton = document.querySelector('.btn-edit');
-  const viewPetsButton = document.querySelector('.btn-view-pets');
   const displayNameInput = document.getElementById('display-name');
   const displayEmailInput = document.getElementById('display-email');
   const themeInput = document.getElementById('current-theme');
   const notificationInput = document.getElementById('notification-settings');
+  const cancelButton = document.querySelector('.btn-cancel');
+
+  cancelButton.style.display = 'inline-block';
+  cancelButton.setAttribute('onclick', 'cancelEdit()');
   
   // Check if currently in edit mode
   const isEditMode = editButton.textContent === 'Save';
+
   
   if (isEditMode) {
     // Save mode - save changes and exit edit mode
@@ -151,14 +151,9 @@ function enterEditMode() {
   
   // Change button text and functionality
   const editButton = document.querySelector('.btn-edit');
-  const viewPetsButton = document.querySelector('.btn-view-pets');
   
   editButton.textContent = 'Save';
   editButton.classList.add('btn-save');
-  
-  viewPetsButton.textContent = 'Cancel';
-  viewPetsButton.classList.add('btn-cancel');
-  viewPetsButton.setAttribute('onclick', 'cancelEdit()');
 }
 
 function saveProfileChanges() {
@@ -231,6 +226,9 @@ function exitEditMode() {
   const displayEmailInput = document.getElementById('display-email');
   const themeInput = document.getElementById('current-theme');
   const notificationInput = document.getElementById('notification-settings');
+  const cancelButton = document.querySelector('.btn-cancel');
+  
+  cancelButton.style.display = 'none';
   
   // Make inputs readonly again
   displayNameInput.setAttribute('readonly', true);
@@ -246,14 +244,9 @@ function exitEditMode() {
   
   // Restore button text and functionality
   const editButton = document.querySelector('.btn-edit');
-  const viewPetsButton = document.querySelector('.btn-view-pets');
   
   editButton.textContent = 'Edit Profile';
   editButton.classList.remove('btn-save');
-  
-  viewPetsButton.textContent = 'View Pets';
-  viewPetsButton.classList.remove('btn-cancel');
-  viewPetsButton.setAttribute('onclick', 'featurePageNavigate()');
   
   // Clear stored original values
   displayNameInput.removeAttribute('data-original');

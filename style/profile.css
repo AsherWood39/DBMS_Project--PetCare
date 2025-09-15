@@ -173,7 +173,7 @@
   flex-wrap: wrap;
 }
 
-.btn-delete, .btn-edit, .btn-view-pets {
+.btn-delete, .btn-edit, .btn-cancel {
   padding: 0.75rem 2rem;
   border: none;
   border-radius: 25px;
@@ -209,13 +209,13 @@
   transition: filter 0s ease;
 }
 
-.btn-view-pets {
+.btn-cancel {
   background: transparent;
   color: var(--text-color);
   border: 3px solid color-mix(in srgb, var(--text-color) 10%, var(--text-color) 30%);
 }
 
-.btn-view-pets:hover {
+.btn-cancel:hover {
   color: var(--primary-color);
   background-color: color-mix(in srgb, var(--border-color) 10%, var(--border-color) 20%);
   border-color: var(--primary-color);
