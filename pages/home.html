@@ -98,5 +98,36 @@
     <!-- Pet Cards Container -->
     <div id="pets-container"></div>
   </section>
+  <section id="post-pet-section" class="post-pet-section">
+    <h2 style="text-align:center; margin-bottom:2rem;">Select Pet Category</h2>
+    <div class="category-card-container">
+      <form id="category-form" style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="cat" required hidden>
+          <div class="card-content">
+            <img src="../public/cat_seller.png" alt="Cat" class="category-icon" />
+            <span>Cat</span>
+          </div>
+        </label>
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="dog" hidden>
+          <div class="card-content">
+            <img src="../public/dog_seller.png" alt="Dog" class="category-icon" />
+            <span>Dog</span>
+          </div>
+        </label>
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="bird" hidden>
+          <div class="card-content">
+            <img src="../public/parrot_seller.png" alt="Bird" class="category-icon" />
+            <span>Bird</span>
+          </div>
+        </label>
+        <div style="flex-basis:100%; text-align:center; margin-top:2rem;">
+          <button type="submit" id="post-btn">Post Pet</button>
+        </div>
+      </form>
+    </div>
+  </section>
 </body>
 </html>

@@ -36,21 +36,22 @@ document.addEventListener('DOMContentLoaded', function() {
   // Show appropriate welcome text based on user role
   const adopterText = document.getElementById('welcome-text-adopter');
   const ownerText = document.getElementById('welcome-text-owner');
+  const viewPetsSection = document.getElementById('view-pets');
+  const postPetSection = document.getElementById('post-pet-section');
 
   if (role === 'Owner') {
     // Show owner-specific welcome text
     if (ownerText) ownerText.style.display = 'block';
     if (adopterText) adopterText.style.display = 'none';
-
+    if (postPetSection) postPetSection.style.display = 'block';
+    if (viewPetsSection) viewPetsSection.style.display = 'none';
   } else if (role === 'Adopter') {
     // Show adopter-specific welcome text
     if (adopterText) adopterText.style.display = 'block';
     if (ownerText) ownerText.style.display = 'none';
-  } else {
-    // Default case - show adopter text if no role is set
-    if (adopterText) adopterText.style.display = 'block';
-    if (ownerText) ownerText.style.display = 'none';
-  }
+    if (viewPetsSection) viewPetsSection.style.display = 'block';
+    if (postPetSection) postPetSection.style.display = 'none';
+  } 
 
   // Update the main action button (welcome-adopt-btn) based on role
   const mainActionBtn = document.getElementById('welcome-adopt-btn');
@@ -59,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (link) {
       if (role === 'Owner') {
         mainActionBtn.textContent = "";
-        link.textContent = "Add a Pet";
-        link.href = "owner_feature.html";
+        link.textContent = "Post a Pet";
+        link.href = "#post-pet-section";
         mainActionBtn.appendChild(link);
       } else {
         // Default to adopter functionality (including when role is 'Adopter' or undefined)
@@ -70,6 +71,38 @@ document.addEventListener('DOMContentLoaded', function() {
         mainActionBtn.appendChild(link);
       }
     }
+  }
+
+  const form = document.getElementById('category-form');
+  const postBtn = document.getElementById('post-btn');
+  const categoryCards = document.querySelectorAll('.category-card');
+
+  // Card selection effect and button text update
+  categoryCards.forEach(card => {
+    card.addEventListener('click', function() {
+      categoryCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      // Update button text based on selected category
+      const input = card.querySelector('input[type="radio"]');
+      if (input && input.value) {
+        postBtn.textContent = `Post ${capitalize(input.value)}`;
+      }
+    });
+  });
+
+  // Form submission navigation
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Get selected category
+    const selected = form.querySelector('input[name="pet-category"]:checked');
+    let category = selected ? selected.value : '';
+    // Redirect to post_pet page with category as query param
+    window.location.href = `post_pet.html?category=${encodeURIComponent(category)}`;
+  });
+
+  // Helper to capitalize first letter
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 });
 
