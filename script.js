@@ -1,6 +1,14 @@
-// Load images from JSON file and initialize everything
+function resolveAssetPath(p) {
+  if (!p) return '';
+  // Treat already-absolute or inline sources as-is
+  if (/^(https?:|data:|blob:)/i.test(p)) return p;
+  const base = import.meta.env.BASE_URL || '/';
+  return base + p.replace(/^\/+/, '');
+}
+
+// Fetch images JSON from public root (Vite copies public/* to dist root)
 console.log('Starting to fetch images...');
-fetch('./public/image_urls.json')
+fetch(`${import.meta.env.BASE_URL}image_urls.json`)
   .then(response => {
     console.log('Fetch response:', response);
     if (!response.ok) {
@@ -10,33 +18,30 @@ fetch('./public/image_urls.json')
   })
   .then(imageUrls => {
     console.log('Images loaded:', imageUrls);
-    // Set main pic
+
+    // Main pic
     const mainPicElement = document.getElementById('main-pic');
-    console.log('Main pic element:', mainPicElement);
     if (mainPicElement && imageUrls.main_pic) {
-      mainPicElement.src = imageUrls.main_pic;
-      console.log('Main pic src set to:', imageUrls.main_pic);
+      mainPicElement.src = resolveAssetPath(imageUrls.main_pic);
+      console.log('Main pic src set to:', mainPicElement.src);
     }
 
-    // Set footer pic
+    // Footer pic
     const footerPicElement = document.getElementById('footer-pic');
     if (footerPicElement && imageUrls.footer_pic) {
-      footerPicElement.src = imageUrls.footer_pic;
+      footerPicElement.src = resolveAssetPath(imageUrls.footer_pic);
     }
 
-    // Initialize carousel with images from JSON
+    // Initialize carousel
     initializeCarousel();
     generateCarouselImages(imageUrls);
   })
   .catch(error => {
     console.error('Error loading images:', error);
-    // Fallback: set a default image
     const mainPicElement = document.getElementById('main-pic');
     if (mainPicElement) {
       mainPicElement.src = 'https://via.placeholder.com/400x300?text=Pet+Image';
     }
-    
-    // Initialize carousel with fallback images
     initializeCarousel();
     generateCarouselImages(null);
   });
@@ -130,53 +135,44 @@ function initializeCarousel() {
 }
 
 function generateCarouselImages(imageUrls) {
-  // Create or get the carousel images container
   let imagesContainer = document.getElementById('carousel-images-container');
-  
   if (!imagesContainer) {
-    // Create the container if it doesn't exist
     imagesContainer = document.createElement('div');
     imagesContainer.id = 'carousel-images-container';
     imagesContainer.className = 'carousel-images-row';
-    
-    // Insert it before the carousel container
     const carouselContainer = document.getElementById('review-carousel');
-    if (carouselContainer && carouselContainer.parentNode) {
+    if (carouselContainer?.parentNode) {
       carouselContainer.parentNode.insertBefore(imagesContainer, carouselContainer);
     }
   }
-  
-  // Clear existing images
   imagesContainer.innerHTML = '';
-  
-  // Define the carousel image keys and fallback URLs
+
   const imageKeys = [
     'carousel-image1',
-    'carousel-image2', 
+    'carousel-image2',
     'carousel-image3',
     'carousel-image4',
     'carousel-image5'
   ];
-  
+
   const fallbackImages = [
     'https://via.placeholder.com/150x150?text=Dog+1',
     'https://via.placeholder.com/150x150?text=Dog+2',
     'https://via.placeholder.com/150x150?text=Dog+3',
     'https://via.placeholder.com/150x150?text=Dog+4',
-    'https://via.placeholder.com/150x150?text=Dog+5',
-    'https://via.placeholder.com/150x150?text=Dog+6'
+    'https://via.placeholder.com/150x150?text=Dog+5'
   ];
-  
-  // Generate images
+
   imageKeys.forEach((key, index) => {
     const imgDiv = document.createElement('div');
     imgDiv.className = 'carousel-image-item';
-    
+
     const img = document.createElement('img');
-    img.src = imageUrls && imageUrls[key] ? imageUrls[key] : fallbackImages[index];
+    const candidate = imageUrls && imageUrls[key] ? resolveAssetPath(imageUrls[key]) : fallbackImages[index];
+    img.src = candidate;
     img.alt = `Pet ${index + 1}`;
     img.className = 'carousel-pet-image';
-    
+
     imgDiv.appendChild(img);
     imagesContainer.appendChild(imgDiv);
   });
@@ -184,12 +180,14 @@ function generateCarouselImages(imageUrls) {
 
 // Initialize DOM content when loaded
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('home-link').addEventListener('click', function(e) {
-    if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
-      e.preventDefault();
-    }
-    else {
-      window.location.href = './pages/home.html';
-    }
-  });
+  const homeLink = document.getElementById('home-link');
+  if (homeLink) {
+    homeLink.addEventListener('click', function(e) {
+      if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
+        e.preventDefault();
+      } else {
+        window.location.href = './pages/home.html';
+      }
+    });
+  }
 });

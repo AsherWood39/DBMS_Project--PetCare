@@ -10,9 +10,8 @@
   <link rel="stylesheet" href="../style.css">
 
   <link rel="stylesheet" href="../style/adopt_pet.css">
-  <script src="../src/theme.js" defer></script>
-  <script src="../src/auth.js" defer></script>
-  <script src="../src/adopt_pet.js" defer></script>
+  <script type="module" src="../src/main.js"></script>
+  <script type="module" src="../src/adopt_pet.js"></script>
 </head>
 <body>
   <header>
@@ -39,158 +38,130 @@
   <div class="paw-bg"></div>
 
   <div class="form-container">
-  <h2>Adoption Request Form</h2>
+    <h2>Adoption Request Form</h2>
+    <form id="adoptionForm">
+      <h3>1️⃣ Personal Information</h3>
+      <label class="checkbox-label">
+        Use my profile info
+        <input type="checkbox" id="useProfile">
+      </label>
 
-  <form id="adoptionForm">
+      <label>Full Name
+        <input type="text" id="fullName" name="fullName" required>
+      </label>
 
-    <!-- 1️⃣ Personal Information -->
+      <label>Age
+        <input type="number" id="age" name="age" required>
+      </label>
 
-    <h3>1️⃣ Personal Information</h3>
-    <label class="checkbox-label">
-         Use my profile info
-         <input type="checkbox" id="useProfile">
-    </label>
-    
-    <label>Full Name
-        <input type="text" name="fullName" id="fullName" placeholder="Enter full name" required>
-    </label>
+      <label>Email Address
+        <input type="email" id="email" name="email" required>
+      </label>
 
-    <label>Age
-      <input type="number" name="age" required>
-    </label>
-    <label>Email Address
-        <input type="email" name="email" id="email" placeholder="Enter email address" required>
-    </label>
-    <label>Phone Number
-      <input type="tel" name="phone" required>
-    </label>
-    <label>Residential Address
-      <textarea name="address" placeholder="Street, City, ZIP, State" required></textarea>
-    </label>
+      <label>Phone Number
+        <input type="tel" id="phone" name="phone" required>
+      </label>
 
-    <!-- 2️⃣ Household & Environment -->
-    <h3>2️⃣ Household & Environment</h3>
-    <label>Do you own or rent your home?
-      <select name="homeType" required>
-        <option value="">-- Select --</option>
-        <option>Owned</option>
-        <option>Rented</option>
-      </select>
-    </label>
-    <label>Do you have a fenced yard?
-      <select name="yard" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
-    <label>Who else lives in your household?
-      <input type="text" name="householdMembers" placeholder="Adults, Children, Other pets">
-    </label>
-    <label>Do you have other pets? If yes, type and age:
-      <input type="text" name="otherPets">
-    </label>
+      <label>Residential Address
+        <textarea id="address" name="address" required></textarea>
+      </label>
 
-    <!-- 3️⃣ Experience & Lifestyle -->
-    <h3>3️⃣ Experience & Lifestyle</h3>
-    <label>Have you adopted a pet before?
-      <select name="adoptedBefore" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
-    <label>Do you have experience with this type of pet?
-      <input type="text" name="petExperience" placeholder="Breed, species, special needs">
-    </label>
-    <label>How many hours per day can you dedicate to the pet?
-      <input type="number" name="dedicatedHours" min="0" max="24" required>
-    </label>
-    <label>Are you willing to provide medical care & vaccinations?
-      <select name="medicalCare" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
+      <h3>2️⃣ Household & Environment</h3>
+      <label>Do you own or rent your home?
+        <select id="homeType" name="homeType" required>
+          <option value="">-- Select --</option>
+          <option>Owned</option>
+          <option>Rented</option>
+        </select>
+      </label>
+      <label>Do you have a fenced yard?
+        <select id="yard" name="yard" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
+      <label>Who else lives in your household?
+        <input type="text" id="householdMembers" name="householdMembers">
+      </label>
+      <label>Do you have other pets? If yes, type and age:
+        <input type="text" id="otherPets" name="otherPets">
+      </label>
 
-    <!-- 4️⃣ Pet-Specific Questions -->
-    <h3>4️⃣ Pet-Specific Questions</h3>
-    <label>Why do you want to adopt this specific pet?
-      <textarea name="adoptReason" required></textarea>
-    </label>
-    <label>Do you have preferences regarding pet’s behavior or age?
-      <textarea name="preferences"></textarea>
-    </label>
-    <label>Are you ready to handle training & socialization?
-      <select name="training" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
+      <h3>3️⃣ Experience & Lifestyle</h3>
+      <label>Have you adopted a pet before?
+        <select id="adoptedBefore" name="adoptedBefore" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
+      <label>Do you have experience with this type of pet?
+        <input type="text" id="petExperience" name="petExperience">
+      </label>
+      <label>How many hours per day can you dedicate to the pet?
+        <input type="number" id="dedicatedHours" name="dedicatedHours" min="0" max="24" required>
+      </label>
+      <label>Are you willing to provide medical care & vaccinations?
+        <select id="medicalCare" name="medicalCare" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
 
-    <!-- 5️⃣ Commitment & Agreement -->
-    <h3>5️⃣ Commitment & Agreement</h3>
-    <label>Are you willing to sign an adoption agreement?
-      <select name="agreement" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
-    <label>Can you provide references (vet or personal)?
-      <input type="text" name="references">
-    </label>
-    <label>Are you aware of adoption fees (if any)?
-      <select name="fees" required>
-        <option value="">-- Select --</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </label>
-    
-    <!-- ✅ Checkbox Commitment -->
-    <label class="checkbox-label">
-      <span>I promise to take responsibility for the pet’s health, food, and exercise.</span>
-      <input type="checkbox" name="commitment" required>
-    </label>
+      <h3>4️⃣ Pet-Specific Questions</h3>
+      <label>Why do you want to adopt this specific pet?
+        <textarea id="adoptReason" name="adoptReason" required></textarea>
+      </label>
+      <label>Do you have preferences regarding pet’s behavior or age?
+        <textarea id="preferences" name="preferences"></textarea>
+      </label>
+      <label>Are you ready to handle training & socialization?
+        <select id="training" name="training" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
 
-    <!-- 💡 Optional Extra Features -->
-    <h3>💡 Optional</h3>
-    <label>Upload a photo of your home or yard:
-      <input type="file" name="homePhoto" accept="image/*">
-    </label>
-    <label>Schedule a visit or call:
-      <input type="datetime-local" name="schedule">
-    </label>
+      <h3>5️⃣ Commitment & Agreement</h3>
+      <label>Are you willing to sign an adoption agreement?
+        <select id="agreement" name="agreement" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
+      <label>Can you provide references (vet or personal)?
+        <input type="text" id="references" name="references">
+      </label>
+      <label>Are you aware of adoption fees (if any)?
+        <select id="fees" name="fees" required>
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
 
-    <button type="submit" class="submit-btn">Submit Adoption Request</button>
-  </form>
-</div>
+      <label class="checkbox-label">
+        <span>I promise to take responsibility for the pet’s health, food, and exercise.</span>
+        <input type="checkbox" id="commitment" name="commitment" required>
+      </label>
 
-  <script>
-    document.getElementById("adoptionForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+      <h3>💡 Optional</h3>
+      <label>Upload a photo of your home or yard:
+        <input type="file" id="homePhoto" name="homePhoto" accept="image/*">
+      </label>
+      <label>Schedule a visit or call:
+        <input type="datetime-local" id="schedule" name="schedule">
+      </label>
 
-      let formData = {
-        fullName: document.getElementById("fullName").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        petName: document.getElementById("petName").value,
-        experience: document.getElementById("experience").value,
-        homeType: document.getElementById("homeType").value,
-        message: document.getElementById("message").value
-      };
-
-      console.log("Adoption Request Submitted:", formData);
-
-      alert("Your adoption request has been submitted successfully!");
-      this.reset(); 
-      <p id="successMessage" style="display:none; color:green; font-weight:bold;">
+      <button type="submit" class="submit-btn">Submit Adoption Request</button>
+      <p id="successMessage" style="display:none;color:var(--primary-color);font-weight:600;margin-top:1rem;">
         ✅ Your adoption request has been submitted! Please wait for approval.
-    </p>
-    });
-  </script>
+      </p>
+    </form>
+  </div>
 </body>
 </html>
