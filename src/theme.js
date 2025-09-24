@@ -55,7 +55,7 @@ function generatePawPrints() {
   pawContainer.innerHTML = '';
 
   // Determine the correct image path based on page location
-  let imagePath = './public/paws.png'; // Default for root pages
+  let imagePath = '../public/paws.png'; // Default for root pages
   
   // Check if we're in a subfolder (like pages/)
   if (window.location.pathname.includes('/pages/')) {

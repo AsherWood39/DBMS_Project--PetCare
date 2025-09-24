@@ -1,36 +1,28 @@
-import { defineConfig } from 'vite'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import fs from 'fs';
 
-export default defineConfig({
-  root: '.', // Root directory for the project
-  base: './', // Base URL for assets (important for deployment)
-  
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: false, // Set to true if you want source maps in production
-    
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        login: resolve(__dirname, 'pages/login.html'),
-        signup: resolve(__dirname, 'pages/signup.html'),
-        feature: resolve(__dirname, 'pages/feature.html')
+function collectHtmlEntries() {
+  const dirs = ['.', 'pages'];
+  const entries = {};
+  for (const dir of dirs) {
+    const full = resolve(__dirname, dir);
+    if (!fs.existsSync(full)) continue;
+    for (const f of fs.readdirSync(full)) {
+      if (f.endsWith('.html')) {
+        entries[f.replace('.html', '')] = resolve(full, f);
       }
     }
-  },
-  
-  server: {
-    port: 3000,
-    open: true, // Automatically open the browser
-    host: true  // Allow access from network
-  },
-  
-  // Handle assets and static files
-  publicDir: 'public',
-  
-  // Optimize dependencies
-  optimizeDeps: {
-    include: []
   }
-})
+  return entries;
+}
+
+export default defineConfig({
+  base: '/',          // <— simpler for Vercel root deployment
+  publicDir: 'public',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: { input: collectHtmlEntries() }
+  }
+});

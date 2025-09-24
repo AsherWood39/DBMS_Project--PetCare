@@ -1,6 +1,6 @@
 // Load images from JSON file and initialize everything
 console.log('Starting to fetch images...');
-fetch('public/image_urls.json')
+fetch('./public/image_urls.json')
   .then(response => {
     console.log('Fetch response:', response);
     if (!response.ok) {
