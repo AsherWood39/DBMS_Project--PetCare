@@ -1,0 +1,427 @@
+/* Main layout structure */
+.welcome-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  min-height: 80vh;
+}
+
+.welcome-content {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.welcome-left {
+  flex: 1;
+  max-width: 50%;
+  padding-right: 1rem;
+  margin-top: 10%;
+  margin-left: -2%;
+}
+
+#welcome-title {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+#welcome-description #welcome-text-adopter,
+#welcome-description #welcome-text-owner {
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* Image container with decorative background */
+.welcome-pic-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#welcome-pic {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 20% 40% 20% 40% / 80% 40% 80% 40%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  flex-shrink: 0;
+  position: relative;
+  margin-left: 70%;
+  margin-top: -4%;
+}
+
+.welcome-pic-container::before {
+  content: '';
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 90%;
+  width: 100vw;
+  background-color: var(--primary-color);
+  border-radius: 0% 100% 100% 100% / 100% 1% 10% 100%;
+  opacity: 0.15;
+}
+
+/* Home Action Buttons */
+.selection-btn {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.selection-btn #welcome-adopt-btn,
+.selection-btn #welcome-learn-btn {
+  padding: 0.8rem 2rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: inline-block;
+  z-index: 2;
+}
+
+.selection-btn #welcome-adopt-btn {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+
+.selection-btn #welcome-learn-btn {
+  background-color: transparent;
+}
+
+/* Style the nested links inside buttons */
+.selection-btn #welcome-adopt-btn a,
+.selection-btn #welcome-learn-btn a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.selection-btn #welcome-learn-btn a {
+  color: var(--primary-color);
+}
+
+.selection-btn #welcome-adopt-btn:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.selection-btn #welcome-learn-btn:hover {
+  background-color: var(--border-color);
+  border: 2px solid var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .welcome-left {
+    max-width: 100%;
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+  
+  .welcome-pic-container {
+    max-width: 100%;
+  }
+  
+  #welcome-pic {
+    max-width: 300px;
+  }
+  
+  #welcome-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .selection-btn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-main {
+    padding: 1rem;
+  }
+  
+  #welcome-pic {
+    max-width: 250px;
+  }
+  
+  #welcome-title {
+    font-size: 1.8rem;
+  }
+  
+  .selection-btn {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .selection-btn #welcome-adopter-button,
+  .selection-btn #welcome-owner-button {
+    width: 100%;
+  }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  margin-top: 4%;
+}
+
+section h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Pet Cards Container */
+#pets-container {
+  display: flex;
+  flex-wrap: wrap;          
+  justify-content: space-between; /* spread cards evenly */
+  padding: 20px;
+  max-width: 1300px;         /* optional: keeps container neat */
+  margin: auto;              /* center container */
+}
+
+/* Individual Pet Card */
+.pet-card {
+  width: 18%;                 /* 5 cards roughly = 100% width (18% + gaps) */
+  background: var(--background-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--background-color), var(--border-color));
+  margin-bottom: 20px;
+  padding: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--background-color), var(--border-color));
+}
+
+/* Pet Images - uniform size */
+.pet-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* Pet Text */
+.pet-card h3 {
+  margin: 5px 0;
+  color: var(--text-color);
+}
+
+.pet-card p {
+  margin: 3px 0;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+/* Pet Card Button */
+.pet-card button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  background: var(--primary-color);
+  color: var(--background-color);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.pet-card button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Filter Buttons */
+#filter-buttons {
+  margin-bottom: 20px;
+}
+
+#filter-buttons button {
+  margin: 0 5px 10px 5px;
+  padding: 10px 20px;
+  border: none;
+  background: color-mix(in srgb, var(--button-bg-color) 80%, var(--background-color));
+  color: var(--background-color);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+}
+
+#filter-buttons button:hover,
+#filter-buttons button.active {
+  transform: scale(1.05);
+  background: var(--secondary-color);
+}
+/* Add Pet Floating Button */
+.add-pet-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 32px;
+  color: var(--background-color);
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--background-color), var(--border-color));
+  transition: transform 0.2s, background 0.2s;
+}
+
+.add-pet-btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) { .pet-card { width: 23%; } }  /* 4 per row */
+@media (max-width: 992px)  { .pet-card { width: 31%; } }  /* 3 per row */
+@media (max-width: 768px)  { .pet-card { width: 48%; } }  /* 2 per row */
+@media (max-width: 480px)  { .pet-card { width: 100%; } }  /* 1 per row */
+
+/* Container for the category cards */
+.category-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Card style for each category - bigger and more prominent */
+.category-card {
+  background: var(--background-color);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  padding: 2.5rem 2rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+  max-width: 260px;
+  margin: 0 1rem;
+  position: relative;
+  font-size: 1.15rem;
+}
+
+.category-card.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary-color) 20%, transparent);
+  transform: scale(1.05);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-icon {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 1.2rem;
+  object-fit: contain;
+}
+
+.category-card span {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+/* Pet Images - uniform size */
+.category-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+/* Style for the Post Pet button */
+#post-btn {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+#post-btn:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Responsive design for mobile */
+@media (max-width: 900px) {
+  .category-card-container form {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .category-card {
+    margin: 1rem 0;
+    min-width: 160px;
+    max-width: 90vw;
+    padding: 1.5rem;
+  }
+  #post-btn {
+    width: 100%;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style/home_style.css">
+  <script type="module" src="../src/home.js" defer></script>
+  <script type="module" src="../src/main.js" defer></script>
+  <title>Home Page</title>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <a href="../index.html">
+        <img src="../petcare_logo.jpg" alt="PetCare Logo" />
+        <h2>PetCare</h2>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <button id="theme-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+              <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+              <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+            </svg>
+          </button>
+        </li>
+        <li><a href="#">Home</a></li>
+        <li><a href="../index.html#about-section">About</a></li>
+        <li><a href="../index.html#services-section">Services</a></li>
+        <li><a href="../index.html#contact-section">Contact</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <div class="logged-out-buttons">
+          <button id="login-button">
+            <a href="login.html">Login</a>
+          </button>
+          <button id="signup-button">
+            <a href="signup.html">Sign Up</a>
+          </button>
+        </div>
+        <div class="logged-in-buttons" style="display: none;">
+          <button id="logout-button">
+            <a href="#">Logout</a>
+          </button>
+          <button id="profile-button">
+            <a href="profile.html"><i class="material-icons">person</i></a>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Paw prints background container -->
+  <div class="paw-bg"></div>
+  <main class="welcome-main">
+    <div class="welcome-content">
+      <div class="welcome-left">
+        <h1 id="welcome-title">Welcome, <span id="user-name">John Doe</span></h1>
+        <div id="welcome-description">
+          <p id="welcome-text-adopter" style="display: none;">
+            Discover amazing pets looking for their forever homes. Browse through our collection of adorable cats, dogs, and other animals ready for adoption. Your perfect companion is just a click away!
+          </p>
+          <p id="welcome-text-owner" style="display: none;">
+            Are you a pet owner looking to find loving homes for your pets? Join our community to list your pets for adoption and connect with potential adopters who will give them the care and love they deserve.
+          </p>
+        </div>
+        <div class="selection-btn">
+          <button class="btn welcome-primary" id="welcome-adopt-btn">
+            <a href="">Adopt a Pet</a>
+          </button>
+          <button class="btn welcome-secondary" id="welcome-learn-btn">
+            <a href="#">Learn More ...</a>
+          </button>
+        </div>
+      </div>
+      <div class="welcome-pic-container">
+        <img src="" alt="Welcome pic" id="welcome-pic">
+      </div>
+    </div>
+  </main>
+  <section id="view-pets" class="view-pets-section">
+    <h2>Pets Available..</h2>
+    <!-- Filter Buttons -->
+    <div id="filter-buttons">
+      <button data-type="All" class="active">All</button>
+      <button data-type="Dog">Dogs</button>
+      <button data-type="Cat">Cats</button>
+      <button data-type="Bird">Birds</button>
+    </div>
+
+    <!-- Pet Cards Container -->
+    <div id="pets-container"></div>
+  </section>
+  <section id="post-pet-section" class="post-pet-section" style="display: none;">
+    <h2 style="text-align:center; margin-bottom:2rem;">Select Pet Category</h2>
+    <div class="category-card-container">
+      <form id="category-form" style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="cat" required hidden>
+          <div class="card-content">
+            <img src="../public/cat_seller.png" alt="Cat" class="category-icon" />
+            <span>Cat</span>
+          </div>
+        </label>
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="dog" hidden>
+          <div class="card-content">
+            <img src="../public/dog_seller.png" alt="Dog" class="category-icon" />
+            <span>Dog</span>
+          </div>
+        </label>
+        <label class="category-card">
+          <input type="radio" name="pet-category" value="bird" hidden>
+          <div class="card-content">
+            <img src="../public/parrot_seller.png" alt="Bird" class="category-icon" />
+            <span>Bird</span>
+          </div>
+        </label>
+        <div style="flex-basis:100%; text-align:center; margin-top:2rem;">
+          <button type="submit" id="post-btn">Post Pet</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

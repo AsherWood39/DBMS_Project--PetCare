@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post a Pet - PetCare</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Import global CSS -->
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style/post_pet.css">
+  <script type="module" src="../src/post_pet.js" defer></script>
+  <script type="module" src="../src/main.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <a href="../index.html"><img src="../petcare_logo.jpg" alt="PetCare Logo" />
+      <h2>PetCare</h2></a>
+    </div>
+    <nav>
+      <ul>
+         <li><button id="theme-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/></svg>
+    </button></li>
+      </ul>
+      <div class="auth-buttons">
+        <button id="profile-button">
+          <a href="profile.html"><i class="material-icons">person</i></a>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Paw background -->
+  <div class="paw-bg"></div>
+
+  <div class="form-container">
+    <h2>Post a Pet for Adoption</h2>
+
+    <form id="postPetForm">
+
+      <!-- 📷 Upload Image -->
+      <label>Upload Pet Image:
+        <input type="file" name="petImage" accept="image/*" required>
+      </label>
+
+      <!-- 🐶 Pet Information -->
+      <h3>🐶 Pet Information</h3>
+      <label>Category
+        <select name="category" id="categorySelect" required>
+          <option value="">-- Select --</option>
+          <option>Dog</option>
+          <option>Cat</option>
+          <option>Bird</option>
+        </select>
+      </label>
+      <label>Pet Name
+        <input type="text" name="petName" required>
+      </label>
+      <label>Breed
+        <input type="text" name="breed" required>
+      </label>
+      <label>Age
+        <input type="number" name="age" min="0" required>
+      </label>
+      <label>Gender
+        <select name="gender" required>
+          <option value="">-- Select --</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </label>
+      <label>Color
+        <input type="text" name="color" required>
+      </label>
+      <label>Weight (kg)
+        <input type="number" name="weight" min="1" required>
+      </label>
+      <label>Temperament
+        <input type="text" name="temperament" placeholder="e.g. Friendly, Active, Great with kids" required>
+      </label>
+
+      <!-- 📍 Location -->
+      <h3>📍 Location</h3>
+      <label>City, State
+        <input type="text" name="location" required>
+      </label>
+
+      <!-- 👤 Previous Owner -->
+      <h3>👤 Previous Owner</h3>
+      <label>Owner Name
+        <input type="text" name="ownerName" required>
+      </label>
+      <label>Contact Number
+        <input type="tel" name="ownerContact" required>
+      </label>
+      <label>Email
+        <input type="email" name="ownerEmail" required>
+      </label>
+
+      <!-- ❤️ Health Records -->
+      <h3>❤️ Health Records</h3>
+      <div class="checkbox-group" id="healthOptions"></div>
+
+      <!-- Compulsory Vaccines -->
+      <h4>Compulsory Vaccines (Upload Certificates)</h4>
+      <div id="compulsoryVaccines"></div>
+
+      <!-- Extra Vaccines -->
+      <h4>Extra Vaccinations</h4>
+      <div id="extraVaccines"></div>
+      <button type="button" id="addVaccineBtn">+ Add Extra Vaccine</button>
+
+      <!-- 🍲 Diet Preferences -->
+      <h3>🍲 Diet Preferences</h3>
+      <textarea name="dietPreferences" rows="3" placeholder="e.g. Chicken, Dry food, Avoid milk"></textarea>
+
+      <!-- 📝 Special Notes -->
+      <h3>📝 Special Notes</h3>
+      <textarea name="specialNotes" rows="3" placeholder="Any additional care instructions or behavior notes"></textarea>
+
+      <button type="submit" class="submit-btn">Post Pet</button>
+    </form>
+
+    <p id="successMessage" style="display:none; color:green; font-weight:bold; margin-top:10px;">
+      ✅ Pet has been posted successfully!
+    </p>
+  </div>
+</body>
+</html>
