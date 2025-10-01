@@ -181,13 +181,65 @@ function generateCarouselImages(imageUrls) {
 // Initialize DOM content when loaded
 document.addEventListener('DOMContentLoaded', function() {
   const homeLink = document.getElementById('home-link');
+  const loginButton = document.getElementById('login-button');
+  const signupButton = document.getElementById('signup-button');
+  const profileButton = document.getElementById('profile-button');
+  const logoutButton = document.getElementById('logout-button');
+  const adopterButton = document.getElementById('adopter-button');
+  const ownerButton = document.getElementById('owner-button');
   if (homeLink) {
     homeLink.addEventListener('click', function(e) {
       if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
         e.preventDefault();
       } else {
-        window.location.href = './pages/home.html';
+        window.location.href = '/pages/home.html';
       }
+    });
+  }
+  if (loginButton) {
+    loginButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/pages/login.html';
+    });
+  }
+  if (signupButton) {
+    signupButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/pages/signup.html';
+    });
+  }
+  if (profileButton) {
+    profileButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
+        alert('Please log in to view your profile.');
+        window.location.href = '/pages/login.html';
+      } else {
+        window.location.href = '/pages/profile.html';
+      }
+    });
+  }
+  if (logoutButton) {
+    logoutButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof logout === 'function') {
+        logout();
+      }
+      window.location.href = './index.html';
+    });
+  }
+  if (adopterButton) {
+    adopterButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.setItem('signupRole', 'Adopter');
+      window.location.href = '/pages/signup.html';
+    });
+  }
+  if (ownerButton) {
+    ownerButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.setItem('signupRole', 'Owner');
+      window.location.href = '/pages/signup.html';
     });
   }
 });
