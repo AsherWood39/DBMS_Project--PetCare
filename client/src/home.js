@@ -32,6 +32,13 @@ fetch(`${import.meta.env.BASE_URL}image_urls.json`)
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Current User:', getUserData());
+
+  const userName = document.getElementById('user-name');
+  const userData = getUserData();
+  if (userName && userData?.fullName) {
+    userName.textContent = userData.fullName;
+  }
+
   // Unified role resolution
   function resolveRole() {
     // Direct simple key
