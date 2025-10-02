@@ -13,10 +13,10 @@ USE petcare_db;
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     full_name VARCHAR(100) NOT NULL,
-    age INT CHECK (age >= 18) NOT NULL,
+    age INT CHECK (age >= 18),
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('Adopter', 'Owner', 'Admin') NOT NULL DEFAULT 'Adopter',
+    pass VARCHAR(255) NOT NULL,
+    role ENUM('Adopter', 'Owner') NOT NULL DEFAULT 'Adopter',
     phone VARCHAR(20),
     address TEXT,
     is_active BOOLEAN DEFAULT TRUE,
@@ -262,11 +262,7 @@ BEGIN
         rejection_reason = p_rejection_reason,
         admin_notes = p_admin_notes
     WHERE request_id = p_request_id;
-    
-    -- Log the action
-    INSERT INTO audit_logs (action, table_name, record_id, new_values)
-    VALUES ('ADOPTION_REJECTED', 'adoption_requests', p_request_id, 
-            JSON_OBJECT('rejection_reason', p_rejection_reason, 'admin_notes', p_admin_notes));
+
 END //
 
 DELIMITER ;

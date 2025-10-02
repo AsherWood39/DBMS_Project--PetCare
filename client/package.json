@@ -18,6 +18,6 @@
   "license": "MIT",
   "devDependencies": {
     "rimraf": "^5.0.5",
-    "vite": "^7.1.4"
+    "vite": "^7.1.7"
   }
 }

@@ -87,17 +87,6 @@
   font-weight: 600;
 }
 
-.profile-status {
-  display: inline-block;
-  padding: 0.25rem 1.75rem;
-  background: var(--success-color);
-  color: var(--background-color);
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-}
-
 .profile-details {
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -173,7 +162,7 @@
   flex-wrap: wrap;
 }
 
-.btn-delete, .btn-edit, .btn-cancel {
+.btn-delete, .btn-edit, .btn-save, .btn-cancel {
   padding: 0.75rem 2rem;
   border: none;
   border-radius: 25px;
@@ -192,7 +181,7 @@
   color: white;
 }
 
-.btn-edit {
+.btn-edit, .btn-save {
   background: color-mix(in srgb, var(--button-bg-color) 10%, var(--button-bg-color) 80%);
   color: white;
 }
@@ -203,7 +192,7 @@
   transition: filter 0s ease;
 }
 
-.btn-edit:hover {
+.btn-edit:hover, .btn-save:hover {
   filter: drop-shadow(0 0 5px color-mix(in srgb, var(--button-bg-color) 10%, var(--button-bg-color) 50%));
   transform: translateY(-2px);
   transition: filter 0s ease;

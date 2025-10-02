@@ -8,13 +8,12 @@ USE petcare_db;
 -- =====================================================
 -- SAMPLE USERS
 -- =====================================================
-INSERT INTO users (full_name, email, password_hash, role, phone, address, is_active, email_verified) VALUES
-('Admin User', 'admin@petcare.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', '+91-9876543210', 'PetCare Office, Kochi, Kerala', TRUE, TRUE),
-('John Doe', 'john@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Adopter', '+91-9876543211', '123 Main Street, Mumbai, Maharashtra', TRUE, TRUE),
-('Jane Smith', 'jane@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Owner', '+91-9876543212', '456 Oak Avenue, Delhi, Delhi', TRUE, TRUE),
-('Mike Johnson', 'mike@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Adopter', '+91-9876543213', '789 Pine Road, Bangalore, Karnataka', TRUE, TRUE),
-('Sarah Wilson', 'sarah@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Owner', '+91-9876543214', '321 Elm Street, Chennai, Tamil Nadu', TRUE, TRUE),
-('David Brown', 'david@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Adopter', '+91-9876543215', '654 Maple Drive, Pune, Maharashtra', TRUE, TRUE);
+INSERT INTO users (full_name, age, email, pass, role, phone, address, is_active, email_verified) VALUES
+('John Doe', 30, 'john@example.com', '$2b$12$0W.E/HXm1qC8xzxnG5ZNy.uTI5GI1ki1/jxL.ir7IYDDQC.yZedGi', 'Adopter', '+91-9876543211', '123 Main Street, Mumbai, Maharashtra', TRUE, TRUE),
+('Jane Smith', 28, 'jane@example.com', '$2b$12$0W.E/HXm1qC8xzxnG5ZNy.uTI5GI1ki1/jxL.ir7IYDDQC.yZedGi', 'Owner', '+91-9876543212', '456 Oak Avenue, Delhi, Delhi', TRUE, TRUE),
+('Mike Johnson', 35, 'mike@example.com', '$2b$12$0W.E/HXm1qC8xzxnG5ZNy.uTI5GI1ki1/jxL.ir7IYDDQC.yZedGi', 'Adopter', '+91-9876543213', '789 Pine Road, Bangalore, Karnataka', TRUE, TRUE),
+('Sarah Wilson', 32, 'sarah@example.com', '$2b$12$0W.E/HXm1qC8xzxnG5ZNy.uTI5GI1ki1/jxL.ir7IYDDQC.yZedGi', 'Owner', '+91-9876543214', '321 Elm Street, Chennai, Tamil Nadu', TRUE, TRUE),
+('David Brown', 29, 'david@example.com', '$2b$12$0W.E/HXm1qC8xzxnG5ZNy.uTI5GI1ki1/jxL.ir7IYDDQC.yZedGi', 'Adopter', '+91-9876543215', '654 Maple Drive, Pune, Maharashtra', TRUE, TRUE);
 
 -- =====================================================
 -- SAMPLE PETS

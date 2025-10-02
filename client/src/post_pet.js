@@ -58,35 +58,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- SINGLE form submit handler ---
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form); // automatically includes all inputs & files
+  e.preventDefault();
+  const formData = new FormData(form); // automatically includes all inputs & files
 
-    // Add static fields
-    formData.append('owner_id', 1);
-    formData.append('is_available', true);
-    formData.append('is_adopted', false);
+  // Add static fields
+  formData.append('owner_id', 1);
+  formData.append('is_available', true);
+  formData.append('is_adopted', false);
 
-    // Append extra vaccine files
-    document.querySelectorAll('.vaccination-entry').forEach((entry, index) => {
-      const fileInput = entry.querySelector('input[type="file"]');
-      const textInput = entry.querySelector('input[type="text"]');
-      if (fileInput && fileInput.files.length > 0 && textInput) {
-        formData.append(`extraVaccines[${index}][name]`, textInput.value);
-        formData.append(`extraVaccines[${index}][file]`, fileInput.files[0]);
-      }
-    });
-
-    try {
-      const res = await fetch('http://localhost:5000/api/pets', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await res.json();
-      alert(data.message);
-    } catch (err) {
-      console.error(err);
-      alert('Error posting pet');
+  // Append extra vaccine files
+  document.querySelectorAll('.vaccination-entry').forEach((entry, index) => {
+    const fileInput = entry.querySelector('input[type="file"]');
+    const textInput = entry.querySelector('input[type="text"]');
+    if (fileInput && fileInput.files.length > 0 && textInput) {
+      formData.append(`extraVaccines[${index}][name]`, textInput.value);
+      formData.append(`extraVaccines[${index}][file]`, fileInput.files[0]);
     }
   });
+
+  try {
+    const token = localStorage.getItem('token'); // GET the token here
+
+    const res = await fetch('http://localhost:5000/api/pets', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}` // <-- add token here
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+    alert(data.message);
+  } catch (err) {
+    console.error(err);
+    alert('Error posting pet');
+  }
+});
+
 });

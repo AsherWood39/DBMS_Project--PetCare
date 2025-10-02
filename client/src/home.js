@@ -1,6 +1,8 @@
 // Home page logic: load JSON images, set welcome pic, role-based UI, pet filtering
 
 // Helper: resolve asset path (handles http(s), data:, blob:, and public-root files)
+import { getUserData } from "../utils/api";
+
 function resolveAssetPath(p) {
   if (!p) return '';
   if (/^(https?:|data:|blob:)/i.test(p)) return p; // leave absolute or data URIs
@@ -29,6 +31,14 @@ fetch(`${import.meta.env.BASE_URL}image_urls.json`)
   });
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('Current User:', getUserData());
+
+  const userName = document.getElementById('user-name');
+  const userData = getUserData();
+  if (userName && userData?.fullName) {
+    userName.textContent = userData.fullName;
+  }
+
   // Unified role resolution
   function resolveRole() {
     // Direct simple key
@@ -44,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {
       console.warn('Role parse failed', e);
     }
-    // Normalize synonyms
-    if (role === 'Seller') role = 'Owner';
-    if (role === 'Buyer') role = 'Adopter';
     return role;
   }
 
@@ -120,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <p>Age: ${p.age}</p>
             <p>Breed: ${p.breed}</p>
             <p>Gender: ${p.gender}</p>
-            <a href="../pages/details.html">
+            <a href="/pages/details.html">
               <button>View Details</button>
             </a>
         `;
