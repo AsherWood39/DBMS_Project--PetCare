@@ -306,7 +306,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
       errorDiv.textContent = "An account with this email already exists";
       return;
     }
-    localStorage.setItem('token', response.token);
+  
     // Prepare user data for registration
     const userData = {
       full_name: name,
@@ -336,7 +336,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
 
     // Call API to register user
     const response = await registerUser(userData);
-
+    localStorage.setItem('token', response.token);
     console.log("User successfully created:", response.data.user);
 
     // Clear form
