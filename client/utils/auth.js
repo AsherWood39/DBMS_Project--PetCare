@@ -55,23 +55,31 @@ async function refreshCurrentUser() {
 
 // Update authentication UI across all pages
 function updateGlobalAuthUI(isLoggedIn) {
-  const loggedOutButtons = document.querySelector('.logged-out-buttons');
-  const loggedInButtons = document.querySelector('.logged-in-buttons');
-  const roleSelection = document.querySelector('.role-selection');
-  const homeLink = document.getElementById('home-link');
+  const elements = {
+    loggedOutButtons: document.querySelector('.logged-out-buttons'),
+    loggedInButtons: document.querySelector('.logged-in-buttons'),
+    roleSelection: document.querySelector('.role-selection'),
+    homeLink: document.getElementById('home-link'),
+  };
 
-  if (isLoggedIn) {
-    // User is logged in - show logout and profile buttons
-    if (loggedOutButtons) loggedOutButtons.style.display = 'none';
-    if (loggedInButtons) loggedInButtons.style.display = 'flex';
-    if (roleSelection) roleSelection.style.display = 'none';
-    if (homeLink) homeLink.style.display = 'block'; // Show Home link when logged in
-  } else {
-    // User is logged out - show login and signup buttons
-    if (loggedOutButtons) loggedOutButtons.style.display = 'flex';
-    if (loggedInButtons) loggedInButtons.style.display = 'none';
-    if (roleSelection) roleSelection.style.display = 'flex';
-    if (homeLink) homeLink.style.display = 'none'; // Hide Home link when logged out
+  const displayConfig = isLoggedIn
+    ? {
+        loggedOutButtons: 'none',
+        loggedInButtons: 'flex',
+        roleSelection: 'none',
+        homeLink: 'block',
+      }
+    : {
+        loggedOutButtons: 'flex',
+        loggedInButtons: 'none',
+        roleSelection: 'flex',
+        homeLink: 'none',
+      };
+
+  for (const key in displayConfig) {
+    if (elements[key]) {
+      elements[key].style.display = displayConfig[key];
+    }
   }
 }
 
@@ -192,11 +200,7 @@ function handleRoleSelection() {
       // Clear any pre-selected role when using header signup
       setSignupRole(null);
       const href = headerSignupButton.querySelector('a')?.href || '/pages/signup.html';
-      if (href.startsWith('pages/')) {
-        window.location.href = href;
-      } else {
-        window.location.href = href;
-      }
+      window.location.href = href;
     });
   }
 }

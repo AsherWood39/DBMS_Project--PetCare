@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | PetCare</title>
+    <script type="module" src="../src/main.js" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../style/global.css">
+    <style>
+        .error-container {
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0;
+            line-height: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .error-message {
+            font-size: 1.5rem;
+            margin: 1rem 0 2rem;
+            color: var(--text-color);
+        }
+
+        .paw-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+
+        .home-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .home-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .description {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="paw-icon">
+            <span class="material-icons" style="font-size: inherit;">pets</span>
+        </div>
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">Oops! This page has gone for a walk</h2>
+        <p class="description">
+            The page you're looking for seems to have wandered off. Don't worry, you can always go back home!
+        </p>
+        <a href="../index.html" class="home-button">
+            Back to Home
+        </a>
+    </div>
+</body>
+</html>

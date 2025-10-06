@@ -168,7 +168,7 @@ function generateCarouselImages(imageUrls) {
     imgDiv.className = 'carousel-image-item';
 
     const img = document.createElement('img');
-    const candidate = imageUrls && imageUrls[key] ? resolveAssetPath(imageUrls[key]) : fallbackImages[index];
+    const candidate = imageUrls?.[key] ? resolveAssetPath(imageUrls[key]) : fallbackImages[index];
     img.src = candidate;
     img.alt = `Pet ${index + 1}`;
     img.className = 'carousel-pet-image';
@@ -365,7 +365,7 @@ function setupEventListeners() {
       e.preventDefault();
       uploadArea.classList.remove('drag-over');
       const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
+      if (file?.type.startsWith('image/')) {
         handleImageUpload(file);
       }
     });

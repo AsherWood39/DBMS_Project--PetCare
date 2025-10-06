@@ -81,5 +81,7 @@ footer {
 }
 
 footer a {
+  text-decoration: none;
+  color: var(--secondary-color);
   margin: 0 1rem;
 }

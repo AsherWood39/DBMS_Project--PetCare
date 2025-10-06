@@ -71,12 +71,21 @@ app.get('/', (req, res) => {
   });
 });
 
+// Serve static files from the client dist directory
+app.use(express.static('../../client/dist'));
+
 // Handle 404 routes
 app.use('*', (req, res) => {
-  res.status(404).json({
-    status: 'error',
-    message: `Route ${req.originalUrl} not found`
-  });
+  // If the request is an API request, return JSON
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({
+      status: 'error',
+      message: `Route ${req.originalUrl} not found`
+    });
+  }
+  
+  // For non-API requests, serve the 404.html page
+  res.status(404).sendFile('pages/404.html', { root: '../../client/dist' });
 });
 
 // Global error handler (must be last middleware)

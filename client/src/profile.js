@@ -1,7 +1,7 @@
 // Profile Page JavaScript - Enhanced with proper error handling and validation
 
 // Import API functions
-import { getCurrentUser, getUserProfile, updateUserProfile, isAuthenticated, deleteUserAccount } from '../utils/api.js';
+import { getCurrentUser, updateUserProfile, isAuthenticated, deleteUserAccount } from '../utils/api.js';
 
 // Constants
 const STORAGE_KEYS = {

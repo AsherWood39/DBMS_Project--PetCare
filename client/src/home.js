@@ -98,6 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const learnMoreBtn = document.getElementById('welcome-learn-btn');
+  if (learnMoreBtn) {
+    const link = learnMoreBtn.querySelector('a');
+    if (link) {
+      if (role === 'Owner') {
+        link.href = '#post-pet-section';
+      } else {
+        link.href = '#view-pets';
+      }
+    }
+  }
+
   const pets = [
     { name: 'Bruno', age: '8-12 weeks', breed: 'Labrador', gender: 'Male', type: 'Dog', image: 'pet1.jpg' },
     { name: 'Mittens', age: '2 years', breed: 'Tabby Cat', gender: 'Female', type: 'Cat', image: 'pet2.jpg' },

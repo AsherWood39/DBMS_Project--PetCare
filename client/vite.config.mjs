@@ -24,5 +24,14 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: { input: collectHtmlEntries() }
+  },
+  server: {
+    // Configure the dev server to handle 404s
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/404$/, to: '/pages/404.html' },
+        { from: /./, to: '/pages/404.html' } // Catch all 404s
+      ]
+    }
   }
 });
