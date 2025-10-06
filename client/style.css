@@ -172,6 +172,380 @@ header .auth-buttons #profile-button:hover {
   background-color: var(--secondary-color);
 }
 
+.breed-detector {
+  position: fixed;
+  bottom: 3vw;
+  right: 3vw;
+  height: 60px;
+  width: 60px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 30%, var(--primary-color) 20%);
+  transition: background-color 0.3s ease;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.breed-detector:hover {
+  background-color: var(--secondary-color);
+}
+
+.breed-detector svg {
+  fill: var(--background-color);
+  height: 50%;
+  width: auto;
+  justify-content: center;
+  align-content: center;
+}
+
+/* Breed Detector Popup Styles */
+.breed-detector-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 10000 !important;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.breed-detector-content {
+  position: relative;
+  z-index: 10001 !important;
+  background: var(--background-color);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.breed-detector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 30px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.breed-detector-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--secondary-color);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: var(--border-color);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: var(--border-color);
+  color: var(--background-color);
+}
+
+.breed-detector-body {
+  padding: 30px;
+  min-height: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.breed-detector-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.breed-detector-body::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.breed-detector-body::-webkit-scrollbar-thumb:hover {
+  background: var(--button-bg-color);
+}
+
+.upload-section,
+.preview-section,
+.results-section {
+  width: 100%;
+  min-height: 200px;
+}
+
+/* Upload Section */
+.upload-area {
+  border: 3px dashed var(--button-bg-color);
+  border-radius: 15px;
+  padding: 50px 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--background-color);
+}
+
+.upload-area:hover {
+  border-color: var(--button-bg-color);
+  background: var(--border-color);
+}
+
+.upload-area.drag-over {
+  border-color: var(--button-bg-color);
+  background: var(--background-color);
+  transform: scale(1.02);
+}
+
+.upload-area svg {
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+}
+
+.upload-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 10px 0 5px 0;
+}
+
+.upload-subtext {
+  font-size: 14px;
+  color: var(--button-bg-color);
+  margin: 0;
+}
+
+/* Preview Section */
+.preview-section {
+  display: none; /* Hidden by default */
+  width: 100%;
+  text-align: center;
+  padding: 0;
+}
+
+.preview-section[style*="display: block"] {
+  display: block !important;
+}
+
+#preview-image {
+  display: block;
+  width: auto;
+  height: 17vw;
+  border-radius: 15px;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.change-image-btn,
+.analyze-btn,
+.new-analysis-btn,
+.retry-btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.change-image-btn {
+  background: var(--border-color);
+  color: var(--text-color);
+  margin-right: 2rem;
+}
+
+.change-image-btn:hover {
+  background: linear-gradient(135deg, var(--border-color) 10%, var(--border-color) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px var(--border-color);
+}
+
+.analyze-btn {
+  margin-left: 2rem;
+}
+
+.new-analysis-btn {
+  place-content: center;
+  margin-left: 30%;
+}
+
+.analyze-btn,
+.new-analysis-btn,
+.retry-btn {
+  background: linear-gradient(135deg, var(--button-bg-color) 0%, var(--button-bg-color) 100%);
+  color: var(--background-color);
+}
+
+.analyze-btn:hover,
+.new-analysis-btn:hover,
+.retry-btn:hover {
+  background: linear-gradient(135deg, var(--button-bg-color) 0%, var(--button-bg-color) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px var(--button-bg-color);
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--text-color);
+  border-top: 4px solid var(--button-bg-color);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+/* Results */
+.result-content {
+  animation: fadeIn 0.5s ease;
+}
+
+.result-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-color);
+  opacity: 0.4;
+}
+
+.result-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--text-color);
+}
+
+.result-body {
+  margin-bottom: 25px;
+}
+
+.analysis-result {
+  background: color-mix(in srgb, var(--border-color) 40%, var(--background-color) 10%);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  line-height: 1.8;
+}
+
+.analysis-result p {
+  margin: 0;
+  color: color-mix(in srgb, var(--text-color) 60%, var(--background-color) 10%);
+  font-size: 15px;
+}
+
+.analysis-result strong {
+  color: color-mix(in srgb, var(--primary-color) 60%, var(--background-color) 10%);
+  font-size: 16px;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  padding: 30px;
+}
+
+.error-message svg {
+  margin-bottom: 15px;
+}
+
+.error-message h3 {
+  color: var(--error-color);
+  margin: 10px 0;
+}
+
+.error-message p {
+  color: var(--text-color);
+  opacity: 0.4;
+  margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .breed-detector-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .breed-detector-header {
+    padding: 20px;
+  }
+
+  .breed-detector-header h2 {
+    font-size: 20px;
+  }
+
+  .breed-detector-body {
+    padding: 20px;
+  }
+
+  .upload-area {
+    padding: 30px 20px;
+  }
+
+  #preview-image {
+    max-height: 300px;
+  }
+
+  .analyze-btn,
+  .change-image-btn,
+  .new-analysis-btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
 .main-content {
   z-index: 2;
 }
