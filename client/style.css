@@ -172,10 +172,15 @@ header .auth-buttons #profile-button:hover {
   background-color: var(--secondary-color);
 }
 
-.breed-detector {
+.breed-detector-wrapper {
   position: fixed;
   bottom: 3vw;
   right: 3vw;
+  z-index: 100;
+}
+
+.breed-detector {
+  position: relative;
   height: 60px;
   width: 60px;
   background-color: var(--primary-color);
@@ -185,12 +190,13 @@ header .auth-buttons #profile-button:hover {
   align-items: center;
   cursor: pointer;
   box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 30%, var(--primary-color) 20%);
-  transition: background-color 0.3s ease;
-  z-index: 1000; /* Ensure it stays above other elements */
+  transition: all 0.3s ease;
+  z-index: 102;
 }
 
 .breed-detector:hover {
   background-color: var(--secondary-color);
+  transform: scale(1.05);
 }
 
 .breed-detector svg {
@@ -198,7 +204,30 @@ header .auth-buttons #profile-button:hover {
   height: 50%;
   width: auto;
   justify-content: center;
-  align-content: center;
+}
+
+.detector-text {
+  position: absolute;
+  right: 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+  padding: 18px 20px;
+  border-radius: 20vw;
+  font-size: 16px;
+  white-space: nowrap;
+  opacity: 0.25;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 101;
+}
+
+.breed-detector:hover .detector-text {
+  opacity: 1;
+  visibility: visible;
+  right: 80px;
 }
 
 /* Breed Detector Popup Styles */
