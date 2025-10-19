@@ -1,3 +1,5 @@
+import { getUserData, refreshUserData } from "../utils/api.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("useProfile");
   const fullNameField = document.getElementById("fullName");
@@ -5,24 +7,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("adoptionForm");
   const successMessage = document.getElementById("successMessage");
 
-  const loggedInUser = {
-    fullName: "John Doe",
-    email: "john@example.com"
-  };
+  // Fill form fields from stored user data. If no data in storage, try to refresh from server.
+  async function fillFromProfile(shouldFill) {
+    if (!toggle || !fullNameField || !emailField) return;
+    if (!shouldFill) {
+      fullNameField.value = "";
+      emailField.value = "";
+      fullNameField.readOnly = false;
+      emailField.readOnly = false;
+      return;
+    }
+
+    let user = getUserData();
+    if (!user) {
+      try {
+        user = await refreshUserData();
+      } catch (err) {
+        console.error('Failed to refresh user data:', err);
+      }
+    }
+
+    if (user && (user.fullName || user.email)) {
+      fullNameField.value = user.fullName || "";
+      emailField.value = user.email || "";
+      fullNameField.readOnly = true;
+      emailField.readOnly = true;
+    } else {
+      alert('No profile data found. Please log in to use this feature or fill the fields manually.');
+      toggle.checked = false;
+    }
+  }
 
   if (toggle && fullNameField && emailField) {
-    toggle.addEventListener("change", () => {
-      if (toggle.checked) {
-        fullNameField.value = loggedInUser.fullName;
-        emailField.value = loggedInUser.email;
-        fullNameField.readOnly = true;
-        emailField.readOnly = true;
-      } else {
-        fullNameField.value = "";
-        emailField.value = "";
-        fullNameField.readOnly = false;
-        emailField.readOnly = false;
-      }
+    toggle.addEventListener("change", (e) => {
+      fillFromProfile(e.target.checked);
     });
   }
 
