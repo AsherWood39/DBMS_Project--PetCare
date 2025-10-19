@@ -81,6 +81,64 @@ function updateGlobalAuthUI(isLoggedIn) {
       elements[key].style.display = displayConfig[key];
     }
   }
+
+  // Manage the AI Breed Detector button visibility across pages.
+  // Only show/create the detector on the post-login landing page (usually /pages/home.html).
+  try {
+    const existingWrapper = document.querySelector('.breed-detector-wrapper');
+    const path = window.location.pathname || '';
+    const isLandingPage = path.includes('/pages/home') || path.endsWith('/pages/home.html');
+
+    if (isLoggedIn) {
+      if (!isLandingPage) {
+        // Ensure it's hidden on pages that are not the landing page
+        if (existingWrapper) existingWrapper.style.display = 'none';
+        return;
+      }
+
+      // We are on the landing page and user is logged in — show or create the button here
+      if (existingWrapper) {
+        existingWrapper.style.display = '';
+        const btn = existingWrapper.querySelector('.breed-detector');
+        if (btn && !btn.dataset.listenerAdded) {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.breedDetector) window.breedDetector();
+            else console.warn('Breed detector function not available yet');
+          });
+          btn.dataset.listenerAdded = 'true';
+        }
+      } else {
+        // Create wrapper only on the landing page
+        const wrapper = document.createElement('div');
+        wrapper.className = 'breed-detector-wrapper';
+        wrapper.innerHTML = `
+          <div class="breed-detector">
+            <span class="detector-text">AI Breed Detector</span>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M180-475q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm180-160q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm240 0q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm180 160q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM266-75q-45 0-75.5-34.5T160-191q0-52 35.5-91t70.5-77q29-31 50-67.5t50-68.5q22-26 51-43t63-17q34 0 63 16t51 42q28 32 49.5 69t50.5 69q35 38 70.5 77t35.5 91q0 47-30.5 81.5T694-75q-54 0-107-9t-107-9q-54 0-107 9t-107 9Z"/></svg>
+          </div>
+        `;
+        // Insert into page body near the main content on the landing page
+        const mainEl = document.querySelector('main') || document.body;
+        mainEl.parentNode.insertBefore(wrapper, mainEl);
+
+        const btn = wrapper.querySelector('.breed-detector');
+        if (btn) {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.breedDetector) window.breedDetector();
+            else console.warn('Breed detector function not available yet');
+          });
+          btn.dataset.listenerAdded = 'true';
+        }
+      }
+    } else {
+      // Hide existing wrapper on logout or for unauthenticated visitors
+      if (existingWrapper) existingWrapper.style.display = 'none';
+    }
+  } catch (err) {
+    console.error('Error managing breed detector button:', err);
+  }
 }
 
 // Logout function (updated to use API client)

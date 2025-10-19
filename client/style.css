@@ -189,7 +189,8 @@ header .auth-buttons #profile-button:hover {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 30%, var(--primary-color) 20%);
+  box-shadow: 0 0 8px
+    color-mix(in srgb, var(--primary-color) 30%, var(--primary-color) 20%);
   transition: all 0.3s ease;
   z-index: 102;
 }
@@ -261,7 +262,7 @@ header .auth-buttons #profile-button:hover {
   background: var(--background-color);
   border-radius: 20px;
   width: 90%;
-  max-width: 600px;
+  max-width: 900px; /* increased from 600px to make popup wider on desktop */
   max-height: 100vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -422,7 +423,11 @@ header .auth-buttons #profile-button:hover {
 }
 
 .change-image-btn:hover {
-  background: linear-gradient(135deg, var(--border-color) 10%, var(--border-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--border-color) 10%,
+    var(--border-color) 100%
+  );
   transform: translateY(-2px);
   box-shadow: 0 2px 8px var(--border-color);
 }
@@ -439,14 +444,22 @@ header .auth-buttons #profile-button:hover {
 .analyze-btn,
 .new-analysis-btn,
 .retry-btn {
-  background: linear-gradient(135deg, var(--button-bg-color) 0%, var(--button-bg-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--button-bg-color) 0%,
+    var(--button-bg-color) 100%
+  );
   color: var(--background-color);
 }
 
 .analyze-btn:hover,
 .new-analysis-btn:hover,
 .retry-btn:hover {
-  background: linear-gradient(135deg, var(--button-bg-color) 0%, var(--button-bg-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--button-bg-color) 0%,
+    var(--button-bg-color) 100%
+  );
   transform: translateY(-2px);
   box-shadow: 0 2px 8px var(--button-bg-color);
 }
@@ -468,8 +481,12 @@ header .auth-buttons #profile-button:hover {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading p {
@@ -501,7 +518,11 @@ header .auth-buttons #profile-button:hover {
 }
 
 .analysis-result {
-  background: color-mix(in srgb, var(--border-color) 40%, var(--background-color) 10%);
+  background: color-mix(
+    in srgb,
+    var(--border-color) 40%,
+    var(--background-color) 10%
+  );
   border-radius: 12px;
   padding: 20px;
   text-align: left;
@@ -515,7 +536,11 @@ header .auth-buttons #profile-button:hover {
 }
 
 .analysis-result strong {
-  color: color-mix(in srgb, var(--primary-color) 60%, var(--background-color) 10%);
+  color: color-mix(
+    in srgb,
+    var(--primary-color) 60%,
+    var(--background-color) 10%
+  );
   font-size: 16px;
 }
 
