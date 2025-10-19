@@ -10,6 +10,7 @@ const __dirname = path.dirname(__filename);
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import petRoutes from './routes/pets.js'; 
+import adoptionRequestRoutes from './routes/adoptionRequests.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/pets', petRoutes);
+app.use('/api/adoption-requests', adoptionRequestRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

@@ -10,18 +10,27 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-// Database connection pool
+// Validate required environment variables before attempting DB connection
+const requiredEnv = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const missing = requiredEnv.filter((k) => !process.env[k]);
+if (missing.length > 0) {
+  console.error('❌ Missing required environment variables:', missing.join(', '));
+  console.error('Please create a .env file in the server directory (see .env.example) and set these values.');
+  process.exit(1);
+}
+
+// Database connection pool (mysql2 - only supported options).
 export const db = mysql.createPool({
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  acquireTimeout: 60000,
-  timeout: 60000
+  // Use connectTimeout (ms) for initial connection timeout
+  connectTimeout: process.env.DB_CONNECT_TIMEOUT ? parseInt(process.env.DB_CONNECT_TIMEOUT, 10) : 10000
 });
 
 // Test database connection
