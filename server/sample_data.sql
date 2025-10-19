@@ -125,3 +125,7 @@ JOIN pets p ON ar.pet_id = p.pet_id
 JOIN users u ON ar.adopter_id = u.user_id
 WHERE ar.status = 'Pending'
 ORDER BY ar.created_at DESC;
+
+UPDATE pets
+SET pet_image = CONCAT('/uploads/', pet_image)
+WHERE pet_image IS NOT NULL AND pet_image != '' AND pet_image NOT LIKE '/uploads/%';

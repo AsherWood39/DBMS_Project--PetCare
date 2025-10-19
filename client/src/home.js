@@ -1,185 +1,238 @@
 // Home page logic: load JSON images, set welcome pic, role-based UI, pet filtering
 
-// Helper: resolve asset path (handles http(s), data:, blob:, and public-root files)
 import { getUserData } from "../utils/api";
 
-function resolveAssetPath(p) {
-  if (!p) return '';
-  if (/^(https?:|data:|blob:)/i.test(p)) return p; // leave absolute or data URIs
-  const base = import.meta.env.BASE_URL || '/';
-  return base + p.replace(/^\/+/, '');
+const API_BASE = window.__API_BASE__ || "http://localhost:5000";
+
+// ✅ Normalize image paths from backend (fix for /uploads issues)
+function resolvePetImage(pet_image) {
+  if (!pet_image) return "../assets/labrador.jpg";
+  if (/^(https?:|data:|blob:)/i.test(pet_image)) return pet_image;
+
+  // Handle already-correct paths
+  if (pet_image.startsWith("/uploads")) {
+    return `${API_BASE}${pet_image}`;
+  }
+
+  // If backend accidentally sent filename only (no /uploads prefix)
+  return `${API_BASE}/uploads/${pet_image.replace(/^\/+/, "")}`;
 }
 
-// Fetch image URLs (image_urls.json must be in /public)
+// ✅ General asset resolver (for JSON pics etc.)
+function resolveAssetPath(p) {
+  if (!p) return "";
+  if (/^(https?:|data:|blob:)/i.test(p)) return p;
+  const base = import.meta.env.BASE_URL || "/";
+  return base + p.replace(/^\/+/, "");
+}
+
+// Load welcome image
 fetch(`${import.meta.env.BASE_URL}image_urls.json`)
-  .then(r => {
+  .then((r) => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
   })
-  .then(json => {
-    const welcomePic = document.getElementById('welcome-pic');
+  .then((json) => {
+    const welcomePic = document.getElementById("welcome-pic");
     if (welcomePic && json.main_pic) {
       welcomePic.src = resolveAssetPath(json.main_pic);
     }
   })
-  .catch(err => {
-    console.warn('Failed to load image_urls.json:', err);
-    const welcomePic = document.getElementById('welcome-pic');
+  .catch((err) => {
+    console.warn("Failed to load image_urls.json:", err);
+    const welcomePic = document.getElementById("welcome-pic");
     if (welcomePic) {
-      welcomePic.src = 'https://via.placeholder.com/400x300?text=Pet+Image';
+      welcomePic.src = "https://via.placeholder.com/400x300?text=Pet+Image";
     }
   });
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Current User:', getUserData());
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Current User:", getUserData());
 
-  const userName = document.getElementById('user-name');
+  const userName = document.getElementById("user-name");
   const userData = getUserData();
   if (userName && userData?.fullName) {
     userName.textContent = userData.fullName;
   }
 
-  // Unified role resolution
+  // Resolve role (from localStorage/sessionStorage)
   function resolveRole() {
-    // Direct simple key
-    let role = localStorage.getItem('userRole');
-    // From currentUser object (rememberMe handling)
+    let role = localStorage.getItem("userRole");
     try {
-      const remember = localStorage.getItem('rememberMe') === 'true';
-      const raw = remember ? localStorage.getItem('currentUser') : sessionStorage.getItem('currentUser');
+      const remember = localStorage.getItem("rememberMe") === "true";
+      const raw = remember
+        ? localStorage.getItem("currentUser")
+        : sessionStorage.getItem("currentUser");
       if (raw) {
         const user = JSON.parse(raw);
         if (user.role) role = user.role;
       }
-    } catch(e) {
-      console.warn('Role parse failed', e);
+    } catch (e) {
+      console.warn("Role parse failed", e);
     }
     return role;
   }
 
   const role = resolveRole();
 
-  const adopterText = document.getElementById('welcome-text-adopter');
-  const ownerText = document.getElementById('welcome-text-owner');
-  const viewPetsSection = document.getElementById('view-pets');
-  const postPetSection = document.getElementById('post-pet-section');
+  const adopterText = document.getElementById("welcome-text-adopter");
+  const ownerText = document.getElementById("welcome-text-owner");
+  const viewPetsSection = document.getElementById("view-pets");
+  const postPetSection = document.getElementById("post-pet-section");
 
-  // Hide all first (defensive)
-  adopterText && (adopterText.style.display = 'none');
-  ownerText && (ownerText.style.display = 'none');
-  viewPetsSection && (viewPetsSection.style.display = 'none');
-  postPetSection && (postPetSection.style.display = 'none');
+  adopterText && (adopterText.style.display = "none");
+  ownerText && (ownerText.style.display = "none");
+  viewPetsSection && (viewPetsSection.style.display = "none");
+  postPetSection && (postPetSection.style.display = "none");
 
-  if (role === 'Owner') {
-    ownerText && (ownerText.style.display = 'block');
-    postPetSection && (postPetSection.style.display = 'block');
-    viewPetsSection && (viewPetsSection.style.display = 'none');
-  } else if (role === 'Adopter') {
-    adopterText && (adopterText.style.display = 'block');
-    viewPetsSection && (viewPetsSection.style.display = 'block');
+  if (role === "Owner") {
+    ownerText && (ownerText.style.display = "block");
+    postPetSection && (postPetSection.style.display = "block");
   } else {
-    // Not logged in: show adopter view only (optional)
-    adopterText && (adopterText.style.display = 'block');
-    viewPetsSection && (viewPetsSection.style.display = 'block');
+    adopterText && (adopterText.style.display = "block");
+    viewPetsSection && (viewPetsSection.style.display = "block");
   }
 
-  // Adjust main action button
-  const mainActionBtn = document.getElementById('welcome-adopt-btn');
+  // Adjust main button
+  const mainActionBtn = document.getElementById("welcome-adopt-btn");
   if (mainActionBtn) {
-    const link = mainActionBtn.querySelector('a');
+    const link = mainActionBtn.querySelector("a");
     if (link) {
-      if (role === 'Owner') {
-        link.textContent = 'Post a Pet';
-        link.href = '#post-pet-section';
+      if (role === "Owner") {
+        link.textContent = "Post a Pet";
+        link.href = "#post-pet-section";
       } else {
-        link.textContent = 'Adopt a Pet';
-        link.href = '#view-pets';
+        link.textContent = "Adopt a Pet";
+        link.href = "#view-pets";
       }
     }
   }
 
-  const learnMoreBtn = document.getElementById('welcome-learn-btn');
+  const learnMoreBtn = document.getElementById("welcome-learn-btn");
   if (learnMoreBtn) {
-    const link = learnMoreBtn.querySelector('a');
+    const link = learnMoreBtn.querySelector("a");
     if (link) {
-      if (role === 'Owner') {
-        link.href = '#post-pet-section';
-      } else {
-        link.href = '#view-pets';
-      }
+      link.href = role === "Owner" ? "#post-pet-section" : "#view-pets";
     }
   }
 
-  const pets = [
-    { name: 'Bruno', age: '8-12 weeks', breed: 'Labrador', gender: 'Male', type: 'Dog', image: 'pet1.jpg' },
-    { name: 'Mittens', age: '2 years', breed: 'Tabby Cat', gender: 'Female', type: 'Cat', image: 'pet2.jpg' },
-    { name: 'Rocky', age: '2 years', breed: 'Australian Shepherd', gender: 'Male', type: 'Dog', image: 'pet3.jpg' },
-    { name: 'Bella', age: '8 weeks', breed: 'Munchkin', gender: 'Female', type: 'Cat', image: 'pet4.jpg' },
-    { name: 'Charlie', age: '1 year', breed: 'Corgi', gender: 'Male', type: 'Dog', image: 'pet5.jpg' },
-    { name: 'Luna', age: '2 years', breed: 'Husky', gender: 'Female', type: 'Dog', image: 'pet6.jpg' },
-    { name: 'Sunny', age: '3 years', breed: 'White Cockatoo', gender: 'Male', type: 'Bird', image: 'pet7.jpg' },
-    { name: 'Coco', age: '12 weeks', breed: 'Cockatiel', gender: 'Female', type: 'Bird', image: 'pet8.jpg' },
-    { name: 'Sky', age: '2 years', breed: 'Macaw', gender: 'Male', type: 'Bird', image: 'pet9.jpg' },
-    { name: 'Snowy', age: '2.5 years', breed: 'Persian Cat', gender: 'Female', type: 'Cat', image: 'pet10.jpg' }
-  ];
+  let pets = [];
+  let currentFilter = "All";
+  const filterButtonsNodeList = document.querySelectorAll("#filter-buttons button");
+  const buttons = filterButtonsNodeList ? Array.from(filterButtonsNodeList) : [];
 
-  const container = document.getElementById('pets-container');
-  const buttons = document.querySelectorAll('#filter-buttons button');
+  // ✅ Fetch pets
+  async function loadPetsFromApi() {
+    try {
+      const res = await fetch(`${API_BASE}/api/pets`);
+      const json = await res.json();
+      const petsData = Array.isArray(json.data) ? json.data : [];
 
-  function displayPets(filter = 'All') {
+      pets = petsData.map((p) => ({
+        pet_id: p.pet_id ?? p.id ?? null,
+        pet_name: p.pet_name ?? "Unknown",
+        breed: p.breed ?? "",
+        age: p.age ?? "",
+        gender: p.gender ?? "",
+        category: p.category ?? "",
+        imageUrl: resolvePetImage(p.pet_image),
+      }));
+
+      displayPets(currentFilter);
+    } catch (err) {
+      console.error("Failed to load pets:", err);
+      const container = document.getElementById("pets-container");
+      if (container)
+        container.innerHTML = `<p>Unable to load pets. ${err.message}</p>`;
+    }
+  }
+
+  function createPetCard(p) {
+    const card = document.createElement('div');
+    card.className = 'pet-card';
+
+    // create image element with reserved size + lazy loading + onerror fallback
+    const img = document.createElement('img');
+    img.src = p.imageUrl || '../assets/labrador.jpg';
+    img.alt = p.pet_name || 'Pet';
+    img.width = 360;          // give intrinsic width/height to avoid layout shift
+    img.height = 180;
+    img.loading = 'lazy';
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = '../assets/labrador.jpg';
+    };
+
+    const body = document.createElement('div');
+    body.className = 'pet-card-body';
+    body.innerHTML = `
+      <h4>${escapeHtml(p.pet_name)}</h4>
+      <p>Age: ${escapeHtml(String(p.age))}</p>
+      <p>Breed: ${escapeHtml(p.breed)}</p>
+      <p>Gender: ${escapeHtml(p.gender)}</p>
+      <a class="view-details-btn" href="details.html?id=${encodeURIComponent(p.pet_id)}">View Details</a>
+    `;
+
+    card.appendChild(img);
+    card.appendChild(body);
+
+    return card;
+  }
+
+  function displayPets(filter = "All") {
+    const container = document.getElementById("pets-container");
     if (!container) return;
-    container.innerHTML = '';
-    pets.forEach(p => {
-      if (filter === 'All' || p.type === filter) {
-        const card = document.createElement('div');
-        card.className = 'pet-card';
-        card.innerHTML = `
-          <img src="${resolveAssetPath(p.image)}" alt="${p.name}">
-          <h3>${p.name}</h3>
-          <p>Age: ${p.age}</p>
-            <p>Breed: ${p.breed}</p>
-            <p>Gender: ${p.gender}</p>
-            <a href="/pages/details.html">
-              <button>View Details</button>
-            </a>
-        `;
-        container.appendChild(card);
+    container.innerHTML = "";
+    pets.forEach((p) => {
+      if (filter === "All" || p.category === filter) {
+        container.appendChild(createPetCard(p));
       }
     });
+  }
+
+  function escapeHtml(s) {
+    return (s + "").replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+    );
   }
 
   // Initial load
-  displayPets('All');
+  loadPetsFromApi();
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      displayPets(btn.getAttribute('data-type'));
+  // Filters
+  if (buttons.length) {
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.getAttribute("data-type") || "All";
+        displayPets(currentFilter);
+      });
     });
-  });
+  }
 
-  const form = document.getElementById('category-form');
-  const postBtn = document.getElementById('post-btn');
-  const categoryCards = document.querySelectorAll('.category-card');
+  const form = document.getElementById("category-form");
+  const postBtn = document.getElementById("post-btn");
+  const categoryCards = document.querySelectorAll(".category-card");
 
-  categoryCards.forEach(card => {
-    card.addEventListener('click', () => {
-      categoryCards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
+  categoryCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      categoryCards.forEach((c) => c.classList.remove("selected"));
+      card.classList.add("selected");
       const input = card.querySelector('input[type="radio"]');
-      if (input?.value) postBtn.textContent = `Post ${capitalize(input.value)}`;
+      if (input?.value)
+        postBtn.textContent = `Post ${capitalize(input.value)}`;
     });
   });
 
-  form?.addEventListener('submit', e => {
+  form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const selected = form.querySelector('input[name="pet-category"]:checked');
-    const category = selected ? selected.value : '';
+    const category = selected ? selected.value : "";
     window.location.href = `post_pet.html?category=${encodeURIComponent(category)}`;
   });
 
   function capitalize(str) {
-    return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
   }
 });

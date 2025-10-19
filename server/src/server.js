@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 import app from './app.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import express from 'express'; // { added }
 
 // Load environment variables
 dotenv.config();
@@ -61,5 +64,11 @@ process.on('SIGINT', async () => {
     process.exit(1);
   }
 });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve uploaded images (ensure this runs before routes that reference /uploads)
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 startServer();
