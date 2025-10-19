@@ -1,6 +1,6 @@
 // details.js — Fetch and display single pet details
 
-const API_BASE = window.__API_BASE__ || '';
+const API_BASE = window.__API_BASE__ || 'http://localhost:5000'; // set to your backend origin
 
 function resolvePetImage(pet_image) {
   if (!pet_image) return `${API_BASE}/uploads/default-pet.png`;
@@ -29,12 +29,17 @@ async function fetchPetDetails() {
 
   try {
     const res = await fetch(`${API_BASE}/api/pets/${encodeURIComponent(petId)}`, { credentials: 'include' });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => '');
-      throw new Error(`Server returned ${res.status}: ${txt}`);
+
+    // Try parse JSON, but if it's HTML log body for diagnosis
+    let json;
+    try {
+      json = await res.json();
+    } catch (parseErr) {
+      const text = await res.text().catch(() => '<no body>');
+      console.error('API returned non-JSON response for details:', { status: res.status, body: text });
+      throw new Error(`Invalid JSON response from API (status ${res.status}). See console for body.`);
     }
 
-    const json = await res.json();
     if (json.status !== 'success' || !json.data) throw new Error(json.message || 'Pet not found');
 
     const pet = json.data;
@@ -97,35 +102,52 @@ async function fetchPetDetails() {
 
     // Fallback: render read-only details into container
     const html = `
-      <section class="pet-detail">
+      <div class="pet-detail">
         <div class="pet-detail-grid">
           <div class="pet-image-col">
             <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(pet.pet_name || 'Pet')}" class="pet-detail-img" onerror="this.src='${API_BASE || ''}/uploads/default-pet.png'">
           </div>
+
           <div class="pet-info-col">
             <h1>${escapeHtml(pet.pet_name || 'Unknown')}</h1>
-            <p><strong>Category:</strong> ${escapeHtml(pet.category || '')}</p>
-            <p><strong>Breed:</strong> ${escapeHtml(pet.breed || '')}</p>
-            <p><strong>Age:</strong> ${escapeHtml(String(pet.age ?? ''))}</p>
-            <p><strong>Gender:</strong> ${escapeHtml(pet.gender || '')}</p>
-            <p><strong>Color:</strong> ${escapeHtml(pet.color || '')}</p>
-            <p><strong>Weight:</strong> ${escapeHtml(pet.weight ? pet.weight + ' kg' : '')}</p>
-            <p><strong>Temperament:</strong> ${escapeHtml(pet.temperament || '')}</p>
-            <p><strong>Location:</strong> ${escapeHtml(pet.location || '')}</p>
-            <p><strong>Diet:</strong> ${escapeHtml(pet.diet_preferences || '')}</p>
-            <p><strong>Notes:</strong> ${escapeHtml(pet.special_notes || '')}</p>
-            <p><strong>Available:</strong> ${pet.is_available ? 'Yes' : 'No'}</p>
-            <p><strong>Adopted:</strong> ${pet.is_adopted ? 'Yes' : 'No'}</p>
 
-            <h3>Owner / Contact</h3>
-            <p><strong>Name:</strong> ${escapeHtml(pet.owner_name || '')}</p>
-            <p><strong>Phone:</strong> ${escapeHtml(pet.owner_phone || '')}</p>
-            <p><strong>Email:</strong> ${escapeHtml(pet.owner_email || '')}</p>
+            <ul class="pet-summary">
+              <li><strong>Breed:</strong> ${escapeHtml(pet.breed || '—')}</li>
+              <li><strong>Age:</strong> ${escapeHtml(String(pet.age ?? '—'))}</li>
+              <li><strong>Gender:</strong> ${escapeHtml(pet.gender || '—')}</li>
+              <li><strong>Color:</strong> ${escapeHtml(pet.color || '—')}</li>
+              <li><strong>Weight:</strong> ${escapeHtml(pet.weight ? pet.weight + ' kg' : '—')}</li>
+              <li><strong>Temperament:</strong> ${escapeHtml(pet.temperament || '—')}</li>
+            </ul>
 
-            <a class="back-btn" href="index.html">← Back to Pets</a>
+            <div class="section-title"><span class="icon">📍</span><span>Location</span></div>
+            <p>${escapeHtml(pet.location || 'Unknown')}</p>
+
+            <div class="section-title"><span class="icon">🧑‍🦳</span><span>Previous Owner</span></div>
+            <div class="owner-block">
+              <p><strong>Name:</strong> ${escapeHtml(pet.owner_name || '—')}</p>
+              <p><strong>Contact:</strong> ${escapeHtml(pet.owner_phone || '—')}</p>
+              <p><strong>Email:</strong> ${escapeHtml(pet.owner_email || '—')}</p>
+            </div>
+
+            <div class="section-title"><span class="icon">❤️</span><span>Health Records</span></div>
+            <ul>
+              <!-- Example health items; replace or render actual fields if available -->
+              <li>✅ Vaccinated</li>
+              <li>✅ Dewormed</li>
+              <li>✅ Neutered</li>
+            </ul>
+
+            <div class="section-title"><span class="icon">🍖</span><span>Diet Preferences</span></div>
+            <p>${escapeHtml(pet.diet_preferences || 'Not specified')}</p>
+
+            <div class="section-title"><span class="icon">⚠</span><span>Special Notes</span></div>
+            <div class="special-notes">${escapeHtml(pet.special_notes || 'None')}</div>
+
+            <a class="request-adoption" href="request.html?pet=${encodeURIComponent(pet.pet_id)}">Request Adoption</a>
           </div>
         </div>
-      </section>
+      </div>
     `;
 
     container.innerHTML = html;
