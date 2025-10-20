@@ -1,6 +1,64 @@
 import { getUserData, refreshUserData } from "../utils/api.js";
 
+const API_BASE = window.__API_BASE__ || 'http://localhost:5000';
+
+function qs(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function escapeHtml(s) {
+  return (s + '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+async function loadPetSummary(petId) {
+  if (!petId) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/pets/${encodeURIComponent(petId)}`);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.status !== 'success' || !json.data) return;
+    const p = json.data;
+    const container = document.getElementById('pet-summary');
+    if (container) {
+      container.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center;">
+          <img src="${escapeHtml(p.pet_image ? (p.pet_image.startsWith('/uploads') ? API_BASE + p.pet_image : API_BASE + '/uploads/' + p.pet_image) : '/assets/default-pet.png')}"
+               alt="${escapeHtml(p.pet_name || 'Pet')}"
+               style="width:96px;height:72px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.25)">
+          <div>
+            <strong style="font-size:1.1rem">${escapeHtml(p.pet_name || '')}</strong><br>
+            <small>${escapeHtml(p.breed || '')} • ${escapeHtml(String(p.age || ''))} years</small>
+          </div>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.warn('Could not load pet summary', e);
+  }
+}
+
+function tryPrefillFromProfile() {
+  // try localStorage currentUser or sessionStorage
+  try {
+    const raw = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+    if (!raw) return null;
+    const user = JSON.parse(raw);
+    return {
+      fullName: user.fullName || user.full_name || '',
+      email: user.email || '',
+      phone: user.phone || user.mobile || '',
+      address: (user.address || '')
+    };
+  } catch (e) { return null; }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  const petId = qs('pet_id') || qs('pet');
+  const petInput = document.getElementById('pet_id');
+  if (petInput && petId) petInput.value = petId;
+
+  loadPetSummary(petId);
+
   const toggle = document.getElementById("useProfile");
   const fullNameField = document.getElementById("fullName");
   const emailField = document.getElementById("email");

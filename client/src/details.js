@@ -144,7 +144,7 @@ async function fetchPetDetails() {
             <div class="section-title"><span class="icon">⚠</span><span>Special Notes</span></div>
             <div class="special-notes">${escapeHtml(pet.special_notes || 'None')}</div>
 
-            <a class="request-adoption" href="request.html?pet=${encodeURIComponent(pet.pet_id)}">Request Adoption</a>
+            <a class="request-adoption" href="adopt_pet.html?pet_id=${encodeURIComponent(pet.pet_id)}">Request Adoption</a>
           </div>
         </div>
       </div>
