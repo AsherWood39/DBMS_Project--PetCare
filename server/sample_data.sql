@@ -31,46 +31,46 @@ INSERT INTO pets (owner_id, category, pet_name, breed, age, gender, color, weigh
 -- =====================================================
 -- SAMPLE VACCINATIONS
 -- =====================================================
-INSERT INTO vaccinations (pet_id, vaccine_name, vaccine_type, vaccination_date, certificate_file, is_completed) VALUES
+INSERT INTO vaccinations (pet_id, vaccine_name, vaccine_type,  certificate_file) VALUES
 -- Bruno (Dog) - Compulsory vaccines
-(1, 'Rabies', 'Compulsory', '2024-07-01', 'bruno_rabies_cert.pdf', TRUE),
-(1, 'DHPPi', 'Compulsory', '2024-07-01', 'bruno_dhppi_cert.pdf', TRUE),
-(1, 'Leptospirosis', 'Compulsory', '2024-07-01', 'bruno_lepto_cert.pdf', TRUE),
-(1, 'Bordetella', 'Extra', '2024-07-15', 'bruno_bordetella_cert.pdf', TRUE),
+(1, 'Rabies', 'Compulsory', 'bruno_rabies_cert.pdf'),
+(1, 'DHPPi', 'Compulsory', 'bruno_dhppi_cert.pdf'),
+(1, 'Leptospirosis', 'Compulsory', 'bruno_lepto_cert.pdf'),
+(1, 'Bordetella', 'Extra', 'bruno_bordetella_cert.pdf'),
 
 -- Max (Dog) - Compulsory vaccines
-(2, 'Rabies', 'Compulsory', '2024-06-15', 'max_rabies_cert.pdf', TRUE),
-(2, 'DHPPi', 'Compulsory', '2024-06-15', 'max_dhppi_cert.pdf', TRUE),
-(2, 'Leptospirosis', 'Compulsory', '2024-06-15', 'max_lepto_cert.pdf', TRUE),
+(2, 'Rabies', 'Compulsory', 'max_rabies_cert.pdf'),
+(2, 'DHPPi', 'Compulsory', 'max_dhppi_cert.pdf'),
+(2, 'Leptospirosis', 'Compulsory', 'max_lepto_cert.pdf'),
 
 -- Whiskers (Cat) - Compulsory vaccines
-(3, 'Rabies', 'Compulsory', '2024-08-01', 'whiskers_rabies_cert.pdf', TRUE),
-(3, 'Feline Distemper', 'Compulsory', '2024-08-01', 'whiskers_distemper_cert.pdf', TRUE),
-(3, 'Calicivirus', 'Compulsory', '2024-08-01', 'whiskers_calici_cert.pdf', TRUE),
-(3, 'Feline Leukemia', 'Extra', '2024-08-10', 'whiskers_leukemia_cert.pdf', TRUE),
+(3, 'Rabies', 'Compulsory', 'whiskers_rabies_cert.pdf'),
+(3, 'Feline Distemper', 'Compulsory', 'whiskers_distemper_cert.pdf'),
+(3, 'Calicivirus', 'Compulsory', 'whiskers_calici_cert.pdf'),
+(3, 'Feline Leukemia', 'Extra', 'whiskers_leukemia_cert.pdf'),
 
 -- Luna (Cat) - Compulsory vaccines
-(4, 'Rabies', 'Compulsory', '2024-07-20', 'luna_rabies_cert.pdf', TRUE),
-(4, 'Feline Distemper', 'Compulsory', '2024-07-20', 'luna_distemper_cert.pdf', TRUE),
-(4, 'Calicivirus', 'Compulsory', '2024-07-20', 'luna_calici_cert.pdf', TRUE),
+(4, 'Rabies', 'Compulsory', 'luna_rabies_cert.pdf'),
+(4, 'Feline Distemper', 'Compulsory', 'luna_distemper_cert.pdf'),
+(4, 'Calicivirus', 'Compulsory', 'luna_calici_cert.pdf'),
 
 -- Charlie (Bird) - Compulsory vaccines
-(5, 'Avian Influenza', 'Compulsory', '2024-08-15', 'charlie_avian_cert.pdf', TRUE),
-(5, 'Newcastle Disease', 'Compulsory', '2024-08-15', 'charlie_newcastle_cert.pdf', TRUE),
+(5, 'Avian Influenza', 'Compulsory', 'charlie_avian_cert.pdf'),
+(5, 'Newcastle Disease', 'Compulsory', 'charlie_newcastle_cert.pdf'),
 
 -- Sunny (Bird) - Compulsory vaccines
-(6, 'Avian Influenza', 'Compulsory', '2024-09-01', 'sunny_avian_cert.pdf', TRUE),
-(6, 'Newcastle Disease', 'Compulsory', '2024-09-01', 'sunny_newcastle_cert.pdf', TRUE),
+(6, 'Avian Influenza', 'Compulsory', 'sunny_avian_cert.pdf'),
+(6, 'Newcastle Disease', 'Compulsory', 'sunny_newcastle_cert.pdf'),
 
 -- Bella (Dog) - Compulsory vaccines
-(7, 'Rabies', 'Compulsory', '2024-06-30', 'bella_rabies_cert.pdf', TRUE),
-(7, 'DHPPi', 'Compulsory', '2024-06-30', 'bella_dhppi_cert.pdf', TRUE),
-(7, 'Leptospirosis', 'Compulsory', '2024-06-30', 'bella_lepto_cert.pdf', TRUE),
+(7, 'Rabies', 'Compulsory', 'bella_rabies_cert.pdf'),
+(7, 'DHPPi', 'Compulsory', 'bella_dhppi_cert.pdf'),
+(7, 'Leptospirosis', 'Compulsory', 'bella_lepto_cert.pdf'),
 
 -- Shadow (Cat) - Compulsory vaccines
-(8, 'Rabies', 'Compulsory', '2024-07-10', 'shadow_rabies_cert.pdf', TRUE),
-(8, 'Feline Distemper', 'Compulsory', '2024-07-10', 'shadow_distemper_cert.pdf', TRUE),
-(8, 'Calicivirus', 'Compulsory', '2024-07-10', 'shadow_calici_cert.pdf', TRUE);
+(8, 'Rabies', 'Compulsory', 'shadow_rabies_cert.pdf'),
+(8, 'Feline Distemper', 'Compulsory', 'shadow_distemper_cert.pdf'),
+(8, 'Calicivirus', 'Compulsory', 'shadow_calici_cert.pdf');
 
 -- =====================================================
 -- SAMPLE ADOPTION REQUESTS

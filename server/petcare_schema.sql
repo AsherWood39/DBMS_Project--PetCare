@@ -72,8 +72,7 @@ CREATE TABLE vaccinations (
     
     FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE,
     INDEX idx_pet (pet_id),
-    INDEX idx_type (vaccine_type),
-    INDEX idx_completed (is_completed)
+    INDEX idx_type (vaccine_type)
 );
 
 -- =====================================================
