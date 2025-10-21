@@ -266,6 +266,22 @@ section h2 {
   font-weight: bold;
 }
 
+.pet-card .view-details-btn {
+  margin-top: 10px;
+  border: none;
+  color: var(--primary-color);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+}
+
+.pet-card .view-details-btn:hover {
+  color: var(--secondary-color);
+}
+
 /* Pet Card Button */
 .pet-card button {
   margin-top: 10px;

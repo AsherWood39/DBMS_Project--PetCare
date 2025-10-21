@@ -3,7 +3,7 @@
   max-width: 1100px;
   margin: 2.5rem auto;
   padding: 1rem 1.25rem;
-  color: #f3e6d8;
+  color: var(--secondary-color);
   font-family: "Georgia", "Times New Roman", serif;
 }
 
@@ -30,19 +30,19 @@
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   display: block;
-  background: #0b0b0b;
+  background: var(--text-color);
 }
 
 /* Info column */
 .pet-info-col {
-  color: #f3e6d8;
+  color: var(--text-color);
   line-height: 1.45;
 }
 .pet-info-col h1 {
   margin: 0 0 0.6rem 0;
-  font-size: 3rem;                          /* large title as in screenshot */
+  font-size: 3rem;                 /* large title as in screenshot */
   letter-spacing: 1px;
-  color: #ffb26b;                           /* orange title */
+  color: var(--secondary-color);
   font-weight: 700;
   text-transform: uppercase;
   font-family: "Georgia", serif;
@@ -57,9 +57,9 @@
 .pet-summary li {
   margin: 0.25rem 0;
   font-size: 1rem;
-  color: #efe9df;
+  color: var(--text-color);
 }
-.pet-summary li strong { color: #fff; }
+.pet-summary li strong { color: var(--primary-color); }
 
 /* Section headings (orange with emoji icon) */
 .section-title {
@@ -68,7 +68,7 @@
   gap: 0.6rem;
   margin-top: 1.25rem;
   margin-bottom: 0.6rem;
-  color: #ff7f2a;
+  color: var(--secondary-color);
   font-weight: 700;
   font-size: 1.25rem;
 }
@@ -78,7 +78,7 @@
 .pet-info-col ul {
   margin: 0.25rem 0 1rem 1.2rem;
   padding: 0;
-  color: #efe9df;
+  color: var(--text-color);
 }
 .pet-info-col ul li {
   margin: 0.45rem 0;
@@ -87,7 +87,7 @@
 
 /* Owner/contact block */
 .owner-block p { margin: 0.2rem 0; }
-.owner-block p strong { color: #fff; }
+.owner-block p strong { color: var(--primary-color); }
 
 /* Diet / Notes text */
 .pet-info-col p {
@@ -100,8 +100,8 @@
   display: inline-block;
   margin-top: 1.25rem;
   padding: 12px 22px;
-  background: #ffb26b;
-  color: #2b1d15;
+  background: var(--primary-color);
+  color: var(--background-color);
   border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
@@ -113,11 +113,11 @@
 /* Special note highlight */
 .special-notes {
   background: rgba(255,178,107,0.05);
-  border-left: 4px solid #ffb26b;
+  border-left: 4px solid var(--primary-color);
   padding: 0.75rem 1rem;
   border-radius: 6px;
   margin-top: 0.6rem;
-  color: #efe9df;
+  color: var(--primary-color);
 }
 
 /* Mobile / responsive: stack and scale down */
