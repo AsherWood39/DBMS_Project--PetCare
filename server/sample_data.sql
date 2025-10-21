@@ -79,26 +79,22 @@ INSERT INTO adoption_requests (
     pet_id, adopter_id, full_name, age, email, phone, address,
     home_type, has_fenced_yard, household_members, other_pets,
     adopted_before, pet_experience, dedicated_hours_per_day, willing_medical_care,
-    adoption_reason, preferences, ready_for_training, willing_agreement, references_info, aware_of_fees, commitment_promise,
-    status, created_at
+    adoption_reason, preferences, ready_for_training, willing_agreement, references_info, aware_of_fees, commitment_promise, created_at
 ) VALUES
 (1, 2, 'John Doe', 28, 'john@example.com', '+91-9876543211', '123 Main Street, Mumbai, Maharashtra',
  'Owned', TRUE, 'Wife and 2 children (ages 5 and 8)', 'None currently',
  TRUE, 'Grew up with dogs, had a Golden Retriever for 10 years', 4, TRUE,
- 'Looking for a family companion for my children. Bruno seems perfect for our active family.', 'Prefer large, active dogs that are good with kids', TRUE, TRUE, 'Dr. Smith (Vet): +91-9876543401, Friend: Mike Johnson', TRUE, TRUE,
- 'Pending', '2024-09-01 10:30:00'),
+ 'Looking for a family companion for my children. Bruno seems perfect for our active family.', 'Prefer large, active dogs that are good with kids', TRUE, TRUE, 'Dr. Smith (Vet): +91-9876543401, Friend: Mike Johnson', TRUE, TRUE, '2024-09-01 10:30:00'),
 
 (3, 4, 'Mike Johnson', 35, 'mike@example.com', '+91-9876543213', '789 Pine Road, Bangalore, Karnataka',
  'Owned', FALSE, 'Live alone', '1 cat (Mittens, 3 years old)',
  TRUE, 'Have had cats for 15 years, very experienced', 6, TRUE,
- 'Whiskers looks like a perfect companion for my current cat. Both are calm and gentle.', 'Prefer calm, indoor cats', TRUE, TRUE, 'Dr. Brown (Vet): +91-9876543402', TRUE, TRUE,
- 'Pending', '2024-09-02 14:20:00'),
+ 'Whiskers looks like a perfect companion for my current cat. Both are calm and gentle.', 'Prefer calm, indoor cats', TRUE, TRUE, 'Dr. Brown (Vet): +91-9876543402', TRUE, TRUE, '2024-09-02 14:20:00'),
 
 (5, 6, 'David Brown', 42, 'david@example.com', '+91-9876543215', '654 Maple Drive, Pune, Maharashtra',
  'Owned', TRUE, 'Wife and teenage daughter', 'None currently',
  FALSE, 'New to bird ownership but have done extensive research', 3, TRUE,
- 'Always wanted a talking bird. Charlie seems intelligent and would be a great addition to our family.', 'Prefer intelligent, social birds', TRUE, TRUE, 'Dr. Davis (Vet): +91-9876543403', TRUE, TRUE,
- 'Pending', '2024-09-03 09:15:00');
+ 'Always wanted a talking bird. Charlie seems intelligent and would be a great addition to our family.', 'Prefer intelligent, social birds', TRUE, TRUE, 'Dr. Davis (Vet): +91-9876543403', TRUE, TRUE, '2024-09-03 09:15:00');
 
 -- =====================================================
 -- VERIFICATION QUERIES
