@@ -10,6 +10,38 @@ function escapeHtml(s) {
   return (s + '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function resolvePetImage(pet_image) {
+  // Return default image if no image provided
+  if (!pet_image) return "../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png";
+
+  // Check if the image path contains an embedded URL
+  if (pet_image.includes('https://') || pet_image.includes('http://')) {
+    // Extract the actual URL if it was mistakenly prepended with /uploads/
+    const urlMatch = pet_image.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch) {
+      console.log('Extracted URL from path:', urlMatch[0]);
+      return urlMatch[0];
+    }
+  }
+
+  // If it's already a clean full URL, return as is
+  if (/^(https?:|data:|blob:)/i.test(pet_image)) {
+    console.log('Using direct URL:', pet_image);
+    return pet_image;
+  }
+
+  // Handle default image case
+  if (pet_image === 'default-pet.png' || !pet_image.includes('://')) {
+    const url = `${API_BASE}/uploads/${pet_image.replace(/^\/+/, "")}`;
+    console.log('Using local file path:', url);
+    return url;
+  }
+
+  // For any other case, return as is
+  console.log('Using original path:', pet_image);
+  return pet_image;
+}
+
 async function loadPetSummary(petId) {
   if (!petId) return;
   try {
@@ -22,7 +54,7 @@ async function loadPetSummary(petId) {
     if (container) {
       container.innerHTML = `
         <div style="display:flex;gap:12px;align-items:center;">
-          <img src="${escapeHtml(p.pet_image ? (p.pet_image.startsWith('/uploads') ? API_BASE + p.pet_image : API_BASE + '/uploads/' + p.pet_image) : '/assets/default-pet.png')}"
+          <img src="${resolvePetImage(p.pet_image)}"
                alt="${escapeHtml(p.pet_name || 'Pet')}"
                style="width:96px;height:72px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.25)">
           <div>
@@ -45,11 +77,15 @@ function tryPrefillFromProfile() {
     const user = JSON.parse(raw);
     return {
       fullName: user.fullName || user.full_name || '',
+      age: user.age || '',
       email: user.email || '',
       phone: user.phone || user.mobile || '',
-      address: (user.address || '')
+      address: user.address || ''
     };
-  } catch (e) { return null; }
+  } catch (e) {
+    console.error('Error reading profile data:', e);
+    return null;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,32 +103,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fill form fields from stored user data. If no data in storage, try to refresh from server.
   async function fillFromProfile(shouldFill) {
-    if (!toggle || !fullNameField || !emailField) return;
+    // Get references to all form fields we want to auto-fill
+    const fields = {
+      fullName: document.getElementById("fullName"),
+      age: document.getElementById("age"),
+      email: document.getElementById("email"),
+      phone: document.getElementById("phone"),
+      address: document.getElementById("address")
+    };
+
+    // If toggle is off, clear and unlock all fields
     if (!shouldFill) {
-      fullNameField.value = "";
-      emailField.value = "";
-      fullNameField.readOnly = false;
-      emailField.readOnly = false;
+      Object.values(fields).forEach(field => {
+        if (field) {
+          field.value = "";
+          field.readOnly = false;
+        }
+      });
       return;
     }
 
-    let user = getUserData();
-    if (!user) {
+    // Try to get user data
+    let userData = tryPrefillFromProfile();
+    
+    // If no data in storage, try to refresh from server
+    if (!userData) {
       try {
-        user = await refreshUserData();
+        const freshData = await refreshUserData();
+        if (freshData) {
+          userData = {
+            fullName: freshData.fullName || freshData.full_name || '',
+            age: freshData.age || '',
+            email: freshData.email || '',
+            phone: freshData.phone || freshData.mobile || '',
+            address: freshData.address || ''
+          };
+        }
       } catch (err) {
         console.error('Failed to refresh user data:', err);
       }
     }
 
-    if (user && (user.fullName || user.email)) {
-      fullNameField.value = user.fullName || "";
-      emailField.value = user.email || "";
-      fullNameField.readOnly = true;
-      emailField.readOnly = true;
+    // If we have user data, fill the fields
+    if (userData) {
+      Object.entries(fields).forEach(([key, field]) => {
+        if (field && userData[key]) {
+          field.value = userData[key];
+          field.readOnly = true;
+        }
+      });
     } else {
       alert('No profile data found. Please log in to use this feature or fill the fields manually.');
-      toggle.checked = false;
+      if (toggle) toggle.checked = false;
     }
   }
 

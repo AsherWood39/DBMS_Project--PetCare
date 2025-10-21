@@ -1,21 +1,41 @@
 // Home page logic: load JSON images, set welcome pic, role-based UI, pet filtering
 
-import { getUserData } from "../utils/api";
+import { getUserData } from "../utils/api"; 
 
 const API_BASE = window.__API_BASE__ || "http://localhost:5000";
+console.log('API_BASE:', API_BASE);
 
 // ✅ Normalize image paths from backend (fix for /uploads issues)
 function resolvePetImage(pet_image) {
-  if (!pet_image) return "../assets/labrador.jpg";
-  if (/^(https?:|data:|blob:)/i.test(pet_image)) return pet_image;
+  // Return default image if no image provided
+  if (!pet_image) return "../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png";
 
-  // Handle already-correct paths
-  if (pet_image.startsWith("/uploads")) {
-    return `${API_BASE}${pet_image}`;
+  // Check if the image path contains an embedded URL
+  if (pet_image.includes('https://') || pet_image.includes('http://')) {
+    // Extract the actual URL if it was mistakenly prepended with /uploads/
+    const urlMatch = pet_image.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch) {
+      console.log('Extracted URL from path:', urlMatch[0]);
+      return urlMatch[0];
+    }
   }
 
-  // If backend accidentally sent filename only (no /uploads prefix)
-  return `${API_BASE}/uploads/${pet_image.replace(/^\/+/, "")}`;
+  // If it's already a clean full URL, return as is
+  if (/^(https?:|data:|blob:)/i.test(pet_image)) {
+    console.log('Using direct URL:', pet_image);
+    return pet_image;
+  }
+
+  // Handle default image case
+  if (pet_image === 'default-pet.png' || !pet_image.includes('://')) {
+    const url = `${API_BASE}/uploads/${pet_image.replace(/^\/+/, "")}`;
+    console.log('Using local file path:', url);
+    return url;
+  }
+
+  // For any other case, return as is
+  console.log('Using original path:', pet_image);
+  return pet_image;
 }
 
 // ✅ General asset resolver (for JSON pics etc.)
@@ -128,15 +148,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const json = await res.json();
       const petsData = Array.isArray(json.data) ? json.data : [];
 
-      pets = petsData.map((p) => ({
-        pet_id: p.pet_id ?? p.id ?? null,
-        pet_name: p.pet_name ?? "Unknown",
-        breed: p.breed ?? "",
-        age: p.age ?? "",
-        gender: p.gender ?? "",
-        category: p.category ?? "",
-        imageUrl: resolvePetImage(p.pet_image),
-      }));
+      console.log('Raw pet data:', petsData);
+      pets = petsData.map((p) => {
+        const pet = {
+          pet_id: p.pet_id ?? p.id ?? null,
+          pet_name: p.pet_name ?? "Unknown",
+          breed: p.breed ?? "",
+          age: p.age ?? "",
+          gender: p.gender ?? "",
+          category: p.category ?? "",
+          imageUrl: resolvePetImage(p.pet_image),
+        };
+        console.log('Processed pet data:', pet);
+        console.log('Original image path:', p.pet_image);
+        console.log('Resolved image URL:', pet.imageUrl);
+        return pet;
+      });
 
       displayPets(currentFilter);
     } catch (err) {
@@ -153,15 +180,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // create image element with reserved size + lazy loading + onerror fallback
     const img = document.createElement('img');
-    img.src = p.imageUrl || '../assets/labrador.jpg';
+    console.log('Creating image for pet:', p.pet_name);
+    console.log('Image URL before processing:', p.imageUrl);
+    
+    // First try to use the direct URL
+    const imgSrc = /^(https?:|data:|blob:)/i.test(p.imageUrl) 
+      ? p.imageUrl 
+      : resolvePetImage(p.imageUrl);
+    
+    console.log('Final image src:', imgSrc);
+    
     img.alt = p.pet_name || 'Pet';
     img.width = 360;          // give intrinsic width/height to avoid layout shift
     img.height = 180;
     img.loading = 'lazy';
     img.onerror = () => {
+      console.warn(`Failed to load image for pet ${p.pet_name}:`, img.src);
       img.onerror = null;
-      img.src = '../assets/labrador.jpg';
+      // Use an absolute path for the fallback image
+      const fallbackPath = new URL('../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png', window.location.href).href;
+      console.log('Using fallback image path:', fallbackPath);
+      img.src = fallbackPath;
     };
+    
+    // Set src after attaching onerror handler
+    img.src = imgSrc;
 
     const body = document.createElement('div');
     body.className = 'pet-card-body';

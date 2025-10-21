@@ -3,10 +3,35 @@
 const API_BASE = window.__API_BASE__ || 'http://localhost:5000'; // set to your backend origin
 
 function resolvePetImage(pet_image) {
-  if (!pet_image) return `${API_BASE}/uploads/default-pet.png`;
-  if (/^(https?:|data:|blob:)/i.test(pet_image)) return pet_image;
-  if (pet_image.startsWith('/uploads')) return `${API_BASE}${pet_image}`;
-  return `${API_BASE}/uploads/${pet_image.replace(/^\/+/, '')}`;
+  // Return default image if no image provided
+  if (!pet_image) return "../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png";
+
+  // Check if the image path contains an embedded URL
+  if (pet_image.includes('https://') || pet_image.includes('http://')) {
+    // Extract the actual URL if it was mistakenly prepended with /uploads/
+    const urlMatch = pet_image.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch) {
+      console.log('Extracted URL from path:', urlMatch[0]);
+      return urlMatch[0];
+    }
+  }
+
+  // If it's already a clean full URL, return as is
+  if (/^(https?:|data:|blob:)/i.test(pet_image)) {
+    console.log('Using direct URL:', pet_image);
+    return pet_image;
+  }
+
+  // Handle default image case
+  if (pet_image === 'default-pet.png' || !pet_image.includes('://')) {
+    const url = `${API_BASE}/uploads/${pet_image.replace(/^\/+/, "")}`;
+    console.log('Using local file path:', url);
+    return url;
+  }
+
+  // For any other case, return as is
+  console.log('Using original path:', pet_image);
+  return pet_image;
 }
 
 function escapeHtml(s) {
