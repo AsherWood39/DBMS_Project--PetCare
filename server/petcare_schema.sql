@@ -130,7 +130,6 @@ CREATE TABLE adoption_requests (
     FOREIGN KEY (adopter_id) REFERENCES users(user_id) ON DELETE CASCADE,
     INDEX idx_pet (pet_id),
     INDEX idx_adopter (adopter_id),
-    INDEX idx_status (status),
     INDEX idx_created (created_at)
 );
 
