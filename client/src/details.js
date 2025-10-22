@@ -181,7 +181,7 @@ async function fetchPetDetails() {
             <div class="section-title"><span class="icon">⚠</span><span>Special Notes</span></div>
             <div class="special-notes">${escapeHtml(pet.special_notes || 'None')}</div>
 
-            <a class="request-adoption" href="adopt_pet.html?pet_id=${encodeURIComponent(pet.pet_id)}">Request Adoption</a>
+            <a id="request-adoption" class="request-adoption" href="adopt_pet.html?pet_id=${encodeURIComponent(pet.pet_id)}">Request Adoption</a>
           </div>
         </div>
       </div>
@@ -194,4 +194,32 @@ async function fetchPetDetails() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', fetchPetDetails);
+// On DOM ready: fetch details first, then apply role-based visibility
+document.addEventListener('DOMContentLoaded', async () => {
+  await fetchPetDetails();
+
+  function resolveRole() {
+    let role = localStorage.getItem("userRole");
+    try {
+      const remember = localStorage.getItem("rememberMe") === "true";
+      const raw = remember
+        ? localStorage.getItem("currentUser")
+        : sessionStorage.getItem("currentUser");
+      if (raw) {
+        const user = JSON.parse(raw);
+        if (user.role) role = user.role;
+      }
+    } catch (e) {
+      console.warn("Role parse failed", e);
+    }
+    return role;
+  }
+
+  const role = resolveRole();
+  const adoptBtn = document.getElementById("request-adoption");
+
+  // Only hide the button when the logged-in user is an Owner
+  if (adoptBtn && role === "Owner") {
+    adoptBtn.style.display = "none";
+  }
+});

@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewPetsSection = document.getElementById("view-pets");
   const postPetSection = document.getElementById("post-pet-section");
 
-  [adopterText, ownerText, viewPetsSection, postPetSection].forEach(el => {
+  [adopterText, ownerText, postPetSection].forEach(el => {
     if (el) el.style.display = "none";
   });
 
