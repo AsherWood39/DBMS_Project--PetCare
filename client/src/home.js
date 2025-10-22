@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
           age: p.age ?? "",
           gender: p.gender ?? "",
           category: p.category ?? "",
+          is_available: p.is_available ?? true,
           imageUrl: resolvePetImage(p.pet_image),
         };
         console.log('Processed pet data:', pet);
@@ -172,8 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Resolved image URL:', pet.imageUrl);
         return pet;
       });
-
-
+      
       displayPets(currentFilter);
     } catch (err) {
       console.error("Failed to load pets:", err);
@@ -236,7 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     container.innerHTML = "";
     pets.forEach((p) => {
-      if (filter === "All" || p.category === filter) container.appendChild(createPetCard(p));
+      if ((filter === "All" || p.category === filter) && p.is_available) {
+        container.appendChild(createPetCard(p));
+      }
     });
   }
 
