@@ -1,8 +1,7 @@
-import fs from 'fs';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { db } from '../server.js';
-import { AppError } from '../middleware/errorHandler.js';
+import { db } from '../server.js'; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,73 +12,72 @@ const __dirname = path.dirname(__filename);
  * @access Private
  */
 export const addPet = asyncHandler(async (req, res) => {
-  // owner_id: if authenticated, derive from req.user (adjust to your auth middleware)
-  const owner_id = req.user?.user_id ?? req.body.owner_id ?? null;
+  try {
+    console.log('addPet: req.file =', req.file);
+    console.log('addPet: req.files =', req.files);
+    // extract filename robustly (support single or fields)
+    let filename = null;
+    if (req.file && req.file.filename) {
+      filename = req.file.filename;
+    } else if (req.files) {
+      if (Array.isArray(req.files.pet_image) && req.files.pet_image[0]?.filename) {
+        filename = req.files.pet_image[0].filename;
+      } else {
+        const firstKey = Object.keys(req.files)[0];
+        if (firstKey && Array.isArray(req.files[firstKey]) && req.files[firstKey][0]?.filename) {
+          filename = req.files[firstKey][0].filename;
+        }
+      }
+    }
 
-  const {
-    category,
-    pet_name,
-    breed,
-    age,
-    gender,
-    color,
-    weight,
-    temperament,
-    location,
-    diet_preferences,
-    special_notes,
-    is_available,
-    is_adopted
-  } = req.body;
+    // sanity check file exists on disk (server/src/uploads)
+    if (filename) {
+      const savedPath = path.join(__dirname, 'uploads', filename);
+      if (!fs.existsSync(savedPath)) {
+        console.warn('addPet: expected uploaded file not found on disk:', savedPath);
+      }
+    }
 
-  // file handling (multer)
-  const filename = req.file ? req.file.filename : null;
+    // Build pet_image DB value as a public path
+    const petImageValue = filename ? `/uploads/${filename}` : null;
 
-  const petImageValue = filename ? filename : null; // store filename (controller/get will prefix)
+    // collect fields from req.body (adjust names as your form sends)
+    const {
+      category, pet_name, breed, age, gender, color, weight,
+      temperament, location, diet_preferences, special_notes,
+      is_available, is_adopted, owner_name, owner_contact, owner_email
+    } = req.body;
 
-  const [result] = await db.query(
-    `INSERT INTO pets
-      (owner_id, category, pet_name, breed, age, gender, color, weight, temperament, location, pet_image, diet_preferences, special_notes, is_available, is_adopted)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      owner_id,
-      category || null,
-      pet_name || null,
-      breed || null,
-      age ? Number(age) : null,
-      gender || null,
-      color || null,
-      weight ? Number(weight) : null,
-      temperament || null,
-      location || null,
-      petImageValue,
-      diet_preferences || null,
-      special_notes || null,
-      is_available === 'true' || is_available === true || is_available === '1' ? 1 : 0,
-      is_adopted === 'true' || is_adopted === true || is_adopted === '1' ? 1 : 0
-    ]
-  );
+    const sql = `INSERT INTO pets
+  (category, pet_name, breed, age, gender, color, weight, temperament, location,
+   diet_preferences, special_notes, is_available, is_adopted, owner_id, pet_image, created_at)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`;
 
-  const insertedId = result.insertId;
+const values = [
+  category || null,
+  pet_name || null,
+  breed || null,
+  age ? Number(age) : null,
+  gender || null,
+  color || null,
+  weight ? Number(weight) : null,
+  temperament || null,
+  location || null,
+  diet_preferences || null,
+  special_notes || null,
+  is_available === 'on' || is_available === '1' || is_available === 1 || is_available === true ? 1 : 1, // default to 1
+  is_adopted === 'on' || is_adopted === '1' || is_adopted === 1 || is_adopted === true ? 1 : 0,
+  req.user?.userId || null,
+  petImageValue
+];
 
-  // return the newly created pet with normalized image path and owner info
-  const [rows] = await db.query(
-    `SELECT p.*, u.full_name AS owner_name, u.phone AS owner_phone, u.email AS owner_email
-     FROM pets p
-     LEFT JOIN users u ON p.owner_id = u.user_id
-     WHERE p.pet_id = ?
-     LIMIT 1`,
-    [insertedId]
-  );
 
-  if (!rows.length) {
-    return res.status(500).json({ status: 'error', message: 'Failed to retrieve created pet' });
+    const [result] = await db.query(sql, values);
+    return res.status(201).json({ status: 'success', petId: result.insertId });
+  } catch (err) {
+    console.error('addPet error:', err);
+    return res.status(500).json({ status: 'error', message: 'Failed to add pet', detail: err.message });
   }
-
-  const pet = rows[0];
-  pet.pet_image = pet.pet_image ? (String(pet.pet_image).startsWith('/uploads') ? pet.pet_image : `/uploads/${pet.pet_image}`) : null;
-
-  res.status(201).json({ status: 'success', data: pet });
 });
 
 /**
@@ -90,9 +88,9 @@ export const addPet = asyncHandler(async (req, res) => {
 export const getAllPets = asyncHandler(async (req, res, next) => {
   const [rows] = await db.query(`
     SELECT p.*, u.full_name AS owner_name, u.phone AS owner_phone, u.email AS owner_email
-    FROM pets p
-    LEFT JOIN users u ON p.owner_id = u.user_id
-    ORDER BY p.created_at DESC
+FROM pets p
+LEFT JOIN users u ON p.owner_id = u.user_id
+
   `);
 
   const pets = rows.map(pet => ({
@@ -115,10 +113,6 @@ export const getAllPets = asyncHandler(async (req, res, next) => {
  */
 export const getPetById = asyncHandler(async (req, res) => {
   const petId = req.params.id;
-  if (!petId) {
-    return res.status(400).json({ status: 'fail', message: 'Pet ID is required' });
-  }
-
   const [rows] = await db.query(
     `SELECT p.*, u.full_name AS owner_name, u.phone AS owner_phone, u.email AS owner_email
      FROM pets p
@@ -127,18 +121,11 @@ export const getPetById = asyncHandler(async (req, res) => {
      LIMIT 1`,
     [petId]
   );
-
-  if (!rows || rows.length === 0) {
-    return res.status(404).json({ status: 'fail', message: 'Pet not found' });
-  }
-
+  if (!rows || rows.length === 0) return res.status(404).json({ status: 'fail', message: 'Pet not found' });
   const pet = rows[0];
-
-  // Normalize image path so frontend can request it at /uploads/...
-  if (pet.pet_image && !String(pet.pet_image).startsWith('/uploads')) {
+  if (pet.pet_image && !String(pet.pet_image).startsWith('/uploads') && !/^(https?:|data:|blob:)/i.test(pet.pet_image)) {
     pet.pet_image = `/uploads/${String(pet.pet_image).replace(/^\/+/, '')}`;
   }
-
   return res.status(200).json({ status: 'success', data: pet });
 });
 

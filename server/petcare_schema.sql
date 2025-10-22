@@ -83,35 +83,42 @@ CREATE TABLE adoption_requests (
     pet_id INT NOT NULL,
     adopter_id INT NOT NULL,
     
-    -- Personal Information
+   
     full_name VARCHAR(100) NOT NULL,
     age INT NOT NULL,
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     address TEXT NOT NULL,
     
-    -- Household & Environment
+    
     home_type ENUM('Owned', 'Rented') NOT NULL,
     has_fenced_yard BOOLEAN NOT NULL,
     household_members TEXT,
     other_pets TEXT,
     
-    -- Experience & Lifestyle
+   
     adopted_before BOOLEAN NOT NULL,
     pet_experience TEXT,
     dedicated_hours_per_day INT NOT NULL,
     willing_medical_care BOOLEAN NOT NULL,
-    
-    -- Pet-Specific Questions
+   
     adoption_reason TEXT NOT NULL,
     preferences TEXT,
     ready_for_training BOOLEAN NOT NULL,
     
-    -- Commitment & Agreement
+    
     willing_agreement BOOLEAN NOT NULL,
     references_info TEXT,
     aware_of_fees BOOLEAN NOT NULL,
     commitment_promise BOOLEAN NOT NULL,
+<<<<<<< HEAD
+    
+    
+    home_photo VARCHAR(255),
+    scheduled_visit DATETIME,
+    
+    
+=======
 
     -- Optional
     home_photo VARCHAR(255),
@@ -121,6 +128,7 @@ CREATE TABLE adoption_requests (
     -- status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
     -- rejection_reason TEXT,
     -- admin_notes TEXT,
+>>>>>>> 086b47066b329c83e2fb534f27e7a4a0f57ac1c6
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

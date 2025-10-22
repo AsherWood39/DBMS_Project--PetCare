@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const healthDiv = document.getElementById("healthOptions");
   const vaccineDiv = document.getElementById("compulsoryVaccines");
 
+  const API_BASE = window.__API_BASE__ || 'http://localhost:5000';
+
   // Prefill category from query string
   const prefillCategory = new URLSearchParams(window.location.search).get('category');
   if (prefillCategory && categorySelect) {
@@ -58,41 +60,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- SINGLE form submit handler ---
   form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form); // automatically includes all inputs & files
+    e.preventDefault();
+    try {
+      // Build FormData so file inputs are included
+      const fd = new FormData(form);
 
-  // Add static fields
-  formData.append('owner_id', 1);
-  formData.append('is_available', true);
-  formData.append('is_adopted', false);
+      // include auth if you use a token (or use credentials for cookie sessions)
+      const token = localStorage.getItem('token');
 
-  // Append extra vaccine files
-  document.querySelectorAll('.vaccination-entry').forEach((entry, index) => {
-    const fileInput = entry.querySelector('input[type="file"]');
-    const textInput = entry.querySelector('input[type="text"]');
-    if (fileInput && fileInput.files.length > 0 && textInput) {
-      formData.append(`extraVaccines[${index}][name]`, textInput.value);
-      formData.append(`extraVaccines[${index}][file]`, fileInput.files[0]);
+      const res = await fetch(`${API_BASE}/api/pets`, {
+        method: 'POST',
+        credentials: 'include', // keeps cookies if your auth uses them
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        body: fd // DO NOT set Content-Type header when sending FormData
+      });
+
+      const body = await res.json().catch(() => null);
+      if (!res.ok) {
+        console.error('Post pet failed', res.status, body);
+        alert(body?.message || 'Failed to post pet');
+        return;
+      }
+
+      alert('Pet posted successfully');
+      form.reset();
+      setTimeout(() => window.location.href = "home.html", 1500);
+    } catch (err) {
+      console.error('submit error', err);
+      alert('Submit error: ' + (err.message || err));
     }
   });
-
-  try {
-    const token = localStorage.getItem('token'); // GET the token here
-
-    const res = await fetch('http://localhost:5000/api/pets', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}` // <-- add token here
-      },
-      body: formData
-    });
-
-    const data = await res.json();
-    alert(data.message);
-  } catch (err) {
-    console.error(err);
-    alert('Error posting pet');
-  }
-});
-
 });

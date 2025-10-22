@@ -79,15 +79,16 @@ fetch(`${import.meta.env.BASE_URL}image_urls.json`)
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Current User:", getUserData());
-
-  const userName = document.getElementById("user-name");
   const userData = getUserData();
+  console.log("Current User:", userData);
+
+  // Display user name
+  const userName = document.getElementById("user-name");
   if (userName && userData?.fullName) {
     userName.textContent = userData.fullName;
   }
 
-  // Resolve role (from localStorage/sessionStorage)
+  // Resolve user role from localStorage/sessionStorage
   function resolveRole() {
     let role = localStorage.getItem("userRole");
     try {
@@ -112,53 +113,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewPetsSection = document.getElementById("view-pets");
   const postPetSection = document.getElementById("post-pet-section");
 
-  adopterText && (adopterText.style.display = "none");
-  ownerText && (ownerText.style.display = "none");
-  viewPetsSection && (viewPetsSection.style.display = "none");
-  postPetSection && (postPetSection.style.display = "none");
+  [adopterText, ownerText, viewPetsSection, postPetSection].forEach(el => {
+    if (el) el.style.display = "none";
+  });
 
   if (role === "Owner") {
-    ownerText && (ownerText.style.display = "block");
-    postPetSection && (postPetSection.style.display = "block");
+    if (ownerText) ownerText.style.display = "block";
+    if (postPetSection) postPetSection.style.display = "block";
   } else {
-    adopterText && (adopterText.style.display = "block");
-    viewPetsSection && (viewPetsSection.style.display = "block");
+    if (adopterText) adopterText.style.display = "block";
+    if (viewPetsSection) viewPetsSection.style.display = "block";
   }
 
-  // Adjust main button
+  // Adjust main buttons
   const mainActionBtn = document.getElementById("welcome-adopt-btn");
-  if (mainActionBtn) {
-    const link = mainActionBtn.querySelector("a");
-    if (link) {
-      if (role === "Owner") {
-        link.textContent = "Post a Pet";
-        link.href = "#post-pet-section";
-      } else {
-        link.textContent = "Adopt a Pet";
-        link.href = "#view-pets";
+  const learnMoreBtn = document.getElementById("welcome-learn-btn");
+  [mainActionBtn, learnMoreBtn].forEach(btn => {
+    if (btn) {
+      const link = btn.querySelector("a");
+      if (link) {
+        if (btn.id === "welcome-adopt-btn") {
+          link.textContent = role === "Owner" ? "Post a Pet" : "Adopt a Pet";
+          link.href = role === "Owner" ? "#post-pet-section" : "#view-pets";
+        } else {
+          link.href = role === "Owner" ? "#post-pet-section" : "#view-pets";
+        }
       }
     }
-  }
-
-  const learnMoreBtn = document.getElementById("welcome-learn-btn");
-  if (learnMoreBtn) {
-    const link = learnMoreBtn.querySelector("a");
-    if (link) {
-      link.href = role === "Owner" ? "#post-pet-section" : "#view-pets";
-    }
-  }
+  });
 
   let pets = [];
   let currentFilter = "All";
-  const filterButtonsNodeList = document.querySelectorAll("#filter-buttons button");
-  const buttons = filterButtonsNodeList ? Array.from(filterButtonsNodeList) : [];
 
-  // ✅ Fetch pets
+  // Filter buttons
+  const buttons = Array.from(document.querySelectorAll("#filter-buttons button") || []);
+
+  // Fetch pets from API
   async function loadPetsFromApi() {
     try {
       const res = await fetch(`${API_BASE}/api/pets`);
       const json = await res.json();
       const petsData = Array.isArray(json.data) ? json.data : [];
+
 
       console.log('Raw pet data:', petsData);
       pets = petsData.map((p) => {
@@ -177,12 +173,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return pet;
       });
 
+
       displayPets(currentFilter);
     } catch (err) {
       console.error("Failed to load pets:", err);
       const container = document.getElementById("pets-container");
-      if (container)
-        container.innerHTML = `<p>Unable to load pets. ${err.message}</p>`;
+      if (container) container.innerHTML = `<p>Unable to load pets. ${err.message}</p>`;
     }
   }
 
@@ -190,8 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const card = document.createElement('div');
     card.className = 'pet-card';
 
-    // create image element with reserved size + lazy loading + onerror fallback
     const img = document.createElement('img');
+
     console.log('Creating image for pet:', p.pet_name);
     console.log('Image URL before processing:', p.imageUrl);
     
@@ -203,9 +199,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('Final image src:', imgSrc);
     
     img.alt = p.pet_name || 'Pet';
-    img.width = 360;          // give intrinsic width/height to avoid layout shift
+    img.width = 360;
     img.height = 180;
     img.loading = 'lazy';
+
     img.onerror = () => {
       console.warn(`Failed to load image for pet ${p.pet_name}:`, img.src);
       img.onerror = null;
@@ -239,9 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     container.innerHTML = "";
     pets.forEach((p) => {
-      if (filter === "All" || p.category === filter) {
-        container.appendChild(createPetCard(p));
-      }
+      if (filter === "All" || p.category === filter) container.appendChild(createPetCard(p));
     });
   }
 
@@ -254,18 +249,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial load
   loadPetsFromApi();
 
-  // Filters
-  if (buttons.length) {
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFilter = btn.getAttribute("data-type") || "All";
-        displayPets(currentFilter);
-      });
+  // Filter buttons click
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentFilter = btn.getAttribute("data-type") || "All";
+      displayPets(currentFilter);
     });
-  }
+  });
 
+  // Category selection for post pet
   const form = document.getElementById("category-form");
   const postBtn = document.getElementById("post-btn");
   const categoryCards = document.querySelectorAll(".category-card");
@@ -275,8 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
       categoryCards.forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
       const input = card.querySelector('input[type="radio"]');
-      if (input?.value)
-        postBtn.textContent = `Post ${capitalize(input.value)}`;
+      if (input?.value) postBtn.textContent = `Post ${capitalize(input.value)}`;
     });
   });
 

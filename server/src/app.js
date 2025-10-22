@@ -1,10 +1,14 @@
 import express from 'express';
-import cors from 'cors';                      // { added }
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv'; // { added }
+import dotenv from 'dotenv'; 
+import fs from 'fs'; // added to create folders if missing
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+dotenv.config();
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -15,9 +19,16 @@ import adoptionRequestRoutes from './routes/adoptionRequests.js';
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
 
-dotenv.config();
-
 const app = express();
+
+// Ensure uploads folder exists (server/src/root/uploads)
+const uploadsDir = path.join(__dirname, 'routes', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Serve uploaded images early
+app.use('/uploads', express.static(uploadsDir));
 
 // CORS configuration
 const corsOptions = {
@@ -75,27 +86,21 @@ app.get('/', (req, res) => {
   });
 });
 
-// Serve uploaded images early so /uploads/* is not swallowed by client static / SPA handler
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
-// Serve static files from the client dist directory
+// Serve client static files
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Handle 404 routes
 app.use('*', (req, res) => {
-  // If the request is an API request, return JSON
   if (req.originalUrl.startsWith('/api')) {
     return res.status(404).json({
       status: 'error',
       message: `Route ${req.originalUrl} not found`
     });
   }
-  
-  // For non-API requests, serve the 404.html page using an absolute path
   return res.status(404).sendFile(path.join(__dirname, '../../client/dist/pages/404.html'));
 });
 
-// Global error handler (must be last middleware)
+// Global error handler
 app.use(errorHandler);
 
 export default app;
