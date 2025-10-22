@@ -38,7 +38,6 @@ async function loadPetSummary(petId) {
 }
 
 function tryPrefillFromProfile() {
-  // try localStorage currentUser or sessionStorage
   try {
     const raw = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
     if (!raw) return null;
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("adoptionForm");
   const successMessage = document.getElementById("successMessage");
 
-  // Fill form fields from stored user data. If no data in storage, try to refresh from server.
   async function fillFromProfile(shouldFill) {
     if (!toggle || !fullNameField || !emailField) return;
     if (!shouldFill) {
@@ -103,62 +101,68 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (form) {
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
-      const formData = new FormData(form);
+      // Collect form data as JSON
       const data = {
-        pet_id: 1, // or dynamically fetch this from URL/selection
-        full_name: formData.get("fullName"),
-        age: Number(formData.get("age")),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        address: formData.get("address"),
-        home_type: formData.get("homeType"),
-        has_fenced_yard: formData.get("yard") === "Yes",
-        household_members: formData.get("householdMembers"),
-        other_pets: formData.get("otherPets"),
-        adopted_before: formData.get("adoptedBefore") === "Yes",
-        pet_experience: formData.get("petExperience"),
-        dedicated_hours_per_day: Number(formData.get("dedicatedHours")),
-        willing_medical_care: formData.get("medicalCare") === "Yes",
-        adoption_reason: formData.get("adoptReason"),
-        preferences: formData.get("preferences"),
-        ready_for_training: formData.get("training") === "Yes",
-        willing_agreement: formData.get("agreement") === "Yes",
-        references_info: formData.get("references"),
-        aware_of_fees: formData.get("fees") === "Yes",
-        commitment_promise: formData.get("commitment") ? true : false,
-        scheduled_visit: formData.get("schedule") || null
-      };
+  pet_id: petInput.value,
+  full_name: document.getElementById("fullName").value,
+  age: parseInt(document.getElementById("age").value, 10) || null,
+  email: document.getElementById("email").value,
+  phone: document.getElementById("phone").value,
+  address: document.getElementById("address").value,
+  home_type: document.getElementById("homeType").value,
+  has_fenced_yard: document.getElementById("yard").value === 'Yes',
+  household_members: document.getElementById("householdMembers").value,
+  other_pets: document.getElementById("otherPets").value,
+  adopted_before: document.getElementById("adoptedBefore").value === 'Yes',
+  pet_experience: document.getElementById("petExperience").value,
+  dedicated_hours_per_day: parseInt(document.getElementById("dedicatedHours").value, 10) || null,
+  willing_medical_care: document.getElementById("medicalCare").value === 'Yes',
+  adoption_reason: document.getElementById("adoptReason").value,
+  preferences: document.getElementById("preferences").value,
+  ready_for_training: document.getElementById("training").value === 'Yes',
+  willing_agreement: document.getElementById("agreement").value === 'Yes',
+  references_info: document.getElementById("references").value,
+  aware_of_fees: document.getElementById("fees").value === 'Yes',
+  commitment_promise: document.getElementById("commitment").checked,
+  scheduled_visit: document.getElementById("schedule").value || null
+};
+
 
       try {
-        const response = await fetch("http://localhost:5000/api/adoption-requests", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token") // if using JWT auth
-          },
-          body: JSON.stringify(data)
-        });
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_BASE}/api/adoption-requests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify(data)
+  });
 
-        const result = await response.json();
+  const json = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(json?.message || 'Failed to submit');
 
-        if (response.ok) {
-          successMessage.style.display = "block";
-          form.reset();
+  // ✅ SUCCESS — show message and redirect
+  successMessage.textContent = "Request sent successfully! Redirecting...";
+  successMessage.style.display = "block";
 
-          // ⭐ Added: Redirect to home.html after 2 seconds
-          setTimeout(() => {
-            window.location.href = "home.html";
-          }, 2000);
-        } else {
-          alert("❌ Error: " + result.message);
-        }
-      } catch (error) {
-        console.error("Error submitting adoption request:", error);
-        alert("Failed to send request.");
-      }
-    });
-  }
+  form.reset();
+
+  setTimeout(() => window.location.href = "home.html", 1500);
+
+} catch (err) {
+  console.error('submit error', err);
+  alert("Failed to send request.");
+} finally {
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Submit";
+}
+    });}
+
 });
