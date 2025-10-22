@@ -1,8 +1,9 @@
 // Home page logic: load JSON images, set welcome pic, role-based UI, pet filtering
 
-import { getUserData } from "../utils/api";
+import { getUserData } from "../utils/api"; 
 
 const API_BASE = window.__API_BASE__ || "http://localhost:5000";
+console.log('API_BASE:', API_BASE);
 
 // ✅ Normalize image paths from backend (fix for /uploads issues)
 function resolvePetImage(pet_image) {
@@ -154,18 +155,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const json = await res.json();
       const petsData = Array.isArray(json.data) ? json.data : [];
 
-      pets = petsData
-  .filter(p => p.is_available !== 0) // ✅ only include available pets
-  .map((p) => ({
-    pet_id: p.pet_id ?? p.id ?? null,
-    pet_name: p.pet_name ?? "Unknown",
-    breed: p.breed ?? "",
-    age: p.age ?? "",
-    gender: p.gender ?? "",
-    category: p.category ?? "",
-    is_available: p.is_available ?? 1,
-    imageUrl: resolvePetImage(p.pet_image),
-  }));
+
+      console.log('Raw pet data:', petsData);
+      pets = petsData.map((p) => {
+        const pet = {
+          pet_id: p.pet_id ?? p.id ?? null,
+          pet_name: p.pet_name ?? "Unknown",
+          breed: p.breed ?? "",
+          age: p.age ?? "",
+          gender: p.gender ?? "",
+          category: p.category ?? "",
+          imageUrl: resolvePetImage(p.pet_image),
+        };
+        console.log('Processed pet data:', pet);
+        console.log('Original image path:', p.pet_image);
+        console.log('Resolved image URL:', pet.imageUrl);
+        return pet;
+      });
+
 
       displayPets(currentFilter);
     } catch (err) {
@@ -180,12 +187,33 @@ document.addEventListener("DOMContentLoaded", () => {
     card.className = 'pet-card';
 
     const img = document.createElement('img');
-    img.src = p.imageUrl || '../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png';
+
+    console.log('Creating image for pet:', p.pet_name);
+    console.log('Image URL before processing:', p.imageUrl);
+    
+    // First try to use the direct URL
+    const imgSrc = /^(https?:|data:|blob:)/i.test(p.imageUrl) 
+      ? p.imageUrl 
+      : resolvePetImage(p.imageUrl);
+    
+    console.log('Final image src:', imgSrc);
+    
     img.alt = p.pet_name || 'Pet';
     img.width = 360;
     img.height = 180;
     img.loading = 'lazy';
-    img.onerror = () => { img.onerror = null; img.src = '../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png'; };
+
+    img.onerror = () => {
+      console.warn(`Failed to load image for pet ${p.pet_name}:`, img.src);
+      img.onerror = null;
+      // Use an absolute path for the fallback image
+      const fallbackPath = new URL('../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png', window.location.href).href;
+      console.log('Using fallback image path:', fallbackPath);
+      img.src = fallbackPath;
+    };
+    
+    // Set src after attaching onerror handler
+    img.src = imgSrc;
 
     const body = document.createElement('div');
     body.className = 'pet-card-body';

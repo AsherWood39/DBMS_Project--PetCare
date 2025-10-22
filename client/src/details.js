@@ -3,10 +3,47 @@
 const API_BASE = window.__API_BASE__ || 'http://localhost:5000'; // set to your backend origin
 
 function resolvePetImage(pet_image) {
-  if (!pet_image) return `${API_BASE}/uploads/default-pet.png`;
-  if (/^(https?:|data:|blob:)/i.test(pet_image)) return pet_image;
-  if (pet_image.startsWith('/uploads')) return `${API_BASE}${pet_image}`;
-  return `${API_BASE}/uploads/${pet_image.replace(/^\/+/, '')}`;
+  console.log('Resolving image path:', pet_image);
+
+  // Return default image if no image provided
+  if (!pet_image) {
+    console.log('No image provided, using default');
+    return "../public/Gemini_Generated_Image_pstd6dpstd6dpstd.png";
+  }
+
+  // Case 1: Handle full URLs (including those mistakenly prefixed with /uploads/)
+  if (pet_image.includes('https://') || pet_image.includes('http://')) {
+    const urlMatch = pet_image.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch) {
+      console.log('Extracted URL from path:', urlMatch[0]);
+      return urlMatch[0];
+    }
+  }
+
+  // Case 2: Clean full URLs that start with proper protocols
+  if (/^(https?:|data:|blob:)/i.test(pet_image)) {
+    console.log('Using direct URL:', pet_image);
+    return pet_image;
+  }
+
+  // Case 3: Handle local uploads with or without /uploads/ prefix
+  if (pet_image.startsWith('/uploads/')) {
+    console.log('Using existing uploads path:', `${API_BASE}${pet_image}`);
+    return `${API_BASE}${pet_image}`;
+  }
+
+  // Case 4: Handle local filenames that need /uploads/ prefix
+  if (!pet_image.includes('://')) {
+    // Remove any leading slashes and ensure clean path
+    const cleanPath = pet_image.replace(/^\/+/, "");
+    const url = `${API_BASE}/uploads/${cleanPath}`;
+    console.log('Using local file path:', url);
+    return url;
+  }
+
+  // Case 5: Default fallback - return as is
+  console.log('Using original path:', pet_image);
+  return pet_image;
 }
 
 function escapeHtml(s) {

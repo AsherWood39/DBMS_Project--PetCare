@@ -111,16 +111,28 @@ CREATE TABLE adoption_requests (
     references_info TEXT,
     aware_of_fees BOOLEAN NOT NULL,
     commitment_promise BOOLEAN NOT NULL,
+<<<<<<< HEAD
     
     
     home_photo VARCHAR(255),
     scheduled_visit DATETIME,
     
     
+=======
+
+    -- Optional
+    home_photo VARCHAR(255),
+    scheduled_visit DATETIME,
+
+    -- -- Request Status
+    -- status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    -- rejection_reason TEXT,
+    -- admin_notes TEXT,
+>>>>>>> 086b47066b329c83e2fb534f27e7a4a0f57ac1c6
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
+
     FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE,
     FOREIGN KEY (adopter_id) REFERENCES users(user_id) ON DELETE CASCADE,
     INDEX idx_pet (pet_id),
