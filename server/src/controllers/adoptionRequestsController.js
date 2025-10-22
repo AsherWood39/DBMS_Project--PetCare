@@ -44,6 +44,7 @@ export const createAdoptionRequest = asyncHandler(async (req, res, next) => {
 	const pet = pets[0];
 	if (!pet.is_available) throw new AppError('Pet is not available for adoption', 400);
 
+	// Create adoption request
 	const sql = `
 		INSERT INTO adoption_requests (
 			pet_id, adopter_id, full_name, age, email, phone, address,
@@ -82,6 +83,9 @@ export const createAdoptionRequest = asyncHandler(async (req, res, next) => {
 	];
 
 	const [result] = await db.query(sql, params);
+
+	// Mark pet as unavailable (since an adoption request is now submitted)
+	await db.query('UPDATE pets SET is_available = 0 WHERE pet_id = ?', [pet_id]);
 
 	res.status(201).json({
 		status: 'success',
